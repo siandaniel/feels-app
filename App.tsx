@@ -1,7 +1,8 @@
 import { useFonts } from "expo-font";
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View } from "react-native";
-import Login from "./pages/Login";
+import Landing from "./pages/Landing";
+import SignUp from "./pages/SignUp";
 
 export default function App() {
   const [fontsLoaded] = useFonts({
@@ -19,7 +20,8 @@ export default function App() {
 
   return (
     <View style={styles.container}>
-      <Login />
+      {/* <Login /> */}
+      <SignUp />
     </View>
   );
 }

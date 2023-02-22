@@ -7,12 +7,21 @@ interface Props {
   text: string;
   onPress: () => void;
   isPrimary: boolean;
+  disabled?: boolean;
 }
 
-const LoginPressable = ({ text, onPress, isPrimary }: Props) => {
+const LoginPressable = ({
+  text,
+  onPress,
+  isPrimary,
+  disabled = false,
+}: Props) => {
   const [pressed, setPressed] = useState(false);
 
   const setStyles = () => {
+    if (disabled) {
+      return styles.containerDisabled;
+    }
     if (isPrimary) {
       return pressed ? styles.containerPrimaryPressed : styles.containerPrimary;
     } else {
@@ -22,6 +31,7 @@ const LoginPressable = ({ text, onPress, isPrimary }: Props) => {
 
   return (
     <Pressable
+      disabled={disabled}
       style={setStyles}
       onPressIn={() => setPressed(true)}
       onPressOut={() => setPressed(false)}
@@ -56,6 +66,13 @@ const styles = StyleSheet.create({
   },
   containerPrimaryPressed: {
     backgroundColor: blue,
+    padding: 20,
+    borderRadius: 32,
+    alignSelf: "stretch",
+    marginTop: 10,
+  },
+  containerDisabled: {
+    backgroundColor: "grey",
     padding: 20,
     borderRadius: 32,
     alignSelf: "stretch",

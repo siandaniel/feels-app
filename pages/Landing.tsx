@@ -1,12 +1,18 @@
-import { Image, StyleSheet, Text, View } from "react-native";
+import {
+  Image,
+  KeyboardAvoidingView,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
 import LoginPressable from "../components/LoginPressable";
 const landingImg = require("../assets/test-img2.jpg");
 
 const { lightBlue, blue, orange, black, white } = require("../assets/colours");
 
-const Login = () => {
+const Landing = () => {
   return (
-    <View style={styles.container}>
+    <View>
       <View>
         <Image source={landingImg} style={styles.image} />
       </View>
@@ -38,10 +44,10 @@ const styles = StyleSheet.create({
   },
   image: {
     resizeMode: "cover",
-    height: 300,
+    height: 300, // CHANGE LATER
     width: 300,
     borderRadius: 150,
   },
 });
 
-export default Login;
+export default Landing;
