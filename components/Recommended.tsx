@@ -1,7 +1,9 @@
 import { View, Text, StyleSheet, ScrollView } from "react-native";
 import { lightBlue, blue, orange, black, white } from "../assets/colours";
+import RecommendedCard from "./RecommendedCard";
 
 export default function Recommended() {
+  
   return (
     <View style={styles.recommendedContainer}>
       <Text style={styles.header}>For You</Text>
@@ -10,13 +12,13 @@ export default function Recommended() {
           contentContainerStyle={styles.sideScroller}
           horizontal={true}
         >
-          <Text style={styles.text}>Test 1</Text>
-          <Text style={styles.text}>Test 2</Text>
-          <Text style={styles.text}>Test 3</Text>
-          <Text style={styles.text}>Test 4</Text>
-          <Text style={styles.text}>Test 5</Text>
-          <Text style={styles.text}>Test 6</Text>
-          <Text style={styles.text}>Test 7</Text>
+          <RecommendedCard/>
+          <RecommendedCard/>
+          <RecommendedCard/>
+          <RecommendedCard/>
+          <RecommendedCard/>
+          <RecommendedCard/>
+          <RecommendedCard/>
         </ScrollView>
       </View>
     </View>
@@ -25,29 +27,27 @@ export default function Recommended() {
 
 const styles = StyleSheet.create({
   recommendedContainer: {
-    height: 450,
+    height: 350,
     padding: 10,
   },
   header: {
     color: white,
     marginLeft: 5,
-    marginBottom: 8,
+    marginBottom: 10,
     fontSize: 20,
   },
   scroller: {
     alignItems: "center",
     justifyContent: "center",
     borderRadius: 25,
-    width: "95%",
+    width: "100%",
     marginLeft: "auto",
     marginRight: "auto",
   },
   sideScroller: {
     minWidth: "100%",
-    height: 350,
-    padding: 30,
-    borderColor: "black",
-    borderWidth: 2,
+    justifyContent: "center",
+    height: 245,
   },
   text: {
     fontSize: 50,
