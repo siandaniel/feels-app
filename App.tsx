@@ -1,20 +1,7 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import MoodTrackingPage from './pages/MoodTrackingPage';
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <Text>Good morning guys</Text>
-      <StatusBar style="auto" />
-    </View>
+      <MoodTrackingPage/>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
