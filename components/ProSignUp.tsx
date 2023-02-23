@@ -1,8 +1,9 @@
 import { Dispatch, SetStateAction, useState } from "react";
-import { ScrollView, StyleSheet, Text, TextInput, View } from "react-native";
+import { ScrollView, StyleSheet, Text, TextInput, View,  } from "react-native";
 import FormInput from "./FormInput";
 import LoginPressable from "./LoginPressable";
 const { lightBlue, blue, orange, black, white } = require("../assets/colours");
+import CheckBox from "@react-native-community/checkbox";
 
 interface ProfessionalDetails {
   fullName: string;
@@ -42,15 +43,11 @@ const ProSignUp = ({ hidden, setDetails }: Props) => {
       />
       <View>
         <Text style={styles.text}>Available Hours</Text>
-        <View style={styles.hoursContainer}>
-          <FormInput
-            onChange={() => {}}
-            placeholder="Start"
-            label=""
-            isNumber
-          />
-          <FormInput onChange={() => {}} placeholder="End" label="" isNumber />
-        </View>
+      <CheckBox/>
+      <CheckBox/>
+      <CheckBox/>
+      <CheckBox/>
+      <CheckBox/>
       </View>
 
       <LoginPressable
