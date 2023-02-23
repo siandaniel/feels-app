@@ -14,7 +14,7 @@ export default function RecommendedCard() {
   const styles = StyleSheet.create({
     recContainer: {
         borderRadius: 25,
-        marginHorizontal: 8,
+        marginHorizontal: 4,
         height: 230,
         width: 160,
         backgroundColor: lightBlue,

@@ -1,4 +1,4 @@
-import { Text, View, StyleSheet, ScrollView, Modal, Pressable } from "react-native";
+import { Text, View, StyleSheet, ScrollView, Modal, Pressable, Button } from "react-native";
 import MoodCard from "./MoodCard";
 import { lightBlue, blue, orange, black, white } from "../assets/colours";
 import { Dispatch, SetStateAction } from "react";
@@ -11,7 +11,7 @@ interface Props {
 export default function Moodal({showModal, setShowModal}: Props) {
 
     return (
-        <View style={styles.centeredView}>
+        <View>
           <Modal
             animationType="fade"
             transparent={true}
@@ -20,10 +20,21 @@ export default function Moodal({showModal, setShowModal}: Props) {
               setShowModal(!showModal);
             }}
             presentationStyle="overFullScreen">
-            <View style={styles.centeredView}>
-              <View style={styles.modalView}>
-                <Text style={styles.modalText}>Track Your Feels</Text>
+            <View style={styles.background}>
+              <View style={styles.modal}>
+                <Pressable style={styles.close} onPress={() => {
+                        setShowModal(false)
+                    }}>
+                    <Text style={styles.closeText}>x</Text>
+                </Pressable>
+                <Text style={styles.header}>Track Your Feels</Text>
                 <ScrollView contentContainerStyle={styles.sideScroll} horizontal={true}>
+                    <MoodCard mood="Joyful"/>
+                    <MoodCard mood="Happy"/>
+                    <MoodCard mood="Just Okay"/>
+                    <MoodCard mood="Neutral"/>
+                    <MoodCard mood="A Bit Low"/>
+                    <MoodCard mood="Sad"/>
                     <MoodCard mood="Depressed"/>
                 </ScrollView>
               </View>
@@ -34,85 +45,46 @@ export default function Moodal({showModal, setShowModal}: Props) {
     };
     
     const styles = StyleSheet.create({
+        background: {
+            backgroundColor: "rgba(0, 0, 0, 0.6)",
+            flex: 1,
+            justifyContent: 'center',
+            alignItems: 'center',
+        },
+        close: {
+            alignSelf: "flex-end",
+            paddingRight: 20,
+            height: 30,
+        },
+        closeText: {
+            fontSize: 26,
+            marginBottom: 5,
+            color: "#666"
+        },
+        header: {
+            fontSize: 27,
+            textAlign: 'center',
+        },
+        modal: {
+            margin: 20,
+            backgroundColor: white,
+            borderRadius: 20,
+            alignItems: 'center',
+            shadowColor: black,
+            height: 300,
+            shadowOffset: {
+                width: 0,
+                height: 2,
+            },
+            shadowOpacity: 0.25,
+            shadowRadius: 4,
+            elevation: 5,
+            paddingTop: 12
+        },
         sideScroll: {
-            height: 70,
-            borderColor: "pink",
-            borderWidth: 2
+            alignItems: "center",
+            height: 200,
+            paddingLeft: 10,
+            paddingRight: 10,
         },
-      centeredView: {
-        backgroundColor: "rgba(0, 0, 0, 0.6)",
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-      },
-      modalView: {
-        margin: 20,
-        backgroundColor: 'white',
-        borderRadius: 20,
-        padding: 35,
-        alignItems: 'center',
-        shadowColor: '#000',
-        height: 250,
-        shadowOffset: {
-          width: 0,
-          height: 2,
-        },
-        shadowOpacity: 0.25,
-        shadowRadius: 4,
-        elevation: 5,
-      },
-      button: {
-        borderRadius: 20,
-        padding: 10,
-        elevation: 2,
-      },
-      modalText: {
-        marginBottom: 15,
-        textAlign: 'center',
-      },
     });
-
-
-
-
-
-
-
-
-
-//     return (
-//         <View style={styles.moodal}>
-//             <Modal style={styles.moodalContent}>
-//                 <Text>Track Your Feels</Text>
-//                 <ScrollView contentContainerStyle={styles.sideScroller} horizontal={true}>
-//                     <MoodCard mood={"Depressed"}/>
-//                     <MoodCard mood={"Sad"}/>
-//                     <MoodCard mood={"A Bit Low"}/>
-//                     <MoodCard mood={"Neutral"}/>
-//                     <MoodCard mood={"Okay"}/>
-//                     <MoodCard mood={"Happy"}/>
-//                     <MoodCard mood={"Very Happy"}/>
-//                 </ScrollView>
-//             </Modal>
-//         </View>
-//     );
-//   }
-
-//   const styles = StyleSheet.create({
-//     moodal: {
-//         height: "100%",
-//         width: "100%"
-//     },
-//     moodalContent: {
-//         height: 200,
-//         width: 300
-//     },
-//     sideScroller: {
-//         minWidth: "100%",
-//         height: 350,
-//         padding: 10,
-//     },
-//     text: {
-//         fontSize: 50,
-//     }
-// })

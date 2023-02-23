@@ -28,11 +28,10 @@ export default function Recommended() {
 const styles = StyleSheet.create({
   recommendedContainer: {
     height: 350,
-    padding: 10,
   },
   header: {
     color: white,
-    marginLeft: 5,
+    marginLeft: 20,
     marginBottom: 10,
     fontSize: 20,
   },
@@ -48,6 +47,8 @@ const styles = StyleSheet.create({
     minWidth: "100%",
     justifyContent: "center",
     height: 245,
+    paddingLeft: 11,
+    paddingRight: 11
   },
   text: {
     fontSize: 50,
