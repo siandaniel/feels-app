@@ -3,29 +3,17 @@ import { ScrollView, StyleSheet, Text, TextInput, View } from "react-native";
 import FormInput from "./FormInput";
 import LoginPressable from "./LoginPressable";
 import FormCheckBox from "./FormCheckBox";
+import type { UserCredential } from "firebase/auth";
+import { postPro } from "../utils";
+import { Weekdays } from "../types";
 const { lightBlue, blue, orange, black, white } = require("../assets/colours");
-
-interface ProfessionalDetails {
-  fullName: string;
-  email: string;
-  registrationNumber: string;
-  password: string;
-}
-
-interface Weekdays {
-  monday: boolean;
-  tuesday: boolean;
-  wednesday: boolean;
-  thursday: boolean;
-  friday: boolean;
-}
 
 interface Props {
   hidden: boolean;
-  setDetails: Dispatch<SetStateAction<ProfessionalDetails | null>>;
+  firebaseSignUp: (a: string, b: string) => Promise<UserCredential>;
 }
 
-const ProSignUp = ({ hidden, setDetails }: Props) => {
+const ProSignUp = ({ hidden, firebaseSignUp }: Props) => {
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [registrationNumber, setRegistrationNumber] = useState("");
@@ -37,6 +25,14 @@ const ProSignUp = ({ hidden, setDetails }: Props) => {
     thursday: false,
     friday: false,
   });
+
+  const submitHandler = () => {
+    if (email !== "" && password !== "") {
+      firebaseSignUp(email, password).then((res) => {
+        // return postPro(tempPro);
+      });
+    }
+  };
 
   const handleCheckBoxes = (day: keyof Weekdays) => {
     setDays((curr) => {
@@ -65,22 +61,16 @@ const ProSignUp = ({ hidden, setDetails }: Props) => {
           label="Password"
           secure
         />
-        <View>
-          <Text style={styles.text}>Available Hours</Text>
+        {/* <View style={styles.daysContainer}>
+          <Text style={styles.text}>Available Days</Text>
           <FormCheckBox onChange={handleCheckBoxes} day="monday" />
           <FormCheckBox onChange={handleCheckBoxes} day="tuesday" />
           <FormCheckBox onChange={handleCheckBoxes} day="wednesday" />
           <FormCheckBox onChange={handleCheckBoxes} day="thursday" />
           <FormCheckBox onChange={handleCheckBoxes} day="friday" />
-        </View>
+        </View> */}
       </ScrollView>
-      <LoginPressable
-        text="Sign up"
-        onPress={() => {
-          setDetails({ fullName, email, registrationNumber, password });
-        }}
-        isPrimary={true}
-      />
+      <LoginPressable text="Sign up" onPress={submitHandler} isPrimary={true} />
     </View>
   );
 };
@@ -100,6 +90,9 @@ const styles = StyleSheet.create({
     fontFamily: "Poppins-Regular",
     color: white,
     fontSize: 16,
+  },
+  daysContainer: {
+    marginLeft: 16,
   },
 });
 // full name

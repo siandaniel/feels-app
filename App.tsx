@@ -19,7 +19,7 @@ export default function App() {
       </View>
     );
 
-  return <Login />;
+  return <SignUp />;
 }
 
 const styles = StyleSheet.create({

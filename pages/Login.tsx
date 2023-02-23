@@ -16,10 +16,9 @@ import { signInWithEmailAndPassword } from "firebase/auth";
 const Login = () => {
   const [isUser, setIsUser] = useState(true);
 
-  const logInUser = async (email: string, password: string) => {
+  const fbLogin = async (email: string, password: string) => {
     try {
       const userData = await signInWithEmailAndPassword(auth, email, password);
-
       console.log(userData);
     } catch (error) {
       console.log(error);
