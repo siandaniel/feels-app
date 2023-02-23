@@ -14,18 +14,12 @@ export default function App() {
 
   if (!fontsLoaded)
     return (
-      <View>
+      <View style={styles.container}>
         <Text>Loading fonts</Text>
       </View>
     );
 
-  return (
-    <View style={styles.container}>
-    
-      <SignUp/>
-     
-    </View>
-  );
+  return <Login />;
 }
 
 const styles = StyleSheet.create({

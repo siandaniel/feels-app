@@ -8,6 +8,8 @@ interface Props {
   isNumber?: boolean;
   secure?: boolean;
   onChange: Dispatch<SetStateAction<string>>;
+  horizontal?: boolean;
+  last?: boolean;
 }
 
 const FormInput = ({
@@ -16,10 +18,20 @@ const FormInput = ({
   isNumber = false,
   secure = false,
   onChange,
+  horizontal,
+  last,
 }: Props) => {
   // ADD ICONS
+
+  const getStyles = () => {
+    if (horizontal) {
+      if (last) return styles.containerHorizLast;
+      return styles.containerHoriz;
+    } else return styles.container;
+  };
+
   return (
-    <View style={styles.container}>
+    <View style={getStyles()}>
       <Text style={styles.text}>{label}</Text>
       <TextInput
         style={styles.input}
@@ -34,7 +46,15 @@ const FormInput = ({
 
 const styles = StyleSheet.create({
   container: {
-    alignSelf: "stretch",
+    flex: 1,
+    marginTop: 24,
+  },
+  containerHoriz: {
+    flex: 1,
+    marginRight: 24,
+  },
+  containerHorizLast: {
+    flex: 1,
   },
   text: {
     fontFamily: "Poppins-Regular",

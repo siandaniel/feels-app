@@ -58,10 +58,11 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: "center",
-    alignSelf: "stretch",
-    padding: 25,
+    justifyContent: "center",
     paddingVertical: 100,
     backgroundColor: blue,
+    borderWidth: 2,
+    paddingHorizontal: "5%",
   },
 });
 

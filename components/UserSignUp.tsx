@@ -26,31 +26,47 @@ const UserSignUp = ({ hidden, setDetails }: Props) => {
 
   return (
     <View style={hidden ? styles.hidden : styles.container}>
-      <FormInput
-        onChange={setUsername}
-        placeholder="Username..."
-        label="Username"
-      />
-      <FormInput onChange={setEmail} placeholder="Email..." label="Email" />
-      <FormInput
-        onChange={setPassword}
-        placeholder="Password"
-        label="Password"
-        secure
-      />
-      <View>
-        <Text style={styles.text}>Date of Birth</Text>
-        <View style={styles.DOBcontainer}>
-          <FormInput onChange={setDay} placeholder="  DD  " label="" isNumber />
-          <FormInput
-            onChange={setMonth}
-            placeholder="  MM  "
-            label=""
-            isNumber
-          />
-          <FormInput onChange={setYear} placeholder="YYYY" label="" isNumber />
+      <ScrollView>
+        <FormInput
+          onChange={setUsername}
+          placeholder="Username..."
+          label="Username"
+        />
+        <FormInput onChange={setEmail} placeholder="Email..." label="Email" />
+        <FormInput
+          onChange={setPassword}
+          placeholder="Password"
+          label="Password"
+          secure
+        />
+        <View>
+          <Text style={styles.text}>Date of Birth</Text>
+          <View style={styles.DOBcontainer}>
+            <FormInput
+              onChange={setDay}
+              placeholder="  DD  "
+              label=""
+              isNumber
+              horizontal
+            />
+            <FormInput
+              onChange={setMonth}
+              placeholder="  MM  "
+              label=""
+              isNumber
+              horizontal
+            />
+            <FormInput
+              onChange={setYear}
+              placeholder="YYYY"
+              label=""
+              isNumber
+              horizontal
+              last
+            />
+          </View>
         </View>
-      </View>
+      </ScrollView>
       <LoginPressable
         text="Sign up"
         onPress={() => {
@@ -71,19 +87,17 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: "space-evenly",
-    // alignItems: "center",
     alignSelf: "stretch",
   },
   DOBcontainer: {
     flexDirection: "row",
     justifyContent: "space-between",
-    width: "50%",
   },
   text: {
     fontFamily: "Poppins-Regular",
     fontSize: 16,
-    // textAlign: "center",
-    marginBottom: -12,
+    marginTop: 24,
+    marginBottom: -8,
     color: white,
   },
   hidden: {

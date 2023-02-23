@@ -1,35 +1,43 @@
-import { View, StyleSheet } from "react-native"
-import FormInput from "./FormInput"
-import LoginPressable from './LoginPressable'
-import { useState } from "react"
-
+import { View, StyleSheet, ScrollView } from "react-native";
+import FormInput from "./FormInput";
+import LoginPressable from "./LoginPressable";
+import { useState } from "react";
 
 interface Props {
-    hidden: boolean
+  hidden: boolean;
 }
 
+const SignInUser = ({ hidden }: Props) => {
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
 
-
-const SignInUser = ({hidden}: Props) => {
-    const [username, setUsername] = useState('')
-    const [password, setPassword] = useState('')
-  
-return <View style={hidden ? styles.hidden : styles.container}>
-    <FormInput label='Username' placeholder="username..." onChange={setUsername}/>
-    <FormInput label='Password' placeholder="password" secure onChange={setPassword}/>
-<LoginPressable text='Log in' onPress={() => {}} isPrimary/>
-        </View>
-
-}
+  return (
+    <View style={hidden ? styles.hidden : styles.container}>
+      <ScrollView>
+        <FormInput
+          label="Username"
+          placeholder="username..."
+          onChange={setUsername}
+        />
+        <FormInput
+          label="Password"
+          placeholder="password"
+          secure
+          onChange={setPassword}
+        />
+      </ScrollView>
+      <LoginPressable text="Log in" onPress={() => {}} isPrimary />
+    </View>
+  );
+};
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        justifyContent: "space-evenly",
-        alignSelf: "stretch",
-      },
-    hidden: {display: 'none'}
-})
+  container: {
+    flex: 1,
+    justifyContent: "space-evenly",
+    alignSelf: "stretch",
+  },
+  hidden: { display: "none" },
+});
 
-
-export default SignInUser
+export default SignInUser;
