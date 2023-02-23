@@ -10,9 +10,21 @@ import LoginPressable from "../components/LoginPressable";
 import SignInPro from "../components/SignInPro";
 import SignInUser from "../components/SignInUser";
 const { lightBlue, blue, orange, black, white } = require("../assets/colours");
+import { auth } from "../firebaseConfig";
+import { signInWithEmailAndPassword } from "firebase/auth";
 
 const Login = () => {
   const [isUser, setIsUser] = useState(true);
+
+  const logInUser = async (email: string, password: string) => {
+    try {
+      const userData = await signInWithEmailAndPassword(auth, email, password);
+
+      console.log(userData);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
