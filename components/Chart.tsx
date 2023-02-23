@@ -24,17 +24,18 @@ export default function Chart() {
 
   const styles = StyleSheet.create({
     chartContainer: {
-        height: 500,
+        height: 450,
         paddingLeft: 10,
         paddingRight: 10,
-        paddingTop: 50,
+        paddingTop: 35,
         paddingBottom: 0,
         justifyContent: "center",
     },
     date: {
         color: white,
         margin: 10,
-        marginBottom: 15,
+        marginBottom: 13,
+        marginLeft: 13,
         fontSize: 25,
         fontWeight: "bold",
     },

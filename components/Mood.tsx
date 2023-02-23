@@ -23,7 +23,7 @@ export default function Mood() {
     header: {
         color: white,
         marginBottom: 8,
-        marginLeft: 5,
+        marginLeft: 9,
         fontSize: 20,
     },
     text: {
