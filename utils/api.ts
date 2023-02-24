@@ -15,7 +15,6 @@ export const getOneUser = (username: String) => {
 
 export const getUserMoods = (username: String) => {
     let apiQuery = `/mood_data/${username}`;
-
     return feelsApi.get(apiQuery)
     .then(({data}) => {
         return data.moodData;

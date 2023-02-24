@@ -103,15 +103,19 @@ export default function Moodal({
               <MoodCard mood="Depressed" setMoodDesc={setMoodDesc} />
             </ScrollView>
             {moodDesc !== "" && (
-              <Pressable
-                style={styles.submitButton}
-                onPress={() => {
-                  setShowModal(false);
-                  updateMood(moodDesc);
-                }}
-              >
-                <Text style={styles.submitButtonText}>Track</Text>
-              </Pressable>
+              <>
+                <Text style={styles.text}>Feeling {moodDesc}?</Text>
+                <Pressable
+                  style={styles.submitButton}
+                  onPress={() => {
+                    console.log(moodDesc)
+                    setShowModal(false);
+                    updateMood(moodDesc);
+                  }}
+                >
+                  <Text style={styles.submitButtonText}>Track</Text>
+                </Pressable>
+              </>
             )}
           </View>
         </View>
@@ -148,7 +152,8 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     alignItems: "center",
     shadowColor: black,
-    height: 340,
+    minHeight: 300,
+    maxHeight: 355,
     shadowOffset: {
       width: 0,
       height: 2,
@@ -163,11 +168,13 @@ const styles = StyleSheet.create({
     height: 200,
     paddingLeft: 10,
     paddingRight: 10,
+    marginBottom: 10
   },
   submitButton: {
-    marginBottom: 20,
+    marginBottom: 23,
     backgroundColor: orange,
     padding: 6,
+    marginTop: 8,
     paddingHorizontal: 10,
     borderRadius: 30,
   },
@@ -175,4 +182,7 @@ const styles = StyleSheet.create({
     fontSize: 17,
     color: white,
   },
+  text: {
+    fontSize: 16
+  }
 });

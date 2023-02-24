@@ -73,23 +73,10 @@ export default function MoodTrackingPage() {
           <Chart />
         </View>
         <View style={styles.mood}>
-          <Mood todaysMood={todaysMood} />
+          <Mood todaysMood={todaysMood} setShowModal={setShowModal} />
         </View>
         <View style={styles.recommended}>
           <Recommended />
-        </View>
-        <View style={styles.button}>
-          <Button
-            title="Track your mood"
-            color={orange}
-            onPress={() => {
-              if (todaysMood === "") {
-                setShowModal(true);
-              } else {
-                setShowModal(false);
-              }
-            }}
-          ></Button>
         </View>
         {showModal && (
           <Moodal
@@ -120,9 +107,5 @@ const styles = StyleSheet.create({
   },
   recommended: {
     width: "100%",
-  },
-  button: {
-    marginTop: -20,
-    marginBottom: 50,
   },
 });

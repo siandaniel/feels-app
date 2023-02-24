@@ -13,20 +13,17 @@ export default function MoodCard({ mood, setMoodDesc }: Props) {
   return (
     <TouchableWithoutFeedback
       onPress={() => {
-        if (!selected) {
+        if (selected === false) {
+          setSelected(true)
           setMoodDesc(mood);
         } else {
+          setSelected(false);
           setMoodDesc("");
         }
-        setSelected(!selected);
       }}
     >
       <View
-        style={
-          selected
-            ? styles.cardContainerSelected
-            : (styles.cardContainer as any)
-        }
+        style={styles.cardContainer as any}
       >
         <View style={styles.placeholder}></View>
         <Text style={styles.moodText}>{mood}</Text>
@@ -41,13 +38,6 @@ const styles = {
     justifyContent: "center",
     height: 190,
     marginHorizontal: 10,
-  },
-  cardContainerSelected: {
-    alignItems: "center",
-    justifyContent: "center",
-    height: 190,
-    marginHorizontal: 10,
-    backgroundColor: "pink",
   },
   moodText: {
     marginTop: 10,
