@@ -5,12 +5,21 @@ import {
   ScrollView,
   Modal,
   Pressable,
+  ShadowPropTypesIOS,
 } from "react-native";
 import MoodCard from "./MoodCard";
 import { lightBlue, blue, orange, black, white } from "../assets/colours";
 import { Dispatch, SetStateAction, useState } from "react";
 import { todaysDate } from "../utils/todaysDate";
 import { updateUserMood } from "../utils/api";
+
+const depressed = require("../assets/depressed.png");
+const sad = require("../assets/sad.png");
+const abitlow = require("../assets/abitlow.png");
+const neutral = require("../assets/neutral.png");
+const justokay = require("../assets/justokay.png");
+const happy = require("../assets/happy.png");
+const joyful = require("../assets/joyful.png");
 
 interface loggedInUser {
   _id: String;
@@ -43,54 +52,68 @@ export default function Moodal({
 
   const updateMood = (moodDesc: String) => {
     if (moodDesc === "Joyful") {
-      updateUserMood(loggedInUser.username, { [todaysDate]: 3 }).then((updatedMoods) => {
-       const moodValue = updatedMoods[updatedMoods.length -1][todaysDate]
-       if (moodValue === 3) {
-        setTodaysMood(moodDesc);
-       } 
-      });
+      updateUserMood(loggedInUser.username, { [todaysDate]: 3 }).then(
+        (updatedMoods) => {
+          const moodValue = updatedMoods[updatedMoods.length - 1][todaysDate];
+          if (moodValue === 3) {
+            setTodaysMood(moodDesc);
+          }
+        }
+      );
     } else if (moodDesc === "Happy") {
-      updateUserMood(loggedInUser.username, { [todaysDate]: 2 }).then((updatedMoods) => {
-        const moodValue = updatedMoods[updatedMoods.length -1][todaysDate]
-        if (moodValue === 2) {
-         setTodaysMood(moodDesc);
-        } 
-       })
+      updateUserMood(loggedInUser.username, { [todaysDate]: 2 }).then(
+        (updatedMoods) => {
+          const moodValue = updatedMoods[updatedMoods.length - 1][todaysDate];
+          if (moodValue === 2) {
+            setTodaysMood(moodDesc);
+          }
+        }
+      );
     } else if (moodDesc === "Just Okay") {
-      updateUserMood(loggedInUser.username, { [todaysDate]: 1 }).then((updatedMoods) => {
-        const moodValue = updatedMoods[updatedMoods.length -1][todaysDate]
-        if (moodValue === 1) {
-         setTodaysMood(moodDesc);
-        } 
-       })
+      updateUserMood(loggedInUser.username, { [todaysDate]: 1 }).then(
+        (updatedMoods) => {
+          const moodValue = updatedMoods[updatedMoods.length - 1][todaysDate];
+          if (moodValue === 1) {
+            setTodaysMood(moodDesc);
+          }
+        }
+      );
     } else if (moodDesc === "Neutral") {
-      updateUserMood(loggedInUser.username, { [todaysDate]: 0 }).then((updatedMoods) => {
-        const moodValue = updatedMoods[updatedMoods.length -1][todaysDate]
-        if (moodValue === 0) {
-         setTodaysMood(moodDesc);
-        } 
-       })
+      updateUserMood(loggedInUser.username, { [todaysDate]: 0 }).then(
+        (updatedMoods) => {
+          const moodValue = updatedMoods[updatedMoods.length - 1][todaysDate];
+          if (moodValue === 0) {
+            setTodaysMood(moodDesc);
+          }
+        }
+      );
     } else if (moodDesc === "A Bit Low") {
-      updateUserMood(loggedInUser.username, { [todaysDate]: -1 }).then((updatedMoods) => {
-        const moodValue = updatedMoods[updatedMoods.length -1][todaysDate]
-        if (moodValue === -1) {
-         setTodaysMood(moodDesc);
-        } 
-       })
+      updateUserMood(loggedInUser.username, { [todaysDate]: -1 }).then(
+        (updatedMoods) => {
+          const moodValue = updatedMoods[updatedMoods.length - 1][todaysDate];
+          if (moodValue === -1) {
+            setTodaysMood(moodDesc);
+          }
+        }
+      );
     } else if (moodDesc === "Sad") {
-      updateUserMood(loggedInUser.username, { [todaysDate]: -2 }).then((updatedMoods) => {
-        const moodValue = updatedMoods[updatedMoods.length -1][todaysDate]
-        if (moodValue === -2) {
-         setTodaysMood(moodDesc);
-        } 
-       })
+      updateUserMood(loggedInUser.username, { [todaysDate]: -2 }).then(
+        (updatedMoods) => {
+          const moodValue = updatedMoods[updatedMoods.length - 1][todaysDate];
+          if (moodValue === -2) {
+            setTodaysMood(moodDesc);
+          }
+        }
+      );
     } else if (moodDesc === "Depressed") {
-      updateUserMood(loggedInUser.username, { [todaysDate]: -3 }).then((updatedMoods) => {
-        const moodValue = updatedMoods[updatedMoods.length -1][todaysDate]
-        if (moodValue === -3) {
-         setTodaysMood(moodDesc);
-        } 
-       })
+      updateUserMood(loggedInUser.username, { [todaysDate]: -3 }).then(
+        (updatedMoods) => {
+          const moodValue = updatedMoods[updatedMoods.length - 1][todaysDate];
+          if (moodValue === -3) {
+            setTodaysMood(moodDesc);
+          }
+        }
+      );
     }
   };
 
@@ -120,13 +143,33 @@ export default function Moodal({
               contentContainerStyle={styles.sideScroll}
               horizontal={true}
             >
-              <MoodCard mood="Joyful" setMoodDesc={setMoodDesc} />
-              <MoodCard mood="Happy" setMoodDesc={setMoodDesc} />
-              <MoodCard mood="Just Okay" setMoodDesc={setMoodDesc} />
-              <MoodCard mood="Neutral" setMoodDesc={setMoodDesc} />
-              <MoodCard mood="A Bit Low" setMoodDesc={setMoodDesc} />
-              <MoodCard mood="Sad" setMoodDesc={setMoodDesc} />
-              <MoodCard mood="Depressed" setMoodDesc={setMoodDesc} />
+              <MoodCard
+                mood="Joyful"
+                setMoodDesc={setMoodDesc}
+                image={joyful}
+              />
+              <MoodCard mood="Happy" setMoodDesc={setMoodDesc} image={happy} />
+              <MoodCard
+                mood="Just Okay"
+                setMoodDesc={setMoodDesc}
+                image={justokay}
+              />
+              <MoodCard
+                mood="Neutral"
+                setMoodDesc={setMoodDesc}
+                image={neutral}
+              />
+              <MoodCard
+                mood="A Bit Low"
+                setMoodDesc={setMoodDesc}
+                image={abitlow}
+              />
+              <MoodCard mood="Sad" setMoodDesc={setMoodDesc} image={sad} />
+              <MoodCard
+                mood="Depressed"
+                setMoodDesc={setMoodDesc}
+                image={depressed}
+              />
             </ScrollView>
             {moodDesc !== "" && (
               <>
@@ -134,7 +177,7 @@ export default function Moodal({
                 <Pressable
                   style={styles.submitButton}
                   onPress={() => {
-                    console.log(moodDesc)
+                    console.log(moodDesc);
                     setShowModal(false);
                     updateMood(moodDesc);
                   }}
@@ -179,7 +222,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     shadowColor: black,
     minHeight: 300,
-    maxHeight: 355,
+    maxHeight: 370,
     shadowOffset: {
       width: 0,
       height: 2,
@@ -194,7 +237,7 @@ const styles = StyleSheet.create({
     height: 200,
     paddingLeft: 10,
     paddingRight: 10,
-    marginBottom: 10
+    marginBottom: 10,
   },
   submitButton: {
     marginBottom: 23,
@@ -209,6 +252,6 @@ const styles = StyleSheet.create({
     color: white,
   },
   text: {
-    fontSize: 16
-  }
+    fontSize: 16,
+  },
 });

@@ -1,20 +1,21 @@
-import { View, Text, TouchableWithoutFeedback } from "react-native";
+import { View, Text, TouchableWithoutFeedback, Image } from "react-native";
 import { Dispatch, SetStateAction, useState } from "react";
 import { orange } from "../assets/colours";
 
 interface Props {
   mood: String;
   setMoodDesc: Dispatch<SetStateAction<String>>;
+  image: any;
 }
 
-export default function MoodCard({ mood, setMoodDesc }: Props) {
+export default function MoodCard({ mood, setMoodDesc, image }: Props) {
   const [selected, setSelected] = useState<Boolean>(false);
 
   return (
     <TouchableWithoutFeedback
       onPress={() => {
         if (selected === false) {
-          setSelected(true)
+          setSelected(true);
           setMoodDesc(mood);
         } else {
           setSelected(false);
@@ -22,10 +23,8 @@ export default function MoodCard({ mood, setMoodDesc }: Props) {
         }
       }}
     >
-      <View
-        style={styles.cardContainer as any}
-      >
-        <View style={styles.placeholder}></View>
+      <View style={styles.cardContainer as any}>
+        <Image source={image} style={styles.placeholder}></Image>
         <Text style={styles.moodText}>{mood}</Text>
       </View>
     </TouchableWithoutFeedback>
@@ -40,13 +39,11 @@ const styles = {
     marginHorizontal: 10,
   },
   moodText: {
-    marginTop: 10,
     fontSize: 19,
   },
   placeholder: {
-    backgroundColor: orange,
     borderRadius: 60,
-    height: 110,
-    width: 110,
+    height: 120,
+    width: 120,
   },
 };

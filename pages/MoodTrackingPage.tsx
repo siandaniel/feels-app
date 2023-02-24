@@ -45,40 +45,43 @@ export default function MoodTrackingPage() {
 
   useEffect(() => {
     // Hard coded "Tom" for now - change later!
-    getOneUser("Ross").then((user) => {
+    getOneUser("Joey").then((user) => {
       setLoggedInUser(user);
     });
-    getUserMoods("Ross")
+    getUserMoods("Joey")
       .then((userMoodsFromApi) => {
         setUserMoods(userMoodsFromApi.mood_data);
         if (!checkUserMoods(userMoodsFromApi.mood_data)) {
           setShowModal(true);
         } else {
           setShowModal(false);
-          const todaysLoggedMood = userMoodsFromApi.mood_data[userMoodsFromApi.mood_data.length - 1][todaysDate]
+          const todaysLoggedMood =
+            userMoodsFromApi.mood_data[userMoodsFromApi.mood_data.length - 1][
+              todaysDate
+            ];
           if (todaysLoggedMood === 3) {
-            setTodaysMood("Joyful")
+            setTodaysMood("Joyful");
           } else if (todaysLoggedMood === 2) {
-            setTodaysMood("Happy")
+            setTodaysMood("Happy");
           } else if (todaysLoggedMood === 1) {
-            setTodaysMood("Just Okay")
+            setTodaysMood("Just Okay");
           } else if (todaysLoggedMood === 0) {
-            setTodaysMood("Neutral")
+            setTodaysMood("Neutral");
           } else if (todaysLoggedMood === -1) {
-            setTodaysMood("A Bit Low")
+            setTodaysMood("A Bit Low");
           } else if (todaysLoggedMood === -2) {
-            setTodaysMood("Sad")
+            setTodaysMood("Sad");
           } else if (todaysLoggedMood === -3) {
-            setTodaysMood("Depressed")
-          } 
-        };
-      }).catch((err) => {
-        console.log(err);
-        
+            setTodaysMood("Depressed");
+          }
+        }
       })
+      .catch((err) => {
+        console.log(err);
+      });
   }, []);
 
-  const checkUserMoods = (data: Array<Object>) => {    
+  const checkUserMoods = (data: Array<Object>) => {
     const trackedDays = data.map((mood) => Object.keys(mood)[0]);
     return trackedDays.includes(todaysDate);
   };

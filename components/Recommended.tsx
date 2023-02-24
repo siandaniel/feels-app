@@ -3,7 +3,6 @@ import { lightBlue, blue, orange, black, white } from "../assets/colours";
 import RecommendedCard from "./RecommendedCard";
 
 export default function Recommended() {
-  
   return (
     <View style={styles.recommendedContainer}>
       <Text style={styles.header}>For You</Text>
@@ -12,13 +11,13 @@ export default function Recommended() {
           contentContainerStyle={styles.sideScroller}
           horizontal={true}
         >
-          <RecommendedCard/>
-          <RecommendedCard/>
-          <RecommendedCard/>
-          <RecommendedCard/>
-          <RecommendedCard/>
-          <RecommendedCard/>
-          <RecommendedCard/>
+          <RecommendedCard />
+          <RecommendedCard />
+          <RecommendedCard />
+          <RecommendedCard />
+          <RecommendedCard />
+          <RecommendedCard />
+          <RecommendedCard />
         </ScrollView>
       </View>
     </View>
@@ -27,7 +26,7 @@ export default function Recommended() {
 
 const styles = StyleSheet.create({
   recommendedContainer: {
-    height: 350,
+    height: 290,
   },
   header: {
     color: white,
@@ -48,7 +47,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     height: 245,
     paddingLeft: 11,
-    paddingRight: 11
+    paddingRight: 11,
   },
   text: {
     fontSize: 50,
