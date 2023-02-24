@@ -4,7 +4,12 @@ import FormInput from "./FormInput";
 import LoginPressable from "./LoginPressable";
 import FormCheckBox from "./FormCheckBox";
 import type { UserCredential } from "firebase/auth";
-import { postPro } from "../utils";
+import {
+  postPro,
+  validateEmail,
+  validatePassword,
+  validateRegNumber,
+} from "../utils";
 import { Weekdays } from "../types";
 const { lightBlue, blue, orange, black, white } = require("../assets/colours");
 
@@ -14,9 +19,10 @@ const tempImg =
 interface Props {
   hidden: boolean;
   firebaseSignUp: (a: string, b: string) => Promise<UserCredential>;
+  avoidKeyboard: Dispatch<SetStateAction<boolean>>;
 }
 
-const ProSignUp = ({ hidden, firebaseSignUp }: Props) => {
+const ProSignUp = ({ hidden, firebaseSignUp, avoidKeyboard }: Props) => {
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [registrationNumber, setRegistrationNumber] = useState("");
@@ -34,8 +40,9 @@ const ProSignUp = ({ hidden, firebaseSignUp }: Props) => {
     if (
       email !== "" &&
       password !== "" &&
+      fullName !== "" &&
       /^CP\d{6}$/g.test(registrationNumber) &&
-      fullName !== ""
+      validateEmail(email)
     ) {
       postPro({
         fullName,
@@ -65,23 +72,45 @@ const ProSignUp = ({ hidden, firebaseSignUp }: Props) => {
 
   return (
     <View style={hidden ? styles.hidden : styles.container}>
-      <ScrollView>
+      <ScrollView contentContainerStyle={styles.innerContainer}>
         <FormInput
+          value={fullName}
           onChange={setFullName}
           placeholder="Full Name..."
           label="Full Name"
+          message="Please enter your name"
+          isValid={fullName.length > 0}
+          avoidKeyboard={avoidKeyboard}
         />
-        <FormInput onChange={setEmail} placeholder="Email..." label="Email" />
         <FormInput
+          value={email}
+          onChange={setEmail}
+          placeholder="Email..."
+          label="Email"
+          message="Please enter a valid email"
+          isValid={validateEmail(email)}
+          avoidKeyboard={avoidKeyboard}
+        />
+        <FormInput
+          value={registrationNumber}
           onChange={setRegistrationNumber}
           placeholder="Registration Number"
           label="Registration Number"
+          message="Please enter a valid registration number i.e. 'CP123456'"
+          isValid={validateRegNumber(registrationNumber)}
+          avoidKeyboard={avoidKeyboard}
+          isAvoiding
         />
         <FormInput
+          value={password}
           onChange={setPassword}
           placeholder="Password"
           label="Password"
           secure
+          message="Password must be at least 6 characters"
+          isValid={validatePassword(password)}
+          avoidKeyboard={avoidKeyboard}
+          isAvoiding
         />
         {/* <View style={styles.daysContainer}>
           <Text style={styles.text}>Available Days</Text>
@@ -99,9 +128,12 @@ const ProSignUp = ({ hidden, firebaseSignUp }: Props) => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    justifyContent: "space-evenly",
+    flex: 0,
+    justifyContent: "center",
     alignSelf: "stretch",
+  },
+  innerContainer: {
+    paddingBottom: 24,
   },
   hidden: {
     display: "none",

@@ -40,8 +40,9 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: "center",
+    justifyContent: "center",
     alignSelf: "stretch",
-    paddingVertical: 100,
+    // paddingVertical: 180,
     backgroundColor: blue,
     paddingHorizontal: "5%",
   },

@@ -29,13 +29,15 @@ const SignInPro = ({ hidden, firebaseSignIn }: Props) => {
 
   return (
     <View style={hidden ? styles.hidden : styles.container}>
-      <ScrollView>
+      <ScrollView contentContainerStyle={styles.inputContainer}>
         <FormInput
+          value={regNumber}
           label="Registration number"
           placeholder="regnumber..."
           onChange={setRegNumber}
         />
         <FormInput
+          value={password}
           label="Password"
           placeholder="password"
           secure
@@ -49,9 +51,12 @@ const SignInPro = ({ hidden, firebaseSignIn }: Props) => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    flex: 0,
     justifyContent: "space-evenly",
     alignSelf: "stretch",
+  },
+  inputContainer: {
+    paddingBottom: 24,
   },
   hidden: { display: "none" },
 });

@@ -12,6 +12,9 @@ interface Props {
   last?: boolean;
   message?: string;
   isValid?: boolean;
+  value: string;
+  avoidKeyboard?: Dispatch<SetStateAction<boolean>>;
+  isAvoiding?: boolean;
 }
 
 const FormInput = ({
@@ -23,9 +26,16 @@ const FormInput = ({
   horizontal,
   last,
   message = "",
-  isValid,
+  isValid = true,
+  value,
+  avoidKeyboard,
+  isAvoiding = false,
 }: Props) => {
   // ADD ICONS
+
+  const setAvoidKeyboard = (value: boolean) => {
+    if (avoidKeyboard) avoidKeyboard(value);
+  };
 
   const getStyles = () => {
     if (horizontal) {
@@ -38,13 +48,15 @@ const FormInput = ({
     <View style={getStyles()}>
       <Text style={styles.text}>{label}</Text>
       <TextInput
+        value={value}
         style={styles.input}
         placeholder={placeholder}
         keyboardType={isNumber ? "number-pad" : "default"}
         secureTextEntry={secure}
         onChangeText={onChange}
+        onFocus={() => setAvoidKeyboard(isAvoiding)}
       />
-      <Text>{isValid ? "" : message}</Text>
+      {!isValid ? <Text style={styles.message}>{message}</Text> : null}
     </View>
   );
 };
@@ -75,6 +87,11 @@ const styles = StyleSheet.create({
     borderRadius: 24,
     marginTop: 8,
     color: black,
+  },
+  message: {
+    marginTop: 8,
+    marginLeft: 16,
+    color: white,
   },
 });
 
