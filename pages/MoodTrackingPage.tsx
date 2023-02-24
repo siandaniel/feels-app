@@ -1,13 +1,71 @@
-import { useState } from "react";
-import { Text, View, StyleSheet, ScrollView, Button } from "react-native";
+import { useState, useEffect } from "react";
+import {
+  Text,
+  View,
+  StyleSheet,
+  ScrollView,
+  Button,
+  LogBox,
+} from "react-native";
 import { lightBlue, blue, orange, black, white } from "../assets/colours";
 import Chart from "../components/Chart";
 import Mood from "../components/Mood";
 import Moodal from "../components/Moodal";
 import Recommended from "../components/Recommended";
+import { getOneUser, getUserMoods } from "../utils/api";
+import { todaysDate } from "../utils/todaysDate";
+
+interface loggedInUser {
+  _id: String;
+  username: String;
+  email: String;
+  date_of_birth: String;
+  date_joined: String;
+  avatar_url: String;
+  _v: Number;
+  createdAt: String;
+  updatedAt: String;
+}
 
 export default function MoodTrackingPage() {
+  const [userMoods, setUserMoods] = useState<Array<Object>>([]);
   const [showModal, setShowModal] = useState<boolean>(false);
+  const [todaysMood, setTodaysMood] = useState<String>("");
+  const [loggedInUser, setLoggedInUser] = useState<loggedInUser>({
+    _id: "",
+    username: "",
+    email: "",
+    date_of_birth: "",
+    date_joined: "",
+    avatar_url: "",
+    _v: 0,
+    createdAt: "",
+    updatedAt: "",
+  });
+
+  useEffect(() => {
+    // Hard coded "Tom" for now - change later!
+    getOneUser("Rachel").then((user) => {
+      setLoggedInUser(user);
+    });
+    getUserMoods("Rachel")
+      .then((userMoods) => {
+        setUserMoods(userMoods.mood_data);
+      })
+      .then(() => {
+        if (!checkUserMoods(userMoods)) {
+          setShowModal(true);
+        } else {
+          setShowModal(false);
+        }
+      });
+  }, []);
+
+  const checkUserMoods = (userMoods: Array<Object>) => {
+    const trackedDays = userMoods.map((mood) => Object.keys(mood)[0]);
+    return trackedDays.includes(todaysDate);
+  };
+
   return (
     <View>
       <ScrollView contentContainerStyle={styles.page}>
@@ -15,7 +73,7 @@ export default function MoodTrackingPage() {
           <Chart />
         </View>
         <View style={styles.mood}>
-          <Mood />
+          <Mood todaysMood={todaysMood} />
         </View>
         <View style={styles.recommended}>
           <Recommended />
@@ -25,16 +83,22 @@ export default function MoodTrackingPage() {
             title="Track your mood"
             color={orange}
             onPress={() => {
-              setShowModal(true);
+              if (todaysMood === "") {
+                setShowModal(true);
+              } else {
+                setShowModal(false);
+              }
             }}
           ></Button>
-          {/* <Button
-            onPress={() => navigation.navigate("TestPage")}
-            title="Go to screen 2"
-          /> */}
         </View>
         {showModal && (
-          <Moodal showModal={showModal} setShowModal={setShowModal} />
+          <Moodal
+            showModal={showModal}
+            setShowModal={setShowModal}
+            setTodaysMood={setTodaysMood}
+            loggedInUser={loggedInUser}
+            setUserMoods={setUserMoods}
+          />
         )}
       </ScrollView>
     </View>
