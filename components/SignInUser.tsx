@@ -20,7 +20,7 @@ const SignInUser = ({ hidden, firebaseSignIn }: Props) => {
         return firebaseSignIn(res.email, password);
       })
       .then((data) => {
-        console.log(data);
+        console.log(data.user.email);
       })
       .catch((error) => {
         console.log(error);

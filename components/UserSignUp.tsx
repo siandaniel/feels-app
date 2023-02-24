@@ -1,10 +1,13 @@
-import { Dispatch, SetStateAction, useState } from "react";
+import { Dispatch, SetStateAction, useDebugValue, useState } from "react";
 import { ScrollView, StyleSheet, Text, TextInput, View } from "react-native";
 import FormInput from "./FormInput";
 import LoginPressable from "./LoginPressable";
 import type { UserCredential } from "firebase/auth";
 import { lightBlue, blue, orange, black, white } from "../assets/colours";
-import { postUser } from "../utils";
+import { formatDate, postUser, validateDate } from "../utils";
+import DateTimePicker, {
+  DateTimePickerEvent,
+} from "@react-native-community/datetimepicker";
 // CHANGE THIS
 const tempImg =
   "https://www.pngitem.com/pimgs/m/30-307416_profile-icon-png-image-free-download-searchpng-employee.png";
@@ -21,13 +24,19 @@ const UserSignUp = ({ hidden, firebaseSignUp }: Props) => {
   const [day, setDay] = useState("");
   const [month, setMonth] = useState("");
   const [year, setYear] = useState("");
+  const [temp, setTemp] = useState(new Date());
 
   const submitHandler = () => {
-    if (email !== "" && password !== "" && username !== "") {
+    if (
+      email !== "" &&
+      password !== "" &&
+      username !== "" &&
+      validateDate(+day, +month, +year)
+    ) {
       postUser({
         username,
         email,
-        date_of_birth: `${day}/${month}/${year}}`,
+        date_of_birth: formatDate(temp),
         avatar_url: tempImg,
       })
         .then(() => {
@@ -39,7 +48,7 @@ const UserSignUp = ({ hidden, firebaseSignUp }: Props) => {
         .catch((error) => {
           console.log(error);
         });
-    }
+    } else console.log("u did it wrong", validateDate(+day, +month, +year));
   };
 
   return (
@@ -54,6 +63,14 @@ const UserSignUp = ({ hidden, firebaseSignUp }: Props) => {
         <View>
           <Text style={styles.text}>Date of Birth</Text>
           <View style={styles.DOBcontainer}>
+            {/* <DateTimePicker
+              style={styles.date}
+              value={temp}
+              onChange={handleDateChange}
+              accentColor={orange}
+              themeVariant={"dark"}
+              positiveButton={{ label: "OK", textColor: orange }}
+            /> */}
             <FormInput
               onChange={setDay}
               placeholder="  DD  "
@@ -99,6 +116,11 @@ const styles = StyleSheet.create({
   DOBcontainer: {
     flexDirection: "row",
     justifyContent: "space-between",
+  },
+  date: {
+    marginTop: 24,
+    // backgroundColor: white,
+    // borderRadius: 16,
   },
   text: {
     fontFamily: "Poppins-Regular",

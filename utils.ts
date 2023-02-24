@@ -22,7 +22,7 @@ interface Pro {
   registrationNumber: string;
   email: string;
   availableHours: Hours[];
-  avatarURL: string
+  avatarURL: string;
 }
 
 export const getUser = async (username: string) => {
@@ -46,12 +46,42 @@ export const postPro = async (proData: Pro) => {
   return user;
 };
 
-
 export const getPro = async (regnumber: string) => {
   const {
-    data: {professional},
+    data: { professional },
   } = await server.get(`/professionals/${regnumber}`);
-  return professional
-}
+  return professional;
+};
 
+export const formatDate = (date: Date) => {
+  return date.toISOString().slice(0, 10).split("-").reverse().join("/");
+};
 
+export const validateDate = (day: number, month: number, year: number) => {
+  const eighteenYearsAgo = new Date().getFullYear() - 18;
+  if (year > eighteenYearsAgo) return false;
+  if (month > 0 && month < 13 && day > 0 && day < 32) {
+    if (month === 2) {
+      if (year % 4 === 0) {
+        if (day > 29) return false;
+      } else if (day > 28) return false;
+      else return true;
+    }
+    if (month === 9 || month === 4 || month === 6 || month === 11) {
+      if (day > 30) return false;
+      else return true;
+    }
+    if (
+      month === 1 ||
+      month === 3 ||
+      month === 5 ||
+      month === 7 ||
+      month === 8 ||
+      month === 10 ||
+      month === 12
+    ) {
+      if (day > 31) return false;
+      else return true;
+    }
+  } else return false;
+};
