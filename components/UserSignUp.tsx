@@ -103,7 +103,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     marginTop: 24,
     marginLeft: 16,
-    marginBottom: -8,
+    marginBottom: -15,
     color: white,
   },
   hidden: {

@@ -18,13 +18,13 @@ const ProSignUp = ({ hidden, firebaseSignUp }: Props) => {
   const [email, setEmail] = useState("");
   const [registrationNumber, setRegistrationNumber] = useState("");
   const [password, setPassword] = useState("");
-  const [days, setDays] = useState<Weekdays>({
-    monday: false,
-    tuesday: false,
-    wednesday: false,
-    thursday: false,
-    friday: false,
-  });
+  // const [days, setDays] = useState<Weekdays>({
+  //   monday: false,
+  //   tuesday: false,
+  //   wednesday: false,
+  //   thursday: false,
+  //   friday: false,
+  // });
 
   const submitHandler = () => {
     if (email !== "" && password !== "") {
@@ -34,12 +34,12 @@ const ProSignUp = ({ hidden, firebaseSignUp }: Props) => {
     }
   };
 
-  const handleCheckBoxes = (day: keyof Weekdays) => {
-    setDays((curr) => {
-      curr[day] = !curr[day];
-      return curr;
-    });
-  };
+  // const handleCheckBoxes = (day: keyof Weekdays) => {
+  //   setDays((curr) => {
+  //     curr[day] = !curr[day];
+  //     return curr;
+  //   });
+  // };
 
   return (
     <View style={hidden ? styles.hidden : styles.container}>
