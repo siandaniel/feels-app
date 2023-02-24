@@ -5,8 +5,6 @@ import {
   ScrollView,
   Modal,
   Pressable,
-  Button,
-  TouchableWithoutFeedback,
 } from "react-native";
 import MoodCard from "./MoodCard";
 import { lightBlue, blue, orange, black, white } from "../assets/colours";
@@ -45,26 +43,54 @@ export default function Moodal({
 
   const updateMood = (moodDesc: String) => {
     if (moodDesc === "Joyful") {
-      setTodaysMood(moodDesc);
-      updateUserMood(loggedInUser.username, { [todaysDate]: 3 });
+      updateUserMood(loggedInUser.username, { [todaysDate]: 3 }).then((updatedMoods) => {
+       const moodValue = updatedMoods[updatedMoods.length -1][todaysDate]
+       if (moodValue === 3) {
+        setTodaysMood(moodDesc);
+       } 
+      });
     } else if (moodDesc === "Happy") {
-      setTodaysMood(moodDesc);
-      updateUserMood(loggedInUser.username, { [todaysDate]: 2 });
+      updateUserMood(loggedInUser.username, { [todaysDate]: 2 }).then((updatedMoods) => {
+        const moodValue = updatedMoods[updatedMoods.length -1][todaysDate]
+        if (moodValue === 2) {
+         setTodaysMood(moodDesc);
+        } 
+       })
     } else if (moodDesc === "Just Okay") {
-      setTodaysMood(moodDesc);
-      updateUserMood(loggedInUser.username, { [todaysDate]: 1 });
+      updateUserMood(loggedInUser.username, { [todaysDate]: 1 }).then((updatedMoods) => {
+        const moodValue = updatedMoods[updatedMoods.length -1][todaysDate]
+        if (moodValue === 1) {
+         setTodaysMood(moodDesc);
+        } 
+       })
     } else if (moodDesc === "Neutral") {
-      setTodaysMood(moodDesc);
-      updateUserMood(loggedInUser.username, { [todaysDate]: 0 });
+      updateUserMood(loggedInUser.username, { [todaysDate]: 0 }).then((updatedMoods) => {
+        const moodValue = updatedMoods[updatedMoods.length -1][todaysDate]
+        if (moodValue === 0) {
+         setTodaysMood(moodDesc);
+        } 
+       })
     } else if (moodDesc === "A Bit Low") {
-      setTodaysMood(moodDesc);
-      updateUserMood(loggedInUser.username, { [todaysDate]: -1 });
+      updateUserMood(loggedInUser.username, { [todaysDate]: -1 }).then((updatedMoods) => {
+        const moodValue = updatedMoods[updatedMoods.length -1][todaysDate]
+        if (moodValue === -1) {
+         setTodaysMood(moodDesc);
+        } 
+       })
     } else if (moodDesc === "Sad") {
-      setTodaysMood(moodDesc);
-      updateUserMood(loggedInUser.username, { [todaysDate]: -2 });
+      updateUserMood(loggedInUser.username, { [todaysDate]: -2 }).then((updatedMoods) => {
+        const moodValue = updatedMoods[updatedMoods.length -1][todaysDate]
+        if (moodValue === -2) {
+         setTodaysMood(moodDesc);
+        } 
+       })
     } else if (moodDesc === "Depressed") {
-      setTodaysMood(moodDesc);
-      updateUserMood(loggedInUser.username, { [todaysDate]: -3 });
+      updateUserMood(loggedInUser.username, { [todaysDate]: -3 }).then((updatedMoods) => {
+        const moodValue = updatedMoods[updatedMoods.length -1][todaysDate]
+        if (moodValue === -3) {
+         setTodaysMood(moodDesc);
+        } 
+       })
     }
   };
 
