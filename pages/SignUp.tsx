@@ -2,7 +2,6 @@ import { useState } from "react";
 import {
   Keyboard,
   KeyboardAvoidingView,
-  Platform,
   StyleSheet,
   TouchableWithoutFeedback,
   View,

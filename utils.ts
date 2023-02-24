@@ -1,4 +1,3 @@
-import { async } from "@firebase/util";
 import axios from "axios";
 import { Weekdays } from "./types";
 const baseURL = "https://feels-api.onrender.com/api";

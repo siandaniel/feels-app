@@ -1,14 +1,8 @@
-import {
-  Image,
-  KeyboardAvoidingView,
-  StyleSheet,
-  Text,
-  View,
-} from "react-native";
+import { Image, StyleSheet, Text, View } from "react-native";
 import LoginPressable from "../components/LoginPressable";
 const landingImg = require("../assets/test-img2.jpg");
 
-const { lightBlue, blue, orange, black, white } = require("../assets/colours");
+const { blue, white } = require("../assets/colours");
 
 const Landing = () => {
   return (

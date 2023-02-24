@@ -1,6 +1,5 @@
 import { useState } from "react";
 import {
-  Text,
   View,
   StyleSheet,
   TouchableWithoutFeedback,
@@ -9,7 +8,7 @@ import {
 import LoginPressable from "../components/LoginPressable";
 import SignInPro from "../components/SignInPro";
 import SignInUser from "../components/SignInUser";
-const { lightBlue, blue, orange, black, white } = require("../assets/colours");
+import { blue } from "../assets/colours";
 import { auth } from "../firebaseConfig";
 import { signInWithEmailAndPassword } from "firebase/auth";
 
@@ -42,7 +41,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     alignSelf: "stretch",
-    // paddingVertical: 180,
     backgroundColor: blue,
     paddingHorizontal: "5%",
   },

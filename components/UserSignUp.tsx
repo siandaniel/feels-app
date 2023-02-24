@@ -1,12 +1,10 @@
-import { Dispatch, SetStateAction, useDebugValue, useState } from "react";
-import { ScrollView, StyleSheet, Text, TextInput, View } from "react-native";
+import { Dispatch, SetStateAction, useState } from "react";
+import { ScrollView, StyleSheet, Text, View } from "react-native";
 import FormInput from "./FormInput";
 import LoginPressable from "./LoginPressable";
 import type { UserCredential } from "firebase/auth";
 import { white } from "../assets/colours";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
 import {
-  formatDate,
   postUser,
   validateDate,
   validateEmail,
@@ -29,7 +27,6 @@ const UserSignUp = ({ hidden, firebaseSignUp, avoidKeyboard }: Props) => {
   const [day, setDay] = useState("");
   const [month, setMonth] = useState("");
   const [year, setYear] = useState("");
-  const [temp, setTemp] = useState(new Date());
 
   const submitHandler = () => {
     if (
@@ -42,7 +39,7 @@ const UserSignUp = ({ hidden, firebaseSignUp, avoidKeyboard }: Props) => {
       postUser({
         username,
         email,
-        date_of_birth: formatDate(temp),
+        date_of_birth: `${day}/${month}/${year}`,
         avatar_url: tempImg,
       })
         .then(() => {
@@ -150,11 +147,6 @@ const styles = StyleSheet.create({
   DOBcontainer: {
     flexDirection: "row",
     justifyContent: "space-between",
-  },
-  date: {
-    marginTop: 24,
-    // backgroundColor: white,
-    // borderRadius: 16,
   },
   text: {
     fontFamily: "Poppins-Regular",
