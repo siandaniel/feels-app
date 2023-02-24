@@ -2,14 +2,30 @@ import { View, StyleSheet, ScrollView } from "react-native";
 import FormInput from "./FormInput";
 import LoginPressable from "./LoginPressable";
 import { useState } from "react";
+import { UserCredential } from "firebase/auth";
+import { getUser } from "../utils";
 
 interface Props {
   hidden: boolean;
+  firebaseSignIn: (a: string, b: string) => Promise<UserCredential>;
 }
 
-const SignInUser = ({ hidden }: Props) => {
+const SignInUser = ({ hidden, firebaseSignIn }: Props) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+
+  const submitHandler = () => {
+    return getUser(username)
+      .then((res) => {
+        return firebaseSignIn(res.email, password);
+      })
+      .then((data) => {
+        console.log(data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
 
   return (
     <View style={hidden ? styles.hidden : styles.container}>
@@ -26,7 +42,7 @@ const SignInUser = ({ hidden }: Props) => {
           onChange={setPassword}
         />
       </ScrollView>
-      <LoginPressable text="Log in" onPress={() => {}} isPrimary />
+      <LoginPressable text="Log in" onPress={submitHandler} isPrimary />
     </View>
   );
 };

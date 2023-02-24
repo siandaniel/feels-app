@@ -17,19 +17,15 @@ const Login = () => {
   const [isUser, setIsUser] = useState(true);
 
   const fbLogin = async (email: string, password: string) => {
-    try {
-      const userData = await signInWithEmailAndPassword(auth, email, password);
-      console.log(userData);
-    } catch (error) {
-      console.log(error);
-    }
+    const userData = await signInWithEmailAndPassword(auth, email, password);
+    return userData;
   };
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
       <View style={styles.container}>
-        <SignInUser hidden={isUser} />
-        <SignInPro hidden={!isUser} />
+        <SignInUser hidden={isUser} firebaseSignIn={fbLogin} />
+        <SignInPro hidden={!isUser} firebaseSignIn={fbLogin} />
         <LoginPressable
           text="press"
           onPress={() => setIsUser((current) => !current)}

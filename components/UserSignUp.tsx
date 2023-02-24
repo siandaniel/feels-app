@@ -23,20 +23,22 @@ const UserSignUp = ({ hidden, firebaseSignUp }: Props) => {
   const [year, setYear] = useState("");
 
   const submitHandler = () => {
-    if (email !== "" && password !== "") {
-      firebaseSignUp(email, password)
+    if (email !== "" && password !== "" && username !== "") {
+      postUser({
+        username,
+        email,
+        date_of_birth: `${day}/${month}/${year}}`,
+        avatar_url: tempImg,
+      })
         .then(() => {
-          return postUser({
-            username,
-            email,
-            date_of_birth: `${day}/${month}/${year}}`,
-            avatar_url: tempImg,
-          });
+          return firebaseSignUp(email, password);
         })
         .then((res) => {
-          console.log(res);
+          console.log(res.user.email);
         })
-        .catch((err) => console.log(err));
+        .catch((error) => {
+          console.log(error);
+        });
     }
   };
 

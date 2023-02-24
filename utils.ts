@@ -1,3 +1,4 @@
+import { async } from "@firebase/util";
 import axios from "axios";
 import { Weekdays } from "./types";
 const baseURL = "https://feels-api.onrender.com/api";
@@ -21,6 +22,7 @@ interface Pro {
   registrationNumber: string;
   email: string;
   availableHours: Hours[];
+  avatarURL: string
 }
 
 export const getUser = async (username: string) => {
@@ -32,9 +34,9 @@ export const getUser = async (username: string) => {
 
 export const postUser = async (userData: User) => {
   const {
-    data: { user },
+    data: { newProfessional },
   } = await server.post("/users", userData);
-  return user;
+  return newProfessional;
 };
 
 export const postPro = async (proData: Pro) => {
@@ -43,3 +45,13 @@ export const postPro = async (proData: Pro) => {
   } = await server.post("/professionals", proData);
   return user;
 };
+
+
+export const getPro = async (regnumber: string) => {
+  const {
+    data: {professional},
+  } = await server.get(`/professionals/${regnumber}`);
+  return professional
+}
+
+

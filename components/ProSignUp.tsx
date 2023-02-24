@@ -8,6 +8,9 @@ import { postPro } from "../utils";
 import { Weekdays } from "../types";
 const { lightBlue, blue, orange, black, white } = require("../assets/colours");
 
+const tempImg =
+  "https://www.pngitem.com/pimgs/m/30-307416_profile-icon-png-image-free-download-searchpng-employee.png";
+
 interface Props {
   hidden: boolean;
   firebaseSignUp: (a: string, b: string) => Promise<UserCredential>;
@@ -24,13 +27,32 @@ const ProSignUp = ({ hidden, firebaseSignUp }: Props) => {
   //   wednesday: false,
   //   thursday: false,
   //   friday: false,
-  // });
+  // })
+  // /^CP\d{6}$/g
 
   const submitHandler = () => {
-    if (email !== "" && password !== "") {
-      firebaseSignUp(email, password).then((res) => {
-        // return postPro(tempPro);
-      });
+    if (
+      email !== "" &&
+      password !== "" &&
+      /^CP\d{6}$/g.test(registrationNumber) &&
+      fullName !== ""
+    ) {
+      postPro({
+        fullName,
+        email,
+        registrationNumber,
+        availableHours: [],
+        avatarURL: tempImg,
+      })
+        .then(() => {
+          return firebaseSignUp(email, password);
+        })
+        .then((res) => {
+          console.log(res.user.email);
+        })
+        .catch((error) => {
+          if (error.response) console.log(error.response.data);
+        });
     }
   };
 
