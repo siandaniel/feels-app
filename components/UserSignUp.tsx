@@ -26,6 +26,11 @@ const UserSignUp = ({ hidden, firebaseSignUp }: Props) => {
   const [year, setYear] = useState("");
   const [temp, setTemp] = useState(new Date());
 
+  const validationTest = (value: string) => {
+    if (value.length < 6) return false;
+    return true;
+  };
+
   const submitHandler = () => {
     if (
       email !== "" &&
@@ -99,6 +104,8 @@ const UserSignUp = ({ hidden, firebaseSignUp }: Props) => {
             placeholder="Password"
             label="Password"
             secure
+            message="Password must be 6 characters"
+            isValid={validationTest(password)}
           />
         </View>
       </ScrollView>

@@ -10,6 +10,8 @@ interface Props {
   onChange: Dispatch<SetStateAction<string>>;
   horizontal?: boolean;
   last?: boolean;
+  message?: string;
+  isValid?: boolean;
 }
 
 const FormInput = ({
@@ -20,6 +22,8 @@ const FormInput = ({
   onChange,
   horizontal,
   last,
+  message = "",
+  isValid,
 }: Props) => {
   // ADD ICONS
 
@@ -40,6 +44,7 @@ const FormInput = ({
         secureTextEntry={secure}
         onChangeText={onChange}
       />
+      <Text>{isValid ? "" : message}</Text>
     </View>
   );
 };
