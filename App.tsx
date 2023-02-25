@@ -1,12 +1,9 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet } from 'react-native';
+import Chat from './components/Chat';
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <Text>Good morning guys</Text>
-      <StatusBar style="auto" />
-    </View>
+    <Chat/>
   );
 }
 
