@@ -1,11 +1,3 @@
-<<<<<<< HEAD
-import { StyleSheet } from 'react-native';
-import Chat from './components/Chat';
-
-export default function App() {
-  return (
-    <Chat/>
-=======
 import { blue, orange, white } from "./assets/colours";
 import MoodTrackingPage from "./pages/MoodTrackingPage";
 import ProfilePage from "./pages/TestPage";
@@ -64,6 +56,5 @@ export default function App() {
         />
       </Tab.Navigator>
     </NavigationContainer>
->>>>>>> d041d77f85cf8d99e81f072edd62beefb99dc080
   );
 }
