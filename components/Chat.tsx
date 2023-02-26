@@ -14,7 +14,7 @@ function chat() {
             <View style={styles.chatContainer}>
                 <ScrollView style={{flexDirection: "column-reverse"}}>
                     <IncomingMessage messageBody="Hello" timeStamp={"14:37"}/>
-                    <OutgoingMessage messageBody="How can I help you today? hfdbeukjfzbejfwbhfjhef ehdWHDJW DQHDB YQWHDFB fhdjd" timeStamp={"14:39"}/>
+                    <OutgoingMessage messageBody="How can I help you today?" timeStamp={"14:39"}/>
                 </ScrollView>
                 <View style={styles.chatbox}>
                     <TextInput style={styles.chatInput} selectionColor={orange} value={userMessage} onChangeText={setUserMessage} placeholder="Aa" multiline={true} onBlur={() => {
@@ -48,7 +48,8 @@ const styles = StyleSheet.create({
     chatContainer: {
         backgroundColor: "rgba(255, 255, 255, 0.8)",
         borderRadius: 30,
-        minHeight: "80%",
+        marginTop: 40,
+        minHeight: "88%",
         width: "100%"
     },
     chatInput: {
