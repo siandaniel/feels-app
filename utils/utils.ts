@@ -42,16 +42,16 @@ export const getUser = async (username: string) => {
 
 export const postUser = async (userData: User) => {
   const {
-    data: { newProfessional },
+    data: { user },
   } = await server.post("/users", userData);
-  return newProfessional;
+  return user;
 };
 
 export const postPro = async (proData: Pro) => {
   const {
-    data: { user },
+    data: { newProfessional },
   } = await server.post("/professionals", proData);
-  return user;
+  return newProfessional;
 };
 
 export const getPro = async (regnumber: string) => {

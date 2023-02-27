@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, useState } from "react";
+import { Dispatch, SetStateAction, useContext, useState } from "react";
 import { ScrollView, StyleSheet, Text, View } from "react-native";
 import FormInput from "./FormInput";
 import LoginPressable from "./LoginPressable";
@@ -11,6 +11,8 @@ import {
   validatePassword,
 } from "../utils/utils";
 import DateOfBirthForm from "./DateOfBirthForm";
+import { LoggedInUserContext } from "../contexts/LoggedInUser";
+import { loggedInUser } from "../types";
 // CHANGE THIS
 const tempImg =
   "https://www.pngitem.com/pimgs/m/30-307416_profile-icon-png-image-free-download-searchpng-employee.png";
@@ -28,6 +30,12 @@ const UserSignUp = ({ hidden, firebaseSignUp, avoidKeyboard }: Props) => {
   const [day, setDay] = useState("");
   const [month, setMonth] = useState("");
   const [year, setYear] = useState("");
+  const loggedInUserState = useContext(LoggedInUserContext);
+  let setLoggedInUser: Dispatch<SetStateAction<loggedInUser | null>>;
+  
+  if (loggedInUserState !== null) {
+    setLoggedInUser = loggedInUserState.setLoggedInUser;
+  }
 
   const submitHandler = () => {
     if (
@@ -37,17 +45,15 @@ const UserSignUp = ({ hidden, firebaseSignUp, avoidKeyboard }: Props) => {
       validateDate(+day, +month, +year) &&
       validateEmail(email)
     ) {
-      postUser({
+      return postUser({
         username,
         email,
         date_of_birth: `${day}/${month}/${year}`,
         avatar_url: tempImg,
       })
-        .then(() => {
-          return firebaseSignUp(email, password);
-        })
-        .then((res) => {
-          console.log(res.user.email);
+        .then(async (res) => {
+          await firebaseSignUp(email, password);
+          setLoggedInUser(res);
         })
         .catch((error) => {
           if (error.response) {

@@ -33,7 +33,7 @@ export default function Index() {
   }
 
     if (loggedInUser === null) {
-      return <Login/>
+      return <SignUp/>
     } 
     return (
         <NavigationContainer>
