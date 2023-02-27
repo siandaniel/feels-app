@@ -56,7 +56,7 @@ export default function App() {
       return <LoggedInUserContext2>
                 <Login/>
             </LoggedInUserContext2>
-    }
+    } 
     return (
       <LoggedInUserContext2>
         <NavigationContainer>
