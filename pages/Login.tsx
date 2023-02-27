@@ -4,11 +4,12 @@ import {
   StyleSheet,
   TouchableWithoutFeedback,
   Keyboard,
+  Button,
 } from "react-native";
 import LoginPressable from "../components/LoginPressable";
 import SignInPro from "../components/SignInPro";
 import SignInUser from "../components/SignInUser";
-import { blue } from "../assets/colours";
+import { blue, white } from "../assets/colours";
 import { auth } from "../firebaseConfig";
 import { signInWithEmailAndPassword } from "firebase/auth";
 
@@ -25,10 +26,15 @@ const Login = () => {
       <View style={styles.container}>
         <SignInUser hidden={isUser} firebaseSignIn={fbLogin} />
         <SignInPro hidden={!isUser} firebaseSignIn={fbLogin} />
-        <LoginPressable
-          text="press"
+        {/* <LoginPressable
+          text={`Sign in as a ${isUser ? "user" : "professional"}`}
           onPress={() => setIsUser((current) => !current)}
           isPrimary={false}
+        /> */}
+        <Button
+          color={white}
+          title={`Sign in as ${isUser ? "a user" : "a professional"}`}
+          onPress={() => setIsUser((curr) => !curr)}
         />
       </View>
     </TouchableWithoutFeedback>

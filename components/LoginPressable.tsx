@@ -3,6 +3,12 @@ import { useCallback, useState } from "react";
 import { Pressable, StyleSheet, Text } from "react-native";
 const { lightBlue, blue, orange, black, white } = require("../assets/colours");
 
+enum ButtonType {
+  Primary,
+  Secondary,
+  Tertiary,
+}
+
 interface Props {
   text: string;
   onPress: () => void;
@@ -63,6 +69,9 @@ const styles = StyleSheet.create({
     borderRadius: 32,
     alignSelf: "stretch",
     marginTop: 10,
+  },
+  containerTertiary: {
+    padding: 20,
   },
   containerPrimaryPressed: {
     backgroundColor: blue,

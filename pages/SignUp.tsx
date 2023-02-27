@@ -1,5 +1,6 @@
 import { useState } from "react";
 import {
+  Button,
   Keyboard,
   KeyboardAvoidingView,
   StyleSheet,
@@ -11,7 +12,7 @@ import ProSignUp from "../components/ProSignUp";
 import UserSignUp from "../components/UserSignUp";
 import { auth } from "../firebaseConfig";
 import { createUserWithEmailAndPassword } from "firebase/auth";
-import { blue } from "../assets/colours";
+import { blue, white } from "../assets/colours";
 
 const SignUp = () => {
   const [isUser, setIsUser] = useState(true);
@@ -43,12 +44,17 @@ const SignUp = () => {
             hidden={!isUser}
             firebaseSignUp={fbSignUp}
           />
-          <LoginPressable
+          {/* <LoginPressable
             text={`Sign up as ${isUser ? "a user" : "a professional"}`}
             onPress={() => {
               setIsUser((curr) => !curr);
             }}
             isPrimary={false}
+          /> */}
+          <Button
+            color={white}
+            title={`Sign up as ${isUser ? "a user" : "a professional"}`}
+            onPress={() => setIsUser((curr) => !curr)}
           />
         </View>
       </TouchableWithoutFeedback>

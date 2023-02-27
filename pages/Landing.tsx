@@ -2,11 +2,11 @@ import { Image, StyleSheet, Text, View } from "react-native";
 import LoginPressable from "../components/LoginPressable";
 const landingImg = require("../assets/test-img2.jpg");
 
-const { blue, white } = require("../assets/colours");
+import { blue, white } from "../assets/colours";
 
 const Landing = () => {
   return (
-    <View>
+    <View style={styles.container}>
       <View>
         <Image source={landingImg} style={styles.image} />
       </View>

@@ -1,5 +1,5 @@
 import { Dispatch, SetStateAction, useState } from "react";
-import { ScrollView, StyleSheet, View } from "react-native";
+import { ScrollView, StyleSheet, Text, View } from "react-native";
 import FormInput from "./FormInput";
 import LoginPressable from "./LoginPressable";
 import type { UserCredential } from "firebase/auth";
@@ -55,6 +55,7 @@ const ProSignUp = ({ hidden, firebaseSignUp, avoidKeyboard }: Props) => {
 
   return (
     <View style={hidden ? styles.hidden : styles.container}>
+      <Text style={styles.heading}>Sign up as a user</Text>
       <ScrollView contentContainerStyle={styles.innerContainer}>
         <FormInput
           value={fullName}
@@ -119,6 +120,13 @@ const styles = StyleSheet.create({
     fontFamily: "Poppins-Regular",
     color: white,
     fontSize: 16,
+  },
+  heading: {
+    fontSize: 20,
+    fontFamily: "Poppins-Medium",
+    color: white,
+    textAlign: "center",
+    paddingBottom: 24,
   },
   daysContainer: {
     marginLeft: 16,

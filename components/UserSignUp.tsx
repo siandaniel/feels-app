@@ -59,6 +59,7 @@ const UserSignUp = ({ hidden, firebaseSignUp, avoidKeyboard }: Props) => {
 
   return (
     <View style={hidden ? styles.hidden : styles.container}>
+      <Text style={styles.heading}>Sign up as a user</Text>
       <ScrollView contentContainerStyle={styles.innerContainer}>
         <FormInput
           value={username}
@@ -125,6 +126,13 @@ const styles = StyleSheet.create({
     marginLeft: 16,
     marginBottom: -15,
     color: white,
+  },
+  heading: {
+    fontSize: 20,
+    fontFamily: "Poppins-Medium",
+    color: white,
+    textAlign: "center",
+    paddingBottom: 24,
   },
   hidden: {
     display: "none",
