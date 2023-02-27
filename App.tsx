@@ -1,9 +1,12 @@
-import { useFonts } from "expo-font";
-import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View } from "react-native";
-import Landing from "./pages/Landing";
-import SignUp from "./pages/SignUp";
-import Login from "./pages/Login";
+import { blue, orange, white } from "./assets/colours";
+import MoodTrackingPage from "./pages/MoodTrackingPage";
+import ProfilePage from "./pages/TestPage";
+import GetHelpPage from "./pages/GetHelpPage";
+import { NavigationContainer } from "@react-navigation/native";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { Ionicons, MaterialIcons } from "@expo/vector-icons";
+
+const Tab = createBottomTabNavigator();
 
 export default function App() {
   const [fontsLoaded] = useFonts({
