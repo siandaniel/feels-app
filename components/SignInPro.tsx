@@ -35,10 +35,8 @@ const SignInPro = ({ hidden, firebaseSignIn }: Props) => {
         loggedInUserState?.setLoggedInUser(null)
         return firebase
       })
-      .then((data) => {
+      .then(() => {
         setError(false);
-        console.log(loggedInUserState?.loggedInUser)
-        console.log(data.user.email);
       })
       .catch((err) => {
         console.log(err)

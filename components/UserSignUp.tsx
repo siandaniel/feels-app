@@ -63,7 +63,7 @@ const UserSignUp = ({ hidden, firebaseSignUp, avoidKeyboard }: Props) => {
             console.log(error.response.data);
           }
         });
-    } else console.log("u did it wrong", validateDate(+day, +month, +year));
+    } else console.log("Invalid date", validateDate(+day, +month, +year));
   };
 
   return (

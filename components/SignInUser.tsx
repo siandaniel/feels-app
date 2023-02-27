@@ -33,9 +33,8 @@ const SignInUser = ({ hidden, firebaseSignIn }: Props) => {
         loggedInProfessionalState?.setLoggedInProfessional(null)
         return firebase
       })
-      .then((data) => {
+      .then(() => {
         setError(false);
-        console.log(data.user.email);
       })
       .catch((err) => {
         console.log(err);

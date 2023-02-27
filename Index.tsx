@@ -1,6 +1,6 @@
 import { blue, orange, white } from "./assets/colours";
 import MoodTrackingPage from "./pages/MoodTrackingPage";
-import ProfilePage from "./pages/TestPage";
+import ProfilePage from "./pages/ProfilePage";
 import GetHelpPage from "./pages/GetHelpPage";
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
