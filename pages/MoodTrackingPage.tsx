@@ -41,7 +41,7 @@ export default function MoodTrackingPage() {
   }
 
   useEffect(() => {
-    if(loggedInUser === null) return
+    if (loggedInUser === null) return;
     getUserMoods(loggedInUser.username)
       .then((userMoodsFromApi) => {
         setUserMoods(userMoodsFromApi.mood_data);
@@ -88,7 +88,7 @@ export default function MoodTrackingPage() {
     <View>
       <ScrollView contentContainerStyle={styles.page}>
         <View style={styles.chart}>
-          <Chart />
+          <Chart userMoods={userMoods} />
         </View>
         <View style={styles.mood}>
           <Mood todaysMood={todaysMood} setShowModal={setShowModal} />
