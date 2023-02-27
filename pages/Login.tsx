@@ -12,6 +12,12 @@ import SignInUser from "../components/SignInUser";
 import { blue, white } from "../assets/colours";
 import { auth } from "../firebaseConfig";
 import { signInWithEmailAndPassword } from "firebase/auth";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { RootStackParamsList } from "./LoginStack";
+
+interface Props {
+  navigation: NativeStackNavigationProp<RootStackParamsList>;
+}
 
 const Login = () => {
   const [isUser, setIsUser] = useState(true);

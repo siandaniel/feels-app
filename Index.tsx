@@ -13,6 +13,7 @@ import Landing from "./pages/Landing";
 import { Dispatch, SetStateAction, useContext, useEffect } from "react";
 import { LoggedInUserContext } from "./contexts/LoggedInUser";
 import { loggedInUser } from "./types";
+import LoginStack from "./pages/LoginStack";
 
 const Tab = createBottomTabNavigator();
 
@@ -32,58 +33,57 @@ export default function Index() {
     setLoggedInUser = loggedInUserState.setLoggedInUser;
   }
 
-    if (loggedInUser === null) {
-      return <SignUp/>
-    } 
-    return (
-        <NavigationContainer>
-          <Tab.Navigator
-            initialRouteName="Insights"
-            screenOptions={({ route }) => ({
-              tabBarBadgeStyle: {
-                backgroundColor: orange,
-                fontSize: 13,
-                textAlign: "center",
-                paddingBottom: 1,
-                color: white,
-                height: 17,
-                width: 14,
-              },
-              headerShown: false,
-              tabBarIcon: ({ focused, color, size }) => {
-                if (route.name === "Get Help") {
-                  return (
-                    <Ionicons
-                      name={"chatbubble-outline"}
-                      size={size}
-                      color={color}
-                    />
-                  );
-                } else if (route.name === "Profile") {
-                  return (
-                    <Ionicons name="ios-person-outline" size={size} color={color} />
-                  );
-                } else if (route.name === "Insights") {
-                  return (
-                    <MaterialIcons name="insights" size={size} color={color} />
-                  );
-                }
-              },
-              tabBarActiveTintColor: blue,
-              tabBarInactiveTintColor: "gray",
-            })}
-          >
-            <Tab.Screen name="Profile" component={ProfilePage} />
-            <Tab.Screen name="Insights" component={MoodTrackingPage} />
-            <Tab.Screen
-              name="Get Help"
-              component={GetHelpPage}
-              options={{ tabBarBadge: 1 }}
-            />
-          </Tab.Navigator>
-        </NavigationContainer>
-    );
-    
+  if (loggedInUser === null) {
+    return <LoginStack />;
+  }
+  return (
+    <NavigationContainer>
+      <Tab.Navigator
+        initialRouteName="Insights"
+        screenOptions={({ route }) => ({
+          tabBarBadgeStyle: {
+            backgroundColor: orange,
+            fontSize: 13,
+            textAlign: "center",
+            paddingBottom: 1,
+            color: white,
+            height: 17,
+            width: 14,
+          },
+          headerShown: false,
+          tabBarIcon: ({ focused, color, size }) => {
+            if (route.name === "Get Help") {
+              return (
+                <Ionicons
+                  name={"chatbubble-outline"}
+                  size={size}
+                  color={color}
+                />
+              );
+            } else if (route.name === "Profile") {
+              return (
+                <Ionicons name="ios-person-outline" size={size} color={color} />
+              );
+            } else if (route.name === "Insights") {
+              return (
+                <MaterialIcons name="insights" size={size} color={color} />
+              );
+            }
+          },
+          tabBarActiveTintColor: blue,
+          tabBarInactiveTintColor: "gray",
+        })}
+      >
+        <Tab.Screen name="Profile" component={ProfilePage} />
+        <Tab.Screen name="Insights" component={MoodTrackingPage} />
+        <Tab.Screen
+          name="Get Help"
+          component={GetHelpPage}
+          options={{ tabBarBadge: 1 }}
+        />
+      </Tab.Navigator>
+    </NavigationContainer>
+  );
 }
 
 const styles = StyleSheet.create({
