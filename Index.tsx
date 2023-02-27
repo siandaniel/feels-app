@@ -6,14 +6,13 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 import { StyleSheet, Text, View } from "react-native";
-import SignUp from "./pages/SignUp";
 import { useFonts } from "expo-font";
-import Login from "./pages/Login";
-import Landing from "./pages/Landing";
 import { Dispatch, SetStateAction, useContext, useEffect } from "react";
 import { LoggedInUserContext } from "./contexts/LoggedInUser";
-import { loggedInUser } from "./types";
+import { LoggedInProfessionalContext } from "./contexts/LoggedInProfessional";
+import { loggedInProfessional, loggedInUser } from "./types";
 import LoginStack from "./pages/LoginStack";
+import WaitingRoom from "./pages/WaitingRoom";
 
 const Tab = createBottomTabNavigator();
 
@@ -28,12 +27,20 @@ export default function Index() {
   let loggedInUser: loggedInUser | null = null;
   let setLoggedInUser: Dispatch<SetStateAction<loggedInUser | null>>;
 
+  const loggedInProfessionalState = useContext(LoggedInProfessionalContext);
+  let loggedInProfessional: loggedInProfessional | null = null;
+  let setLoggedInProfessional: Dispatch<SetStateAction<loggedInProfessional | null>>;
+
   if (loggedInUserState !== null) {
     loggedInUser = loggedInUserState.loggedInUser;
     setLoggedInUser = loggedInUserState.setLoggedInUser;
   }
+  if (loggedInProfessionalState !== null) {
+    loggedInProfessional = loggedInProfessionalState.loggedInProfessional;
+    setLoggedInProfessional = loggedInProfessionalState.setLoggedInProfessional;
+  }
 
-  if (loggedInUser === null) {
+  if (loggedInUser === null && loggedInProfessional === null) {
     return <LoginStack />;
   }
   return (
@@ -75,7 +82,8 @@ export default function Index() {
         })}
       >
         <Tab.Screen name="Profile" component={ProfilePage} />
-        <Tab.Screen name="Insights" component={MoodTrackingPage} />
+        {loggedInUserState?.loggedInUser !== null && <Tab.Screen name="Insights" component={MoodTrackingPage} />}
+        {loggedInProfessionalState?.loggedInProfessional !== null && <Tab.Screen name="Waiting" component={WaitingRoom} />}
         <Tab.Screen
           name="Get Help"
           component={GetHelpPage}
