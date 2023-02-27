@@ -14,18 +14,7 @@ import Recommended from "../components/Recommended";
 import { getUser, getUserMoods } from "../utils/utils";
 import { todaysDate } from "../utils/todaysDate";
 import { LoggedInUserContext } from "../contexts/LoggedInUser";
-
-interface loggedInUser {
-  _id: string;
-  username: string;
-  email: string;
-  date_of_birth: string;
-  date_joined: string;
-  avatar_url: string;
-  _v: number;
-  createdAt: string;
-  updatedAt: string;
-}
+import { loggedInUser } from "../types";
 
 export enum Moods {
   JOYFUL = "Joyful",
@@ -44,7 +33,7 @@ export default function MoodTrackingPage() {
 
   const loggedInUserState = useContext(LoggedInUserContext);
   let loggedInUser: loggedInUser | null = null;
-  let setLoggedInUser: Dispatch<SetStateAction<loggedInUser>>;
+  let setLoggedInUser: Dispatch<SetStateAction<loggedInUser | null>>;
 
   if (loggedInUserState !== null) {
     loggedInUser = loggedInUserState.loggedInUser;
@@ -52,11 +41,7 @@ export default function MoodTrackingPage() {
   }
 
   useEffect(() => {
-    // Hard coded "Tom" for now - change later!
     if(loggedInUser === null) return
-    getUser(loggedInUser.username).then((user) => {
-      setLoggedInUser(user);
-    });
     getUserMoods(loggedInUser.username)
       .then((userMoodsFromApi) => {
         setUserMoods(userMoodsFromApi.mood_data);
@@ -88,7 +73,7 @@ export default function MoodTrackingPage() {
       .catch((err) => {
         console.log(err);
       });
-  }, [loggedInUser]);
+  }, []);
 
   const checkUserMoods = (data: Array<Object>) => {
     const trackedDays = data.map((mood) => Object.keys(mood)[0]);

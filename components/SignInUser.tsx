@@ -29,7 +29,7 @@ const SignInUser = ({ hidden, firebaseSignIn }: Props) => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState(false);
   const loggedInUserState = useContext(LoggedInUserContext);
-  let setLoggedInUser: Dispatch<SetStateAction<loggedInUser>>;
+  let setLoggedInUser: Dispatch<SetStateAction<loggedInUser | null>>;
   
   if (loggedInUserState !== null) {
     setLoggedInUser = loggedInUserState.setLoggedInUser;

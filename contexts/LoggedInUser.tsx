@@ -1,40 +1,19 @@
-import { Children, createContext, Dispatch, SetStateAction, useState } from "react";
+import { createContext, Dispatch, SetStateAction, useState } from "react";
+import { loggedInUser } from "../types";
 
 interface Context {
-    loggedInUser: loggedInUser;
-    setLoggedInUser: Dispatch<SetStateAction<loggedInUser>>;
+    loggedInUser: loggedInUser | null;
+    setLoggedInUser: Dispatch<SetStateAction<loggedInUser | null>>;
 }
 
 interface Props {
     children: any
 }
 
-interface loggedInUser {
-    _id: string;
-    username: string;
-    email: string;
-    date_of_birth: string;
-    date_joined: string;
-    avatar_url: string;
-    _v: number;
-    createdAt: string;
-    updatedAt: string;
-  }
-
 export const LoggedInUserContext = createContext<Context | null>(null);
 
 function LoggedInUser({children}: Props) {
-    const [loggedInUser, setLoggedInUser] = useState<loggedInUser>({
-        _id: "",
-        username: "",
-        email: "",
-        date_of_birth: "",
-        date_joined: "",
-        avatar_url: "",
-        _v: 0,
-        createdAt: "",
-        updatedAt: "",
-      });
+    const [loggedInUser, setLoggedInUser] = useState<loggedInUser | null>(null);
 
     return (
         <LoggedInUserContext.Provider value={{loggedInUser, setLoggedInUser}}>
