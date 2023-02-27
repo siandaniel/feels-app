@@ -55,7 +55,7 @@ const ProSignUp = ({ hidden, firebaseSignUp, avoidKeyboard }: Props) => {
 
   return (
     <View style={hidden ? styles.hidden : styles.container}>
-      <Text style={styles.heading}>Sign up as a user</Text>
+      <Text style={styles.heading}>Sign up as a professional</Text>
       <ScrollView contentContainerStyle={styles.innerContainer}>
         <FormInput
           value={fullName}
