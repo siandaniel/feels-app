@@ -13,6 +13,7 @@ import {
 import DateOfBirthForm from "./DateOfBirthForm";
 import { LoggedInUserContext } from "../contexts/LoggedInUser";
 import { loggedInUser } from "../types";
+import { LoggedInProfessionalContext } from "../contexts/LoggedInProfessional";
 // CHANGE THIS
 const tempImg =
   "https://www.pngitem.com/pimgs/m/30-307416_profile-icon-png-image-free-download-searchpng-employee.png";
@@ -30,6 +31,7 @@ const UserSignUp = ({ hidden, firebaseSignUp, avoidKeyboard }: Props) => {
   const [day, setDay] = useState("");
   const [month, setMonth] = useState("");
   const [year, setYear] = useState("");
+  const loggedInProfessionalState = useContext(LoggedInProfessionalContext);
   const loggedInUserState = useContext(LoggedInUserContext);
   let setLoggedInUser: Dispatch<SetStateAction<loggedInUser | null>>;
   
@@ -54,6 +56,7 @@ const UserSignUp = ({ hidden, firebaseSignUp, avoidKeyboard }: Props) => {
         .then(async (res) => {
           await firebaseSignUp(email, password);
           setLoggedInUser(res);
+          loggedInProfessionalState?.setLoggedInProfessional(null)
         })
         .catch((error) => {
           if (error.response) {
@@ -70,7 +73,7 @@ const UserSignUp = ({ hidden, firebaseSignUp, avoidKeyboard }: Props) => {
         <FormInput
           value={username}
           onChange={setUsername}
-          placeholder="Username..."
+          placeholder="Username"
           label="Username"
           message="Please enter a username"
           isValid={username.length > 0}
@@ -79,7 +82,7 @@ const UserSignUp = ({ hidden, firebaseSignUp, avoidKeyboard }: Props) => {
         <FormInput
           value={email}
           onChange={setEmail}
-          placeholder="Email..."
+          placeholder="Email"
           label="Email"
           message="Please enter a valid email"
           isValid={validateEmail(email)}
@@ -144,9 +147,4 @@ const styles = StyleSheet.create({
     display: "none",
   },
 });
-// username
-// email
-// date of birth
-// password
-// avatar URL
 export default UserSignUp;
