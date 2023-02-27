@@ -10,6 +10,7 @@ import {
   validateEmail,
   validatePassword,
 } from "../utils";
+import DateOfBirthForm from "./DateOfBirthForm";
 // CHANGE THIS
 const tempImg =
   "https://www.pngitem.com/pimgs/m/30-307416_profile-icon-png-image-free-download-searchpng-employee.png";
@@ -77,58 +78,27 @@ const UserSignUp = ({ hidden, firebaseSignUp, avoidKeyboard }: Props) => {
           isValid={validateEmail(email)}
           avoidKeyboard={avoidKeyboard}
         />
-        <View>
-          <Text style={styles.text}>Date of Birth</Text>
-          <View style={styles.DOBcontainer}>
-            <FormInput
-              value={day}
-              onChange={setDay}
-              placeholder="  DD  "
-              label=""
-              isNumber
-              horizontal
-              message="Please enter a valid date of birth"
-              isValid={(() => {
-                if (!day || !month || !year) return true;
-                else return validateDate(+day, +month, +year);
-              })()}
-              avoidKeyboard={avoidKeyboard}
-              isAvoiding
-            />
-            <FormInput
-              value={month}
-              onChange={setMonth}
-              placeholder="  MM  "
-              label=""
-              isNumber
-              horizontal
-              avoidKeyboard={avoidKeyboard}
-              isAvoiding
-            />
-            <FormInput
-              value={year}
-              onChange={setYear}
-              placeholder="YYYY"
-              label=""
-              isNumber
-              horizontal
-              last
-              avoidKeyboard={avoidKeyboard}
-              isAvoiding
-            />
-          </View>
-          <FormInput
-            value={password}
-            onChange={setPassword}
-            placeholder="Password"
-            label="Password"
-            secure
-            message="Password must be at least 6 characters"
-            isValid={validatePassword(password)}
-            avoidKeyboard={avoidKeyboard}
-            isAvoiding={true}
-          />
-        </View>
+        <DateOfBirthForm
+          setDay={setDay}
+          setMonth={setMonth}
+          setYear={setYear}
+          day={day}
+          month={month}
+          year={year}
+          avoidKeyboard={avoidKeyboard}
+          message="Please enter a valid date of birth"
+        />
+        <FormInput
+          value={password}
+          onChange={setPassword}
+          placeholder="Password"
+          label="Password"
+          secure
+          message="Password must be at least 6 characters"
+          isValid={validatePassword(password)}
+          avoidKeyboard={avoidKeyboard}
+          isAvoiding={true}
+        />
       </ScrollView>
       <LoginPressable text="Sign up" onPress={submitHandler} isPrimary={true} />
     </View>
