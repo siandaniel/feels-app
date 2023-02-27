@@ -5,6 +5,7 @@ import LoginPressable from "./LoginPressable";
 import type { UserCredential } from "firebase/auth";
 import { white } from "../assets/colours";
 import {
+  initialiseUserMoods,
   postUser,
   validateDate,
   validateEmail,
@@ -56,7 +57,11 @@ const UserSignUp = ({ hidden, firebaseSignUp, avoidKeyboard }: Props) => {
         .then(async (res) => {
           await firebaseSignUp(email, password);
           setLoggedInUser(res);
-          loggedInProfessionalState?.setLoggedInProfessional(null)
+          await loggedInProfessionalState?.setLoggedInProfessional(null)
+          return res.username
+        })
+        .then(res => {
+          return initialiseUserMoods({username: res})
         })
         .catch((error) => {
           if (error.response) {
