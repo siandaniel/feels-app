@@ -8,7 +8,7 @@ import {
   validateEmail,
   validatePassword,
   validateRegNumber,
-} from "../utils";
+} from "../utils/utils";
 const { white } = require("../assets/colours");
 
 const tempImg =

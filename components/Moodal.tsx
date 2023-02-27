@@ -11,7 +11,7 @@ import MoodCard from "./MoodCard";
 import { lightBlue, blue, orange, black, white } from "../assets/colours";
 import { Dispatch, SetStateAction, useState } from "react";
 import { todaysDate } from "../utils/todaysDate";
-import { updateUserMood } from "../utils/api";
+import { updateUserMood } from "../utils/utils";
 import { Moods } from "../pages/MoodTrackingPage";
 
 const depressed = require("../assets/depressed.png");

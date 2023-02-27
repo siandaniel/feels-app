@@ -10,15 +10,15 @@ interface Props {
 }
 
 interface loggedInUser {
-    _id: String;
-    username: String;
-    email: String;
-    date_of_birth: String;
-    date_joined: String;
-    avatar_url: String;
-    _v: Number;
-    createdAt: String;
-    updatedAt: String;
+    _id: string;
+    username: string;
+    email: string;
+    date_of_birth: string;
+    date_joined: string;
+    avatar_url: string;
+    _v: number;
+    createdAt: string;
+    updatedAt: string;
   }
 
 export const LoggedInUserContext = createContext<Context | null>(null);

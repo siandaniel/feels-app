@@ -1,10 +1,23 @@
 import { View, StyleSheet, ScrollView, Text } from "react-native";
 import FormInput from "./FormInput";
 import LoginPressable from "./LoginPressable";
-import { useState } from "react";
+import { Dispatch, SetStateAction, useContext, useState } from "react";
 import { UserCredential } from "firebase/auth";
-import { getUser } from "../utils";
+import { getUser } from "../utils/utils";
 import { white } from "../assets/colours";
+import { LoggedInUserContext } from "../contexts/LoggedInUser";
+
+interface loggedInUser {
+  _id: string;
+  username: string;
+  email: string;
+  date_of_birth: string;
+  date_joined: string;
+  avatar_url: string;
+  _v: number;
+  createdAt: string;
+  updatedAt: string;
+}
 
 interface Props {
   hidden: boolean;
@@ -15,19 +28,25 @@ const SignInUser = ({ hidden, firebaseSignIn }: Props) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(false);
-
+  const loggedInUserState = useContext(LoggedInUserContext);
+  let setLoggedInUser: Dispatch<SetStateAction<loggedInUser>>;
+  
+  if (loggedInUserState !== null) {
+    setLoggedInUser = loggedInUserState.setLoggedInUser;
+  }
   const submitHandler = () => {
     return getUser(username)
-      .then((res) => {
-        console.log(res.email);
-
-        return firebaseSignIn(res.email, password);
+      .then(async (res) => {
+        const firebase = await firebaseSignIn(res.email, password);
+        setLoggedInUser(res)
+        return firebase
       })
       .then((data) => {
         setError(false);
         console.log(data.user.email);
       })
-      .catch(() => {
+      .catch((err) => {
+        console.log(err);
         setError(true);
       });
   };

@@ -9,7 +9,7 @@ import {
   validateDate,
   validateEmail,
   validatePassword,
-} from "../utils";
+} from "../utils/utils";
 import DateOfBirthForm from "./DateOfBirthForm";
 // CHANGE THIS
 const tempImg =

@@ -1,5 +1,5 @@
 import axios from "axios";
-import { Weekdays } from "./types";
+import { Weekdays } from "../types";
 const baseURL = "https://feels-api.onrender.com/api";
 
 const server = axios.create({ baseURL });
@@ -30,6 +30,15 @@ export const getUser = async (username: string) => {
   } = await server.get(`/users/${username}`);
   return user;
 };
+
+// export const getOneUser = (username: String) => {
+//   let apiQuery = `/users/${username}`;
+
+//   return server.get(apiQuery)
+//   .then(({data}) => {
+//       return data.user;
+//   })
+// }
 
 export const postUser = async (userData: User) => {
   const {
@@ -105,3 +114,20 @@ export const validateRegNumber = (reg: string) => {
   if (reg.length === 0) return true;
   return /^CP\d{6}$/g.test(reg);
 };
+
+export const getUserMoods = (username: String) => {
+  let apiQuery = `/mood_data/${username}`;
+  return server.get(apiQuery)
+  .then(({data}) => {
+      return data.moodData;
+  })
+}
+
+export const updateUserMood = (username: String, body: Object) => {
+  let apiQuery = `/mood_data/${username}`;
+
+  return server.patch(apiQuery, body)
+  .then(({data}) => {
+      return data.updatedMoodData.mood_data;
+  })
+}
