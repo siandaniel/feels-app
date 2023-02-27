@@ -1,9 +1,11 @@
-import { useState, useEffect, useContext, SetStateAction, Dispatch } from "react";
 import {
-  View,
-  StyleSheet,
-  ScrollView,
-} from "react-native";
+  useState,
+  useEffect,
+  useContext,
+  SetStateAction,
+  Dispatch,
+} from "react";
+import { View, StyleSheet, ScrollView } from "react-native";
 import { lightBlue, blue, orange, black, white } from "../assets/colours";
 import Chart from "../components/Chart";
 import Mood from "../components/Mood";
@@ -32,7 +34,7 @@ export enum Moods {
   NEUTRAL = "Neutral",
   A_BIT_LOW = "A Bit Low",
   SAD = "Sad",
-  DEPRESSED = "Depressed"
+  DEPRESSED = "Depressed",
 }
 
 export default function MoodTrackingPage() {
@@ -41,14 +43,13 @@ export default function MoodTrackingPage() {
   const [todaysMood, setTodaysMood] = useState<string>("");
 
   const loggedInUserState = useContext(LoggedInUserContext);
-  let loggedInUser: loggedInUser = 
+  let loggedInUser: loggedInUser | null = null;
   let setLoggedInUser: Dispatch<SetStateAction<loggedInUser>>;
 
   if (loggedInUserState !== null) {
     loggedInUser = loggedInUserState.loggedInUser;
-    setLoggedInUser = loggedInUserState.setLoggedInUser
-  } 
-
+    setLoggedInUser = loggedInUserState.setLoggedInUser;
+  }
 
   useEffect(() => {
     // Hard coded "Tom" for now - change later!
@@ -92,9 +93,11 @@ export default function MoodTrackingPage() {
     const trackedDays = data.map((mood) => Object.keys(mood)[0]);
     return trackedDays.includes(todaysDate);
   };
-  if (loggedInUser !== null) {
 
+  if (loggedInUser === null) {
+    return null;
   }
+
   return (
     <View>
       <ScrollView contentContainerStyle={styles.page}>
@@ -105,7 +108,7 @@ export default function MoodTrackingPage() {
           <Mood todaysMood={todaysMood} setShowModal={setShowModal} />
         </View>
         <View style={styles.recommended}>
-          <Recommended todaysMood={todaysMood}/>
+          <Recommended todaysMood={todaysMood} />
         </View>
         {showModal && (
           <Moodal
