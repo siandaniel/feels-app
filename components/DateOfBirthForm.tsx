@@ -1,7 +1,7 @@
 import { Dispatch, SetStateAction } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { white } from "../assets/colours";
-import { validateDate } from "../utils";
+import { validateDate } from "../utils/utils";
 import FormInput from "./FormInput";
 
 interface Props {

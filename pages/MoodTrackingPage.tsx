@@ -1,28 +1,20 @@
-import { useState, useEffect } from "react";
 import {
-  View,
-  StyleSheet,
-  ScrollView,
-} from "react-native";
+  useState,
+  useEffect,
+  useContext,
+  SetStateAction,
+  Dispatch,
+} from "react";
+import { View, StyleSheet, ScrollView } from "react-native";
 import { lightBlue, blue, orange, black, white } from "../assets/colours";
 import Chart from "../components/Chart";
 import Mood from "../components/Mood";
 import Moodal from "../components/Moodal";
 import Recommended from "../components/Recommended";
-import { getOneUser, getUserMoods } from "../utils/api";
+import { getUser, getUserMoods } from "../utils/utils";
 import { todaysDate } from "../utils/todaysDate";
-
-interface loggedInUser {
-  _id: String;
-  username: String;
-  email: String;
-  date_of_birth: String;
-  date_joined: String;
-  avatar_url: String;
-  _v: Number;
-  createdAt: String;
-  updatedAt: String;
-}
+import { LoggedInUserContext } from "../contexts/LoggedInUser";
+import { loggedInUser } from "../types";
 
 export enum Moods {
   JOYFUL = "Joyful",
@@ -31,31 +23,26 @@ export enum Moods {
   NEUTRAL = "Neutral",
   A_BIT_LOW = "A Bit Low",
   SAD = "Sad",
-  DEPRESSED = "Depressed"
+  DEPRESSED = "Depressed",
 }
 
 export default function MoodTrackingPage() {
   const [userMoods, setUserMoods] = useState<Array<Object>>([]);
   const [showModal, setShowModal] = useState<boolean>(false);
   const [todaysMood, setTodaysMood] = useState<string>("");
-  const [loggedInUser, setLoggedInUser] = useState<loggedInUser>({
-    _id: "",
-    username: "",
-    email: "",
-    date_of_birth: "",
-    date_joined: "",
-    avatar_url: "",
-    _v: 0,
-    createdAt: "",
-    updatedAt: "",
-  });
+
+  const loggedInUserState = useContext(LoggedInUserContext);
+  let loggedInUser: loggedInUser | null = null;
+  let setLoggedInUser: Dispatch<SetStateAction<loggedInUser | null>>;
+
+  if (loggedInUserState !== null) {
+    loggedInUser = loggedInUserState.loggedInUser;
+    setLoggedInUser = loggedInUserState.setLoggedInUser;
+  }
 
   useEffect(() => {
-    // Hard coded "Tom" for now - change later!
-    getOneUser("Joey").then((user) => {
-      setLoggedInUser(user);
-    });
-    getUserMoods("Joey")
+    if(loggedInUser === null) return
+    getUserMoods(loggedInUser.username)
       .then((userMoodsFromApi) => {
         setUserMoods(userMoodsFromApi.mood_data);
         if (!checkUserMoods(userMoodsFromApi.mood_data)) {
@@ -93,6 +80,10 @@ export default function MoodTrackingPage() {
     return trackedDays.includes(todaysDate);
   };
 
+  if (loggedInUser === null) {
+    return null;
+  }
+
   return (
     <View>
       <ScrollView contentContainerStyle={styles.page}>
@@ -103,7 +94,7 @@ export default function MoodTrackingPage() {
           <Mood todaysMood={todaysMood} setShowModal={setShowModal} />
         </View>
         <View style={styles.recommended}>
-          <Recommended todaysMood={todaysMood}/>
+          <Recommended todaysMood={todaysMood} />
         </View>
         {showModal && (
           <Moodal

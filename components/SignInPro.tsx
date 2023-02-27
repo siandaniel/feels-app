@@ -3,7 +3,7 @@ import FormInput from "./FormInput";
 import LoginPressable from "./LoginPressable";
 import { useState } from "react";
 import { UserCredential } from "firebase/auth";
-import { getPro } from "../utils";
+import { getPro } from "../utils/utils";
 import { white } from "../assets/colours";
 
 interface Props {
