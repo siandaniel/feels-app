@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext, SetStateAction, Dispatch } from "react";
 import {
   View,
   StyleSheet,
@@ -11,6 +11,7 @@ import Moodal from "../components/Moodal";
 import Recommended from "../components/Recommended";
 import { getOneUser, getUserMoods } from "../utils/api";
 import { todaysDate } from "../utils/todaysDate";
+import { LoggedInUserContext } from "../contexts/LoggedInUser";
 
 interface loggedInUser {
   _id: String;
@@ -38,17 +39,16 @@ export default function MoodTrackingPage() {
   const [userMoods, setUserMoods] = useState<Array<Object>>([]);
   const [showModal, setShowModal] = useState<boolean>(false);
   const [todaysMood, setTodaysMood] = useState<string>("");
-  const [loggedInUser, setLoggedInUser] = useState<loggedInUser>({
-    _id: "",
-    username: "",
-    email: "",
-    date_of_birth: "",
-    date_joined: "",
-    avatar_url: "",
-    _v: 0,
-    createdAt: "",
-    updatedAt: "",
-  });
+
+  const loggedInUserState = useContext(LoggedInUserContext);
+  let loggedInUser: loggedInUser = 
+  let setLoggedInUser: Dispatch<SetStateAction<loggedInUser>>;
+
+  if (loggedInUserState !== null) {
+    loggedInUser = loggedInUserState.loggedInUser;
+    setLoggedInUser = loggedInUserState.setLoggedInUser
+  } 
+
 
   useEffect(() => {
     // Hard coded "Tom" for now - change later!
@@ -92,7 +92,9 @@ export default function MoodTrackingPage() {
     const trackedDays = data.map((mood) => Object.keys(mood)[0]);
     return trackedDays.includes(todaysDate);
   };
+  if (loggedInUser !== null) {
 
+  }
   return (
     <View>
       <ScrollView contentContainerStyle={styles.page}>
