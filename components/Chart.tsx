@@ -39,12 +39,52 @@ export default function Chart({ userMoods }: Props) {
             ]);
     
             const options = {
+
+                hAxis: {
+                    title: 'Date',
+                    textStyle: {
+                        color: '#01579b',
+                        fontSize: 22,
+                        fontName: 'Arial',
+                        bold: true,
+                        italic: true
+                      },
+                      titleTextStyle: {
+                        color: '#01579b',
+                        fontSize: 40,
+                        fontName: 'Arial',
+                        bold: false,
+                        italic: true
+                      },
+                  },
+                  vAxis: {
+                    title: 'Mood',
+                    textStyle: {
+                        color: '#01579b',
+                        fontSize: 30,
+                        fontName: 'Arial',
+                        bold: true,
+                        italic: true,
+                      },
+                      titleTextStyle: {
+                        color: '#01579b',
+                        fontSize: 40,
+                        fontName: 'Arial',
+                        bold: false,
+                        italic: true
+                      },
+                  },
+                backgroundColor: "#c5fffd",
+                width: 1150,
+                height: 1070,
               title: 'Your Feels',
+              fontSize: 40,
               curveType: 'function',
-              legend: { position: 'bottom' },
+              legend: 'none',
+              chartArea:{left:150,top:150,width:"70%",height:"70%"},
               lineWidth: 6,
               series: {
-                0: { color: 'red' },
+                0: { color: "#fe654f" },
               }
             };
     
@@ -55,16 +95,14 @@ export default function Chart({ userMoods }: Props) {
         </script>
       </head>
       <body>
-        <div id="curve_chart" style="width: 900px; height: 500px"></div>
+        <div id="curve_chart" style="width: 900px; height: 500px; margin: -12px; padding-left: 6px"></div>
       </body>
     </html>`;
 
   return (
     <View style={styles.chartContainer}>
       <Text style={styles.date}>{formattedDate}</Text>
-      <View style={styles.chart}>
-        <WebView source={{ html: ExampleChart }} style={styles.webStyle} />
-      </View>
+      <WebView source={{ html: ExampleChart }} style={styles.chart} />
     </View>
   );
 }
@@ -95,9 +133,11 @@ const styles = StyleSheet.create({
     height: "80%",
     marginLeft: "auto",
     marginRight: "auto",
+    paddingLeft: 30,
   },
   webStyle: {
-    width: 300,
-    flex: 1,
+    backgroundColor: lightBlue,
+    width: "100%",
+    height: "100%",
   },
 });
