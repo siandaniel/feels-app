@@ -1,8 +1,14 @@
 import { View, Text, StyleSheet, ScrollView } from "react-native";
-import { lightBlue, blue, orange, black, white } from "../assets/colours";
+import { white } from "../assets/colours";
 import RecommendedCard from "./RecommendedCard";
+import articles from "../assets/articles";
 
-export default function Recommended() {
+interface Props {
+  todaysMood: string
+}
+
+export default function Recommended({todaysMood}: Props) {
+  const moodArticles = articles.filter((article) => article.moodRange.includes(todaysMood))
   return (
     <View style={styles.recommendedContainer}>
       <Text style={styles.header}>For You</Text>
@@ -11,13 +17,12 @@ export default function Recommended() {
           contentContainerStyle={styles.sideScroller}
           horizontal={true}
         >
-          <RecommendedCard />
-          <RecommendedCard />
-          <RecommendedCard />
-          <RecommendedCard />
-          <RecommendedCard />
-          <RecommendedCard />
-          <RecommendedCard />
+          {!todaysMood && articles.map((article) => {
+            return <RecommendedCard imageSrc={article.imageTitle} title={article.title} url={article.articleLink}/>
+          })}
+          {todaysMood && moodArticles.map((article) => {
+            return <RecommendedCard imageSrc={article.imageTitle} title={article.title} url={article.articleLink}/>
+          })}
         </ScrollView>
       </View>
     </View>

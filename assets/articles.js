@@ -1,127 +1,174 @@
 module.exports = [
   {
     title: "Beating 'Blue Monday'",
-    imageTitle: "blue-monday",
+    imageTitle: require("../assets/imgs/blue_monday.jpg"),
     articleLink: "https://www.futurelearn.com/info/blog/beat-blue-monday",
-    moodRange: [3, 2, 1, 0, -1, -2, -3],
+    moodRange: [
+      "Joyful",
+      "Happy",
+      "Just Okay",
+      "Neutral",
+      "A Bit Low",
+      "Sad",
+      "Depressed",
+    ],
   },
   {
     title: "Learning to love yourself",
-    imageTitle: "body-image",
+    imageTitle: require("../assets/imgs/body_image.jpg"),
     articleLink:
       "https://health.clevelandclinic.org/7-tips-for-building-a-better-body-image-as-an-adult/",
-    moodRange: [3, 2, 1, 0, -1],
+    moodRange: ["Joyful", "Happy", "Just Okay", "Neutral", "A Bit Low"],
   },
   {
     title: "A Clean Space Leads To a Clear mind",
-    imageTitle: "clutter-free",
+    imageTitle: require("../assets/imgs/clutter_free.jpg"),
     articleLink:
       "https://medium.com/the-ascent/clear-space-clear-mind-4364b152b81b",
-    moodRange: [3, 2, 1, 0, -1, -2],
+    moodRange: ["Joyful", "Happy", "Just Okay", "Neutral", "A Bit Low", "Sad"],
   },
   {
-    title: "Touch Grass",
-    imageTitle: "exploring",
+    title: "Touching Grass",
+    imageTitle: require("../assets/imgs/exploring.jpg"),
     articleLink:
       "https://www.mind.org.uk/information-support/tips-for-everyday-living/nature-and-mental-health/how-nature-benefits-mental-health/",
-    moodRange: [3, 2, 1, 0, -1, -2, -3],
+    moodRange: [
+      "Joyful",
+      "Happy",
+      "Just Okay",
+      "Neutral",
+      "A Bit Low",
+      "Sad",
+      "Depressed",
+    ],
   },
   {
     title: "FOMO got you down?",
-    imageTitle: "FOMO",
+    imageTitle: require("../assets/imgs/FOMO.jpg"),
     articleLink: "https://www.verywellmind.com/how-to-cope-with-fomo-4174664",
-    moodRange: [1, 0, -1, -2, -3],
+    moodRange: ["Just Okay", "Neutral", "A Bit Low", "Sad", "Depressed"],
   },
   {
-    title:
-      "Asking for help is hard! Tips on overcoming the fear of asking for help",
-    imageTitle: "getting-help",
+    title: "Overcoming the fear of asking for help",
+    imageTitle: require("../assets/imgs/getting_help.jpg"),
     articleLink:
       "https://www.mind.org.uk/information-support/guides-to-support-and-services/seeking-help-for-a-mental-health-problem/where-to-start/",
-    moodRange: [1, 0, -1, -2, -3],
+    moodRange: ["Just Okay", "Neutral", "A Bit Low", "Sad", "Depressed"],
   },
   {
     title: "Finding your inner peace",
-    imageTitle: "innerpeace",
+    imageTitle: require("../assets/imgs/innerpeace.jpg"),
     articleLink:
       "https://www.happiness.com/magazine/relationships/finding-inner-peace/",
-    moodRange: [3, 2, 1],
+    moodRange: ["Joyful", "Happy", "Just Okay"],
   },
   {
     title: "Finding the Joy in Missing Out",
-    imageTitle: "JOMO",
+    imageTitle: require("../assets/imgs/JOMO.jpg"),
     articleLink:
       "https://www.psychologytoday.com/gb/blog/happiness-is-state-mind/201807/jomo-the-joy-missing-out",
-    moodRange: [3, 2, 1],
+    moodRange: ["Joyful", "Happy", "Just Okay"],
   },
   {
     title: "Journalling - A powerful wellbeing practice",
-    imageTitle: "journalling",
+    imageTitle: require("../assets/imgs/journalling.jpg"),
     articleLink:
       "https://www.metoday.com/blogs/articles/the-art-of-journalling-5-tips-for-a-powerful-journaling-practice",
-    moodRange: [3, 2, 1, 0, -1, -2, -3],
+    moodRange: [
+      "Joyful",
+      "Happy",
+      "Just Okay",
+      "Neutral",
+      "A Bit Low",
+      "Sad",
+      "Depressed",
+    ],
   },
   {
     title: "Personal Growth",
-    imageTitle: "personal-growth",
+    imageTitle: require("../assets/imgs/personal_growth.jpg"),
     articleLink:
       "https://www.tonyrobbins.com/productivity-performance/how-to-create-personal-growth-plan/",
-    moodRange: [3, 2, 1, 0],
+    moodRange: ["Joyful", "Happy", "Just Okay", "Neutral"],
   },
   {
     title: "Planning for Balance",
-    imageTitle: "planningyourtime",
+    imageTitle: require("../assets/imgs/planningyourtime.jpg"),
     articleLink:
       "https://www.mentalhealth.org.uk/explore-mental-health/a-z-topics/work-life-balance",
-    moodRange: [3, 2, 1, 0, -1],
+    moodRange: ["Joyful", "Happy", "Just Okay", "Neutral", "A Bit Low"],
   },
   {
     title: "How a green thumb can positively affect your wellbeing",
-    imageTitle: "plants",
+    imageTitle: require("../assets/imgs/plants.jpg"),
     articleLink:
       "https://www.healthline.com/health/healthy-home-guide/benefits-of-indoor-plants",
-    moodRange: [3, 2, 1, 0, -1, -2, -3],
+    moodRange: [
+      "Joyful",
+      "Happy",
+      "Just Okay",
+      "Neutral",
+      "A Bit Low",
+      "Sad",
+      "Depressed",
+    ],
   },
   {
     title: "Healing your relationship with food",
-    imageTitle: "relationship-with-food",
+    imageTitle: require("../assets/imgs/relationship_with_food.jpg"),
     articleLink:
       "https://www.healthline.com/nutrition/fixing-a-bad-relationship-with-food",
-    moodRange: [3, 2, 1, 0, -1, -2, -3],
+    moodRange: [
+      "Joyful",
+      "Happy",
+      "Just Okay",
+      "Neutral",
+      "A Bit Low",
+      "Sad",
+      "Depressed",
+    ],
   },
   {
     title: "Trouble shutting off?",
-    imageTitle: "troublesleeping",
+    imageTitle: require("../assets/imgs/troublesleeping.jpg"),
     articleLink:
       "https://www.mind.org.uk/information-support/types-of-mental-health-problems/sleep-problems/about-sleep-and-mental-health/",
-    moodRange: [-1, -2, -3],
+    moodRange: ["A Bit Low", "Sad", "Depressed"],
   },
   {
     title: "Intrusive thoughts bogging you down?",
-    imageTitle: "intrusive-thoughts",
+    imageTitle: require("../assets/imgs/intrusive_thoughts.jpg"),
     articleLink:
       "https://www.iesohealth.com/wellbeing-blog/what-are-intrusive-thoughts#:~:text=Intrusive%20thoughts%20are%20unwanted%20thoughts,be%20disturbing%20or%20even%20distressing.",
-    moodRange: [-1, -2, -3],
+    moodRange: ["A Bit Low", "Sad", "Depressed"],
   },
   {
     title: "What next?",
-    imageTitle: "what-to-do",
+    imageTitle: require("../assets/imgs/what_to_do.jpg"),
     articleLink:
       "https://www.talkspace.com/blog/4-phases-will-encounter-making-progress-therapy/",
-    moodRange: [0, -1, -2, -3],
+    moodRange: ["Neutral", "A Bit Low", "Sad", "Depressed"],
   },
   {
     title: "Celebrating World Mental Health Day",
-    imageTitle: "world-mental-health",
+    imageTitle: require("../assets/imgs/world_mental_health.jpg"),
     articleLink:
       "https://mentalhealth-uk.org/get-involved/mental-health-awareness-days/world-mental-health-day-2022/",
-    moodRange: [3, 2, 1, 0, -1, -2, -3],
+    moodRange: [
+      "Joyful",
+      "Happy",
+      "Just Okay",
+      "Neutral",
+      "A Bit Low",
+      "Sad",
+      "Depressed",
+    ],
   },
   {
     title: "Understanding mental health symptoms",
-    imageTitle: "depression-illustration",
+    imageTitle: require("../assets/imgs/depression_illustration.jpg"),
     articleLink:
       "https://www.nhs.uk/mental-health/feelings-symptoms-behaviours/feelings-and-symptoms/",
-    moodRange: [-1, -2, -3],
+    moodRange: ["A Bit Low", "Sad", "Depressed"],
   },
 ];

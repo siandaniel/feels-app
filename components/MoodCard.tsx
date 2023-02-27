@@ -3,24 +3,19 @@ import { Dispatch, SetStateAction, useState } from "react";
 import { orange } from "../assets/colours";
 
 interface Props {
-  mood: String;
-  setMoodDesc: Dispatch<SetStateAction<String>>;
+  mood: string;
+  setMoodDesc: Dispatch<SetStateAction<string>>;
   image: any;
 }
 
 export default function MoodCard({ mood, setMoodDesc, image }: Props) {
-  const [selected, setSelected] = useState<Boolean>(false);
+  const [selected, setSelected] = useState(false);
 
   return (
     <TouchableWithoutFeedback
       onPress={() => {
-        if (selected === false) {
-          setSelected(true);
-          setMoodDesc(mood);
-        } else {
-          setSelected(false);
-          setMoodDesc("");
-        }
+        setSelected(!selected)
+        setMoodDesc(selected ? "" : mood)
       }}
     >
       <View style={styles.cardContainer as any}>

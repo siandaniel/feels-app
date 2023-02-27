@@ -1,13 +1,19 @@
-import { StyleSheet, View, Text } from "react-native";
+import { StyleSheet, View, Text, ImageBackground } from "react-native";
 import { black, lightBlue, white } from "../assets/colours";
 
-export default function RecommendedCard() {
+interface Props {
+    imageSrc: any;
+    title: string;
+    url: string;
+}
+
+export default function RecommendedCard({imageSrc, title, url}: Props) {
     return (
-        <View style={styles.recContainer}>
+        <ImageBackground style={styles.recContainer} imageStyle={{ borderRadius: 25}} source={imageSrc}>
             <View style={styles.textBkgnd}>
-                <Text style={styles.title}>Recommended</Text>
+                <Text style={styles.title}>{title}</Text>
             </View>
-        </View>
+        </ImageBackground>
     );
   }
 
@@ -23,10 +29,11 @@ export default function RecommendedCard() {
     title: {
         fontSize: 18,
         marginTop: 2,
-        marginBottom: 5
+        marginBottom: 5,
+        color: black
     },
     textBkgnd: {
-        backgroundColor: "rgba(255, 255, 255, 0.4)",
+        backgroundColor: "rgba(255, 255, 255, 0.7)",
         padding: 8,
         minHeight: 50,
         width: "100%",

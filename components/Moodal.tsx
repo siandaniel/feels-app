@@ -12,6 +12,7 @@ import { lightBlue, blue, orange, black, white } from "../assets/colours";
 import { Dispatch, SetStateAction, useState } from "react";
 import { todaysDate } from "../utils/todaysDate";
 import { updateUserMood } from "../utils/api";
+import { Moods } from "../pages/MoodTrackingPage";
 
 const depressed = require("../assets/depressed.png");
 const sad = require("../assets/sad.png");
@@ -36,7 +37,7 @@ interface loggedInUser {
 interface Props {
   showModal: boolean;
   setShowModal: Dispatch<SetStateAction<boolean>>;
-  setTodaysMood: Dispatch<SetStateAction<String>>;
+  setTodaysMood: Dispatch<SetStateAction<string>>;
   loggedInUser: loggedInUser;
   setUserMoods: Dispatch<SetStateAction<Array<Object>>>;
 }
@@ -48,10 +49,10 @@ export default function Moodal({
   loggedInUser,
   setUserMoods,
 }: Props) {
-  const [moodDesc, setMoodDesc] = useState<String>("");
+  const [moodDesc, setMoodDesc] = useState("");
 
-  const updateMood = (moodDesc: String) => {
-    if (moodDesc === "Joyful") {
+  const updateMood = (moodDesc: string) => {
+    if (moodDesc === Moods.JOYFUL) {
       updateUserMood(loggedInUser.username, { [todaysDate]: 3 }).then(
         (updatedMoods) => {
           const moodValue = updatedMoods[updatedMoods.length - 1][todaysDate];
@@ -60,7 +61,7 @@ export default function Moodal({
           }
         }
       );
-    } else if (moodDesc === "Happy") {
+    } else if (moodDesc === Moods.HAPPY) {
       updateUserMood(loggedInUser.username, { [todaysDate]: 2 }).then(
         (updatedMoods) => {
           const moodValue = updatedMoods[updatedMoods.length - 1][todaysDate];
@@ -69,7 +70,7 @@ export default function Moodal({
           }
         }
       );
-    } else if (moodDesc === "Just Okay") {
+    } else if (moodDesc === Moods.JUST_OKAY) {
       updateUserMood(loggedInUser.username, { [todaysDate]: 1 }).then(
         (updatedMoods) => {
           const moodValue = updatedMoods[updatedMoods.length - 1][todaysDate];
@@ -78,7 +79,7 @@ export default function Moodal({
           }
         }
       );
-    } else if (moodDesc === "Neutral") {
+    } else if (moodDesc === Moods.NEUTRAL) {
       updateUserMood(loggedInUser.username, { [todaysDate]: 0 }).then(
         (updatedMoods) => {
           const moodValue = updatedMoods[updatedMoods.length - 1][todaysDate];
@@ -87,7 +88,7 @@ export default function Moodal({
           }
         }
       );
-    } else if (moodDesc === "A Bit Low") {
+    } else if (moodDesc === Moods.A_BIT_LOW) {
       updateUserMood(loggedInUser.username, { [todaysDate]: -1 }).then(
         (updatedMoods) => {
           const moodValue = updatedMoods[updatedMoods.length - 1][todaysDate];
@@ -96,7 +97,7 @@ export default function Moodal({
           }
         }
       );
-    } else if (moodDesc === "Sad") {
+    } else if (moodDesc === Moods.SAD) {
       updateUserMood(loggedInUser.username, { [todaysDate]: -2 }).then(
         (updatedMoods) => {
           const moodValue = updatedMoods[updatedMoods.length - 1][todaysDate];
@@ -105,7 +106,7 @@ export default function Moodal({
           }
         }
       );
-    } else if (moodDesc === "Depressed") {
+    } else if (moodDesc === Moods.DEPRESSED) {
       updateUserMood(loggedInUser.username, { [todaysDate]: -3 }).then(
         (updatedMoods) => {
           const moodValue = updatedMoods[updatedMoods.length - 1][todaysDate];

@@ -1,11 +1,8 @@
 import { useState, useEffect } from "react";
 import {
-  Text,
   View,
   StyleSheet,
   ScrollView,
-  Button,
-  LogBox,
 } from "react-native";
 import { lightBlue, blue, orange, black, white } from "../assets/colours";
 import Chart from "../components/Chart";
@@ -27,10 +24,20 @@ interface loggedInUser {
   updatedAt: String;
 }
 
+export enum Moods {
+  JOYFUL = "Joyful",
+  HAPPY = "Happy",
+  JUST_OKAY = "Just Okay",
+  NEUTRAL = "Neutral",
+  A_BIT_LOW = "A Bit Low",
+  SAD = "Sad",
+  DEPRESSED = "Depressed"
+}
+
 export default function MoodTrackingPage() {
   const [userMoods, setUserMoods] = useState<Array<Object>>([]);
   const [showModal, setShowModal] = useState<boolean>(false);
-  const [todaysMood, setTodaysMood] = useState<String>("");
+  const [todaysMood, setTodaysMood] = useState<string>("");
   const [loggedInUser, setLoggedInUser] = useState<loggedInUser>({
     _id: "",
     username: "",
@@ -60,19 +67,19 @@ export default function MoodTrackingPage() {
               todaysDate
             ];
           if (todaysLoggedMood === 3) {
-            setTodaysMood("Joyful");
+            setTodaysMood(Moods.JOYFUL);
           } else if (todaysLoggedMood === 2) {
-            setTodaysMood("Happy");
+            setTodaysMood(Moods.HAPPY);
           } else if (todaysLoggedMood === 1) {
-            setTodaysMood("Just Okay");
+            setTodaysMood(Moods.JUST_OKAY);
           } else if (todaysLoggedMood === 0) {
-            setTodaysMood("Neutral");
+            setTodaysMood(Moods.NEUTRAL);
           } else if (todaysLoggedMood === -1) {
-            setTodaysMood("A Bit Low");
+            setTodaysMood(Moods.A_BIT_LOW);
           } else if (todaysLoggedMood === -2) {
-            setTodaysMood("Sad");
+            setTodaysMood(Moods.SAD);
           } else if (todaysLoggedMood === -3) {
-            setTodaysMood("Depressed");
+            setTodaysMood(Moods.DEPRESSED);
           }
         }
       })
@@ -96,7 +103,7 @@ export default function MoodTrackingPage() {
           <Mood todaysMood={todaysMood} setShowModal={setShowModal} />
         </View>
         <View style={styles.recommended}>
-          <Recommended />
+          <Recommended todaysMood={todaysMood}/>
         </View>
         {showModal && (
           <Moodal
