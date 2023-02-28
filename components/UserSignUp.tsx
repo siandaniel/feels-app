@@ -15,6 +15,7 @@ import DateOfBirthForm from "./DateOfBirthForm";
 import { LoggedInUserContext } from "../contexts/LoggedInUser";
 import { loggedInUser } from "../types";
 import { LoggedInProfessionalContext } from "../contexts/LoggedInProfessional";
+import { socket } from "../utils/socket";
 // CHANGE THIS
 const tempImg =
   "https://www.pngitem.com/pimgs/m/30-307416_profile-icon-png-image-free-download-searchpng-employee.png";
@@ -61,6 +62,8 @@ const UserSignUp = ({ hidden, firebaseSignUp, avoidKeyboard }: Props) => {
           return res.username
         })
         .then(res => {
+          socket.auth = {username: res}
+          socket.connect()
           return initialiseUserMoods({username: res})
         })
         .catch((error) => {

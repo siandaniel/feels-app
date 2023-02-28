@@ -12,6 +12,7 @@ import {
 import { LoggedInProfessionalContext } from "../contexts/LoggedInProfessional";
 import { loggedInProfessional } from "../types";
 import { LoggedInUserContext } from "../contexts/LoggedInUser";
+import { socket } from "../utils/socket";
 const { white } = require("../assets/colours");
 
 const tempImg =
@@ -55,6 +56,11 @@ const ProSignUp = ({ hidden, firebaseSignUp, avoidKeyboard }: Props) => {
           await firebaseSignUp(email, password);
           setLoggedInProfessional(res),
           loggedInUserState?.setLoggedInUser(null)
+          return res
+        })
+        .then((res) => {
+          socket.auth = {fullName: res.fullName}
+          socket.connect()
         })
         .catch((error) => {
           if (error.response) console.log(error.response.data);

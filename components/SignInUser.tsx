@@ -8,6 +8,7 @@ import { white } from "../assets/colours";
 import { LoggedInUserContext } from "../contexts/LoggedInUser";
 import { loggedInProfessional, loggedInUser } from "../types";
 import { LoggedInProfessionalContext } from "../contexts/LoggedInProfessional";
+import { socket } from "../utils/socket";
 
 interface Props {
   hidden: boolean;
@@ -28,13 +29,15 @@ const SignInUser = ({ hidden, firebaseSignIn }: Props) => {
   const submitHandler = () => {
     return getUser(username)
       .then(async (res) => {
-        const firebase = await firebaseSignIn(res.email, password);
+        await firebaseSignIn(res.email, password);
         setLoggedInUser(res)
         loggedInProfessionalState?.setLoggedInProfessional(null)
-        return firebase
+        return res
       })
-      .then(() => {
+      .then((res) => {
         setError(false);
+        socket.auth = {username: res.username}
+        socket.connect()
       })
       .catch((err) => {
         console.log(err);
