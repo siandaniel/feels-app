@@ -178,7 +178,6 @@ export default function Moodal({
                 <Pressable
                   style={styles.submitButton}
                   onPress={() => {
-                    console.log(moodDesc);
                     setShowModal(false);
                     updateMood(moodDesc);
                   }}
