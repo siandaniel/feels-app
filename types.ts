@@ -17,3 +17,13 @@ export interface loggedInUser {
   createdAt: string;
   updatedAt: string;
 }
+
+export interface loggedInProfessional {
+  _id: string;
+  fullName: string;
+  email: string;
+  registrationNumber: string;
+  availableHours: Array<Object> | Array<any> ;
+  avatarURL: string;
+  _v: string;
+}

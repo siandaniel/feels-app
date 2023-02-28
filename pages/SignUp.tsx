@@ -15,7 +15,7 @@ import { createUserWithEmailAndPassword } from "firebase/auth";
 import { blue, white } from "../assets/colours";
 
 const SignUp = () => {
-  const [isUser, setIsUser] = useState(true);
+  const [isProfessional, setIsProfessional] = useState(false);
   const [isAvoiding, setIsAvoiding] = useState(false);
   const fbSignUp = async (email: string, password: string) => {
     const userData = await createUserWithEmailAndPassword(
@@ -36,25 +36,18 @@ const SignUp = () => {
         <View style={styles.container}>
           <UserSignUp
             avoidKeyboard={setIsAvoiding}
-            hidden={isUser}
+            hidden={isProfessional}
             firebaseSignUp={fbSignUp}
           />
           <ProSignUp
             avoidKeyboard={setIsAvoiding}
-            hidden={!isUser}
+            hidden={!isProfessional}
             firebaseSignUp={fbSignUp}
           />
-          {/* <LoginPressable
-            text={`Sign up as ${isUser ? "a user" : "a professional"}`}
-            onPress={() => {
-              setIsUser((curr) => !curr);
-            }}
-            isPrimary={false}
-          /> */}
           <Button
             color={white}
-            title={`Sign up as ${isUser ? "a user" : "a professional"}`}
-            onPress={() => setIsUser((curr) => !curr)}
+            title={`Want to sign up as ${isProfessional ? "a user instead?" : "a professional instead?"}`}
+            onPress={() => setIsProfessional((curr) => !curr)}
           />
         </View>
       </TouchableWithoutFeedback>
