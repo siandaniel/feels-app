@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { Button, Pressable, StyleSheet, Text, View } from "react-native";
+import { ActiveChat } from "../contexts/ActiveChats";
 import { socket } from "../utils/socket";
 
 function WaitingRoom() {
@@ -10,6 +11,8 @@ function WaitingRoom() {
         setUsers(res)
     })
 
+    const ActiveChatState = useContext(ActiveChat)
+
     return (
         <View style={styles.page}>
             <Text>Welcome to the waiting room</Text>
@@ -19,7 +22,7 @@ function WaitingRoom() {
             <View>
               {users.map((user) => (
                 <Pressable onPress={() => {
-                  socket.emit("message", {message: "Yo!", recipient: user})
+                  ActiveChatState?.setActiveChat(user)
                 }}>
                   <Text>{user}</Text>
                 </Pressable>

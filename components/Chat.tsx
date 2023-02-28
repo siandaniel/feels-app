@@ -1,19 +1,25 @@
 import { ScrollView, Text, StyleSheet, View, TextInput, Pressable, Keyboard } from "react-native";
 import { black, blue, orange, white } from "../assets/colours";
 import { Feather } from '@expo/vector-icons';
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import IncomingMessage from "./IncomingMessage";
 import OutgoingMessage from "./OutgoingMessage";
 import { socket } from "../utils/socket";
+import { ActiveChat } from "../contexts/ActiveChats";
 
 function chat() {
-
-    useEffect(() => {
-        socket.on("message", (res) => {
-            console.log(res);
-        })
+    socket.on("message", (res) => {
+        console.log(res);
     })
+    // useEffect(() => {
+    //     socket.on("message", (res) => {
+    //         console.log(res);
+    //     })
+    // })
     const [userMessage, setUserMessage] = useState<string>("");
+
+    const ActiveChatState = useContext(ActiveChat)
+
 
     return (
         <View style={styles.container}>
@@ -27,8 +33,8 @@ function chat() {
                         Keyboard.dismiss()
                     }}></TextInput>
                     <Pressable onPress={() => {
-                        console.log("Pressed");
-                        socket.emit("message", {message: userMessage, recipient: socket.id})
+                        console.log(ActiveChatState?.activeChat);
+                        socket.emit("message", {message: userMessage, to: ActiveChatState?.activeChat})
                     }}>
                         <Feather name="send" size={24} color={orange} />
                     </Pressable>
