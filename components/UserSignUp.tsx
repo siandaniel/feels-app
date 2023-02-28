@@ -36,7 +36,7 @@ const UserSignUp = ({ hidden, firebaseSignUp, avoidKeyboard }: Props) => {
   const loggedInProfessionalState = useContext(LoggedInProfessionalContext);
   const loggedInUserState = useContext(LoggedInUserContext);
   let setLoggedInUser: Dispatch<SetStateAction<loggedInUser | null>>;
-  
+
   if (loggedInUserState !== null) {
     setLoggedInUser = loggedInUserState.setLoggedInUser;
   }
@@ -58,8 +58,8 @@ const UserSignUp = ({ hidden, firebaseSignUp, avoidKeyboard }: Props) => {
         .then(async (res) => {
           await firebaseSignUp(email, password);
           setLoggedInUser(res);
-          await loggedInProfessionalState?.setLoggedInProfessional(null)
-          return res.username
+          await loggedInProfessionalState?.setLoggedInProfessional(null);
+          return res.username;
         })
         .then(res => {
           socket.auth = {username: res}
