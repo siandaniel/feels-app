@@ -1,3 +1,7 @@
-import { io } from "socket.io-client";
+import { io, Socket } from "socket.io-client";
 
-export const socket = io("http://192.168.1.70:9999", {autoConnect: false})
+interface SocketData extends Socket{
+    isProfessional?: boolean;
+}
+
+export const socket: SocketData = io("http://192.168.1.70:9999", {autoConnect: false})

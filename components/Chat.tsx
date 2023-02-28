@@ -1,4 +1,4 @@
-import { ScrollView, Text, StyleSheet, View, TextInput, Pressable, Keyboard } from "react-native";
+import { ScrollView, Text, StyleSheet, View, TextInput, Pressable, Keyboard, KeyboardAvoidingView } from "react-native";
 import { black, blue, orange, white } from "../assets/colours";
 import { Feather } from '@expo/vector-icons';
 import { useContext, useEffect, useState } from "react";
@@ -7,40 +7,59 @@ import OutgoingMessage from "./OutgoingMessage";
 import { socket } from "../utils/socket";
 import { ActiveChat } from "../contexts/ActiveChats";
 
+interface Message {
+    message: string;
+    from?: string;
+    to?: string | null;
+}
+
 function chat() {
-    socket.on("message", (res) => {
-        console.log(res);
-    })
-    // useEffect(() => {
-    //     socket.on("message", (res) => {
-    //         console.log(res);
-    //     })
-    // })
-    const [userMessage, setUserMessage] = useState<string>("");
-
     const ActiveChatState = useContext(ActiveChat)
+    const [userMessage, setUserMessage] = useState<string>("");
+    const [chatMessages, setChatMessages] = useState<Message[]>([])
 
+    useEffect(() => {
+        socket.on("message", (res) => {
+            if(!socket.isProfessional) {
+                ActiveChatState?.setActiveChat(res.from)
+            }
+            setChatMessages((currMessages) => [...currMessages, res])
+        })
+        return () => {
+            socket.off("message")
+        }
+    }, [])
 
     return (
-        <View style={styles.container}>
-            <View style={styles.chatContainer}>
-                <ScrollView style={{flexDirection: "column-reverse"}}>
-                    <IncomingMessage messageBody="Hello" timeStamp={"14:37"}/>
-                    <OutgoingMessage messageBody="How can I help you today?" timeStamp={"14:39"}/>
-                </ScrollView>
-                <View style={styles.chatbox}>
-                    <TextInput style={styles.chatInput} selectionColor={orange} value={userMessage} onChangeText={setUserMessage} placeholder="Aa" multiline={true} onBlur={() => {
-                        Keyboard.dismiss()
-                    }}></TextInput>
-                    <Pressable onPress={() => {
-                        console.log(ActiveChatState?.activeChat);
-                        socket.emit("message", {message: userMessage, to: ActiveChatState?.activeChat})
-                    }}>
-                        <Feather name="send" size={24} color={orange} />
-                    </Pressable>
+        <KeyboardAvoidingView behavior="padding">
+            <View style={styles.container}>
+                <View style={styles.chatContainer}>
+                    <ScrollView>
+                        {chatMessages.map((message) => {
+                            if(message.to){
+                                return <OutgoingMessage messageBody={message.message} timeStamp="14:27"/>
+                            } else if(message.from) {
+                                return <IncomingMessage messageBody={message.message} timeStamp="14:27"/>
+                            }
+                        })}
+                    </ScrollView>
+                    <View style={styles.chatbox}>
+                        <TextInput style={styles.chatInput} selectionColor={orange} value={userMessage} onChangeText={setUserMessage} placeholder="Aa" multiline={true} onBlur={() => {
+                            Keyboard.dismiss()
+                        }}></TextInput>
+                        <Pressable onPress={() => {
+                            if (ActiveChatState) {
+                                const message: Message = {message: userMessage, to: ActiveChatState?.activeChat}
+                                setChatMessages((currMessages) => [...currMessages, message])
+                                socket.emit("message", {message: userMessage, to: ActiveChatState.activeChat})
+                            }
+                        }}>
+                            <Feather name="send" size={24} color={orange} />
+                        </Pressable>
+                    </View>
                 </View>
             </View>
-        </View>
+        </KeyboardAvoidingView>
     );
 }
 
@@ -65,6 +84,7 @@ const styles = StyleSheet.create({
         borderRadius: 30,
         marginTop: 40,
         minHeight: "88%",
+        maxHeight: "90%",
         width: "100%"
     },
     chatInput: {
