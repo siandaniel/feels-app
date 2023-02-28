@@ -13,10 +13,11 @@ function chat() {
             console.log(res);
         })
     })
-
+    const [users, setUsers] = useState<string[]>([]);
     const [userMessage, setUserMessage] = useState<string>("");
     socket.on("users", (res) => {
         console.log(res);   
+        setUsers(res)
     })
 
     return (
@@ -32,7 +33,9 @@ function chat() {
                     }}></TextInput>
                     <Pressable onPress={() => {
                         console.log("Pressed");
-                        socket.emit("message", {message: userMessage, recipient: socket.id})
+                        for (let id of users) {
+                            socket.emit("message", {message: userMessage, recipient: id})
+                        }
                     }}>
                         <Feather name="send" size={24} color={orange} />
                     </Pressable>
