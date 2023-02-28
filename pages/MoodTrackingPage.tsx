@@ -73,7 +73,7 @@ export default function MoodTrackingPage() {
       .catch((err) => {
         console.log(err);
       });
-  }, []);
+  }, [todaysMood]);
 
   const checkUserMoods = (data: Array<Object>) => {
     const trackedDays = data.map((mood) => Object.keys(mood)[0]);
@@ -88,7 +88,7 @@ export default function MoodTrackingPage() {
     <View>
       <ScrollView contentContainerStyle={styles.page}>
         <View style={styles.chart}>
-          <Chart userMoods={userMoods} />
+          <Chart userMoods={userMoods} todaysMood={todaysMood} />
         </View>
         <View style={styles.mood}>
           <Mood todaysMood={todaysMood} setShowModal={setShowModal} />

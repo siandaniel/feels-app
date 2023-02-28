@@ -1,13 +1,14 @@
 import { Text, View, StyleSheet } from "react-native";
 import { lightBlue, blue, orange, black, white } from "../assets/colours";
 import WebView from "react-native-webview";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
 interface Props {
   userMoods: Array<Object>;
+  todaysMood: string;
 }
 
-export default function Chart({ userMoods }: Props) {
+export default function Chart({ userMoods, todaysMood }: Props) {
   const todaysDate: Date = new Date();
   const options: Object = {
     weekday: "long",
@@ -16,11 +17,21 @@ export default function Chart({ userMoods }: Props) {
   };
   const formattedDate: String = todaysDate.toLocaleDateString("en-UK", options);
 
-  const formattedMoods = userMoods.map((mood) => {
-    return [Object.keys(mood)[0], Object.values(mood)[0]];
-  });
+  if (userMoods.length === 0) {
+    return (
+      <View style={styles.chartContainer}>
+        <Text style={styles.date}>{formattedDate}</Text>
+        <View style={styles.chart}>
+          <Text style={styles.text}>Track your Feels to see your data!</Text>
+        </View>
+      </View>
+    );
+  } else {
+    const formattedMoods = userMoods.map((mood) => {
+      return [Object.keys(mood)[0], Object.values(mood)[0]];
+    });
 
-  const ExampleChart = `<html>
+    let MoodChart = `<html>
       <head>
         <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
         <script type="text/javascript">
@@ -29,17 +40,45 @@ export default function Chart({ userMoods }: Props) {
     
           function drawChart() {
             const data = google.visualization.arrayToDataTable([
-              ['Date', 'Mood'],
-              ["22/02/2023", -1],
-              ["23/02/2023", 0],
-              ["24/02/2023", 2],
-              ["25/02/2023", 1],
-              ["26/02/2023", -2],
-              ["27/02/2023", 3],         
-            ]);
-    
-            const options = {
+              ['Date', 'Mood'],`;
 
+    if (formattedMoods[formattedMoods.length - 7]) {
+      MoodChart += `['${formattedMoods[formattedMoods.length - 7][0]}', ${
+        formattedMoods[formattedMoods.length - 7][1]
+      }],`;
+    }
+    if (formattedMoods[formattedMoods.length - 6]) {
+      MoodChart += `['${formattedMoods[formattedMoods.length - 6][0]}', ${
+        formattedMoods[formattedMoods.length - 6][1]
+      }],`;
+    }
+    if (formattedMoods[formattedMoods.length - 5]) {
+      MoodChart += `['${formattedMoods[formattedMoods.length - 5][0]}', ${
+        formattedMoods[formattedMoods.length - 5][1]
+      }],`;
+    }
+    if (formattedMoods[formattedMoods.length - 4]) {
+      MoodChart += `['${formattedMoods[formattedMoods.length - 4][0]}', ${
+        formattedMoods[formattedMoods.length - 4][1]
+      }],`;
+    }
+    if (formattedMoods[formattedMoods.length - 3]) {
+      MoodChart += `['${formattedMoods[formattedMoods.length - 3][0]}', ${
+        formattedMoods[formattedMoods.length - 3][1]
+      }],`;
+    }
+    if (formattedMoods[formattedMoods.length - 2]) {
+      MoodChart += `['${formattedMoods[formattedMoods.length - 2][0]}', ${
+        formattedMoods[formattedMoods.length - 2][1]
+      }],`;
+    }
+    if (formattedMoods[formattedMoods.length - 1]) {
+      MoodChart += `['${formattedMoods[formattedMoods.length - 1][0]}', ${
+        formattedMoods[formattedMoods.length - 1][1]
+      }],`;
+    }
+    MoodChart += `]);
+            const options = {
                 hAxis: {
                     title: 'Date',
                     textStyle: {
@@ -56,8 +95,8 @@ export default function Chart({ userMoods }: Props) {
                         bold: false,
                         italic: true
                       },
-                  },
-                  vAxis: {
+                },
+                vAxis: {
                     title: 'Mood',
                     textStyle: {
                         color: '#01579b',
@@ -73,23 +112,23 @@ export default function Chart({ userMoods }: Props) {
                         bold: false,
                         italic: true
                       },
-                  },
+                      viewWindow: {max: 3, min: -3},
+                      format: '##',
+                },
                 backgroundColor: "#c5fffd",
                 width: 1150,
                 height: 1070,
-              title: 'Your Feels',
-              fontSize: 40,
-              curveType: 'function',
-              legend: 'none',
-              chartArea:{left:150,top:150,width:"70%",height:"70%"},
-              lineWidth: 6,
-              series: {
-                0: { color: "#fe654f" },
-              }
+                title: 'Your Feels',
+                fontSize: 40,
+                curveType: 'function',
+                legend: 'none',
+                chartArea:{left:150,top:150,width:"70%",height:"70%"},
+                lineWidth: 6,
+                series: {
+                    0: { color: "#fe654f" },
+                },
             };
-    
             const chart = new google.visualization.LineChart(document.getElementById('curve_chart'));
-    
             chart.draw(data, options);
           }
         </script>
@@ -99,12 +138,13 @@ export default function Chart({ userMoods }: Props) {
       </body>
     </html>`;
 
-  return (
-    <View style={styles.chartContainer}>
-      <Text style={styles.date}>{formattedDate}</Text>
-      <WebView source={{ html: ExampleChart }} style={styles.chart} />
-    </View>
-  );
+    return (
+      <View style={styles.chartContainer}>
+        <Text style={styles.date}>{formattedDate}</Text>
+        <WebView source={{ html: MoodChart }} style={styles.chart} />
+      </View>
+    );
+  }
 }
 
 const styles = StyleSheet.create({
@@ -134,6 +174,9 @@ const styles = StyleSheet.create({
     marginLeft: "auto",
     marginRight: "auto",
     paddingLeft: 30,
+  },
+  text: {
+    marginRight: 25,
   },
   webStyle: {
     backgroundColor: lightBlue,
