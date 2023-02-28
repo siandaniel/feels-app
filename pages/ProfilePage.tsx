@@ -1,4 +1,5 @@
-import { View, Text, Button, StyleSheet } from "react-native";
+import { View, Text, StyleSheet } from "react-native";
+import { blue } from "../assets/colours";
 
 export default function ProfilePage() {
   return (
@@ -10,6 +11,7 @@ export default function ProfilePage() {
 
 const styles = StyleSheet.create({
   page: {
+    backgroundColor: blue,
     marginTop: 60,
   },
 });

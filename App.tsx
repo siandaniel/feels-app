@@ -1,6 +1,7 @@
 import { StyleSheet, Text, View } from "react-native";
 import { useFonts } from "expo-font";
 import LoggedInUserContext2 from "./contexts/LoggedInUser";
+import LoggedInProfessional from "./contexts/LoggedInProfessional";
 import Index from "./Index";
 
 export default function App() {
@@ -18,9 +19,11 @@ export default function App() {
     ); 
     
     return (
-      <LoggedInUserContext2>
-        <Index/>
-      </LoggedInUserContext2>
+      <LoggedInProfessional>
+        <LoggedInUserContext2>
+          <Index/>
+        </LoggedInUserContext2>
+      </LoggedInProfessional>
     );
     
 }

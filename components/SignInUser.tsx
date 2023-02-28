@@ -6,18 +6,8 @@ import { UserCredential } from "firebase/auth";
 import { getUser } from "../utils/utils";
 import { white } from "../assets/colours";
 import { LoggedInUserContext } from "../contexts/LoggedInUser";
-
-interface loggedInUser {
-  _id: string;
-  username: string;
-  email: string;
-  date_of_birth: string;
-  date_joined: string;
-  avatar_url: string;
-  _v: number;
-  createdAt: string;
-  updatedAt: string;
-}
+import { loggedInProfessional, loggedInUser } from "../types";
+import { LoggedInProfessionalContext } from "../contexts/LoggedInProfessional";
 
 interface Props {
   hidden: boolean;
@@ -30,6 +20,7 @@ const SignInUser = ({ hidden, firebaseSignIn }: Props) => {
   const [error, setError] = useState(false);
   const loggedInUserState = useContext(LoggedInUserContext);
   let setLoggedInUser: Dispatch<SetStateAction<loggedInUser | null>>;
+  const loggedInProfessionalState = useContext(LoggedInProfessionalContext);
   
   if (loggedInUserState !== null) {
     setLoggedInUser = loggedInUserState.setLoggedInUser;
@@ -39,11 +30,11 @@ const SignInUser = ({ hidden, firebaseSignIn }: Props) => {
       .then(async (res) => {
         const firebase = await firebaseSignIn(res.email, password);
         setLoggedInUser(res)
+        loggedInProfessionalState?.setLoggedInProfessional(null)
         return firebase
       })
-      .then((data) => {
+      .then(() => {
         setError(false);
-        console.log(data.user.email);
       })
       .catch((err) => {
         console.log(err);
@@ -53,18 +44,18 @@ const SignInUser = ({ hidden, firebaseSignIn }: Props) => {
 
   return (
     <View style={hidden ? styles.hidden : styles.container}>
-      <Text style={styles.text}>Sign in as a user</Text>
+      <Text style={styles.text}>Log in as a user</Text>
       <ScrollView contentContainerStyle={styles.inputContainer}>
         <FormInput
           value={username}
           label="Username"
-          placeholder="username..."
+          placeholder="Username"
           onChange={setUsername}
         />
         <FormInput
           value={password}
           label="Password"
-          placeholder="password"
+          placeholder="Password"
           secure
           onChange={setPassword}
         />

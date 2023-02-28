@@ -31,15 +31,6 @@ export const getUser = async (username: string) => {
   return user;
 };
 
-// export const getOneUser = (username: String) => {
-//   let apiQuery = `/users/${username}`;
-
-//   return server.get(apiQuery)
-//   .then(({data}) => {
-//       return data.user;
-//   })
-// }
-
 export const postUser = async (userData: User) => {
   const {
     data: { user },
@@ -129,5 +120,14 @@ export const updateUserMood = (username: String, body: Object) => {
   return server.patch(apiQuery, body)
   .then(({data}) => {
       return data.updatedMoodData.mood_data;
+  })
+}
+
+export const initialiseUserMoods = (body: object) => {
+  let apiQuery = `/mood_data`;
+
+  return server.post(apiQuery, body)
+  .then(({data}) => {
+    console.log(data.moodData);
   })
 }

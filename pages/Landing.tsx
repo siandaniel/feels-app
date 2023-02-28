@@ -1,6 +1,6 @@
 import { Image, StyleSheet, Text, View } from "react-native";
 import LoginPressable from "../components/LoginPressable";
-const landingImg = require("../assets/test-img2.jpg");
+const landingImg = require("../assets/imgs/innerpeace.jpg");
 
 import { blue, white } from "../assets/colours";
 import { RootStackParamsList } from "./LoginStack";
@@ -37,7 +37,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: "center",
-    justifyContent: "space-evenly",
+    justifyContent: "center",
     alignSelf: "stretch",
     padding: 25,
     backgroundColor: blue,
@@ -48,12 +48,13 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 64,
     fontFamily: "Lobster",
+    marginVertical: 50,
     color: white,
   },
   image: {
     resizeMode: "cover",
-    height: 300, // CHANGE LATER
-    width: 300,
+    height: 250,
+    width: 250,
     borderRadius: 150,
   },
 });
