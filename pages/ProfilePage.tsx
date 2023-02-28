@@ -73,7 +73,7 @@ export default function ProfilePage() {
           {loggedInProfessional.email}
         </Text>
         <Text style={styles.text}>
-          <Text style={styles.bold}>👨‍⚕️ Reg Number: </Text>
+          <Text style={styles.bold}>📋 Reg Number: </Text>
           {loggedInProfessional.registrationNumber}
         </Text>
         <Text style={styles.hoursTitleIcon}>
