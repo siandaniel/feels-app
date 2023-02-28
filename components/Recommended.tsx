@@ -4,11 +4,13 @@ import RecommendedCard from "./RecommendedCard";
 import articles from "../assets/articles";
 
 interface Props {
-  todaysMood: string
+  todaysMood: string;
 }
 
-export default function Recommended({todaysMood}: Props) {
-  const moodArticles = articles.filter((article) => article.moodRange.includes(todaysMood))
+export default function Recommended({ todaysMood }: Props) {
+  const moodArticles = articles.filter((article) =>
+    article.moodRange.includes(todaysMood)
+  );
   return (
     <View style={styles.recommendedContainer}>
       <Text style={styles.header}>For You</Text>
@@ -17,12 +19,28 @@ export default function Recommended({todaysMood}: Props) {
           contentContainerStyle={styles.sideScroller}
           horizontal={true}
         >
-          {!todaysMood && articles.map((article) => {
-            return <RecommendedCard imageSrc={article.imageTitle} title={article.title} url={article.articleLink}/>
-          })}
-          {todaysMood && moodArticles.map((article) => {
-            return <RecommendedCard imageSrc={article.imageTitle} title={article.title} url={article.articleLink}/>
-          })}
+          {todaysMood === "" &&
+            articles.map((article) => {
+              return (
+                <RecommendedCard
+                  key={article.id}
+                  imageSrc={article.imageTitle}
+                  title={article.title}
+                  url={article.articleLink}
+                />
+              );
+            })}
+          {todaysMood &&
+            moodArticles.map((article) => {
+              return (
+                <RecommendedCard
+                  key={article.id}
+                  imageSrc={article.imageTitle}
+                  title={article.title}
+                  url={article.articleLink}
+                />
+              );
+            })}
         </ScrollView>
       </View>
     </View>
