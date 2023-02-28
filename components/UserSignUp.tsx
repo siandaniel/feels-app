@@ -58,7 +58,7 @@ const UserSignUp = ({ hidden, firebaseSignUp, avoidKeyboard }: Props) => {
           await firebaseSignUp(email, password);
           setLoggedInUser(res);
           await loggedInProfessionalState?.setLoggedInProfessional(null);
-          return res;
+          return res.username;
         })
         .then((res) => {
           return initialiseUserMoods({ username: res });
