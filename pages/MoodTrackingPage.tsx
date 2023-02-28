@@ -41,11 +41,14 @@ export default function MoodTrackingPage() {
   }
 
   useEffect(() => {
-    if(loggedInUser === null) return
+    if (loggedInUser === null) return;
     getUserMoods(loggedInUser.username)
       .then((userMoodsFromApi) => {
         setUserMoods(userMoodsFromApi.mood_data);
-        if (!checkUserMoods(userMoodsFromApi.mood_data)) {
+        if (
+          !checkUserMoods(userMoodsFromApi.mood_data) ||
+          userMoodsFromApi.mood_data === undefined
+        ) {
           setShowModal(true);
         } else {
           setShowModal(false);
@@ -73,7 +76,7 @@ export default function MoodTrackingPage() {
       .catch((err) => {
         console.log(err);
       });
-  }, []);
+  }, [todaysMood, loggedInUser]);
 
   const checkUserMoods = (data: Array<Object>) => {
     const trackedDays = data.map((mood) => Object.keys(mood)[0]);
@@ -88,7 +91,7 @@ export default function MoodTrackingPage() {
     <View>
       <ScrollView contentContainerStyle={styles.page}>
         <View style={styles.chart}>
-          <Chart />
+          <Chart userMoods={userMoods} todaysMood={todaysMood} />
         </View>
         <View style={styles.mood}>
           <Mood todaysMood={todaysMood} setShowModal={setShowModal} />
