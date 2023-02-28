@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, useState } from "react";
+import { Dispatch, SetStateAction, useContext, useState } from "react";
 import { ScrollView, StyleSheet, Text, View } from "react-native";
 import FormInput from "./FormInput";
 import LoginPressable from "./LoginPressable";
@@ -9,6 +9,9 @@ import {
   validatePassword,
   validateRegNumber,
 } from "../utils/utils";
+import { LoggedInProfessionalContext } from "../contexts/LoggedInProfessional";
+import { loggedInProfessional } from "../types";
+import { LoggedInUserContext } from "../contexts/LoggedInUser";
 const { white } = require("../assets/colours");
 
 const tempImg =
@@ -25,6 +28,13 @@ const ProSignUp = ({ hidden, firebaseSignUp, avoidKeyboard }: Props) => {
   const [email, setEmail] = useState("");
   const [registrationNumber, setRegistrationNumber] = useState("");
   const [password, setPassword] = useState("");
+  const loggedInUserState = useContext(LoggedInUserContext);
+  const loggedInProfessionalState = useContext(LoggedInProfessionalContext);
+  let setLoggedInProfessional: Dispatch<SetStateAction<loggedInProfessional | null>>;
+  
+  if (loggedInProfessionalState !== null) {
+    setLoggedInProfessional = loggedInProfessionalState.setLoggedInProfessional;
+  }
 
   const submitHandler = () => {
     if (
@@ -41,11 +51,10 @@ const ProSignUp = ({ hidden, firebaseSignUp, avoidKeyboard }: Props) => {
         availableHours: [],
         avatarURL: tempImg,
       })
-        .then(() => {
-          return firebaseSignUp(email, password);
-        })
-        .then((res) => {
-          console.log(res.user.email);
+        .then(async (res) => {
+          await firebaseSignUp(email, password);
+          setLoggedInProfessional(res),
+          loggedInUserState?.setLoggedInUser(null)
         })
         .catch((error) => {
           if (error.response) console.log(error.response.data);

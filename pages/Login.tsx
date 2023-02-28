@@ -6,7 +6,6 @@ import {
   Keyboard,
   Button,
 } from "react-native";
-import LoginPressable from "../components/LoginPressable";
 import SignInPro from "../components/SignInPro";
 import SignInUser from "../components/SignInUser";
 import { blue, white } from "../assets/colours";
@@ -20,7 +19,7 @@ interface Props {
 }
 
 const Login = () => {
-  const [isUser, setIsUser] = useState(true);
+  const [isProfessional, setIsProfessional] = useState(false);
 
   const fbLogin = async (email: string, password: string) => {
     const userData = await signInWithEmailAndPassword(auth, email, password);
@@ -30,18 +29,15 @@ const Login = () => {
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
       <View style={styles.container}>
-        <SignInUser hidden={isUser} firebaseSignIn={fbLogin} />
-        <SignInPro hidden={!isUser} firebaseSignIn={fbLogin} />
-        {/* <LoginPressable
-          text={`Sign in as a ${isUser ? "user" : "professional"}`}
-          onPress={() => setIsUser((current) => !current)}
-          isPrimary={false}
-        /> */}
-        <Button
-          color={white}
-          title={`Sign in as ${isUser ? "a user" : "a professional"}`}
-          onPress={() => setIsUser((curr) => !curr)}
-        />
+        <SignInUser hidden={isProfessional} firebaseSignIn={fbLogin} />
+        <SignInPro hidden={!isProfessional} firebaseSignIn={fbLogin} />
+        <View style={{marginTop: 8}}>
+          <Button
+            color={white}
+            title={`Want to log in as ${isProfessional ? "a user instead?" : "a professional instead?"}`}
+            onPress={() => setIsProfessional((curr) => !curr)}
+          />
+        </View>
       </View>
     </TouchableWithoutFeedback>
   );
