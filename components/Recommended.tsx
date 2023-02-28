@@ -23,7 +23,7 @@ export default function Recommended({ todaysMood }: Props) {
             articles.map((article) => {
               return (
                 <RecommendedCard
-                  // key={article.id}
+                  key={article.id}
                   imageSrc={article.imageTitle}
                   title={article.title}
                   url={article.articleLink}
@@ -34,7 +34,7 @@ export default function Recommended({ todaysMood }: Props) {
             moodArticles.map((article) => {
               return (
                 <RecommendedCard
-                  // key={article.id}
+                  key={article.id}
                   imageSrc={article.imageTitle}
                   title={article.title}
                   url={article.articleLink}

@@ -4,15 +4,7 @@ module.exports = [
     title: "Beating 'Blue Monday'",
     imageTitle: require("../assets/imgs/blue_monday.jpg"),
     articleLink: "https://www.futurelearn.com/info/blog/beat-blue-monday",
-    moodRange: [
-      "Joyful",
-      "Happy",
-      "Just Okay",
-      "Neutral",
-      "A Bit Low",
-      "Sad",
-      "Depressed",
-    ],
+    moodRange: ["Neutral", "A Bit Low", "Sad", "Depressed"],
   },
   {
     id: 2,
@@ -20,7 +12,7 @@ module.exports = [
     imageTitle: require("../assets/imgs/body_image.jpg"),
     articleLink:
       "https://health.clevelandclinic.org/7-tips-for-building-a-better-body-image-as-an-adult/",
-    moodRange: ["Joyful", "Happy", "Just Okay", "Neutral", "A Bit Low"],
+    moodRange: ["Just Okay", "Neutral", "A Bit Low", "Sad", "Depressed"],
   },
   {
     id: 3,
@@ -59,7 +51,7 @@ module.exports = [
     imageTitle: require("../assets/imgs/getting_help.jpg"),
     articleLink:
       "https://www.mind.org.uk/information-support/guides-to-support-and-services/seeking-help-for-a-mental-health-problem/where-to-start/",
-    moodRange: ["Just Okay", "Neutral", "A Bit Low", "Sad", "Depressed"],
+    moodRange: ["Neutral", "A Bit Low", "Sad", "Depressed"],
   },
   {
     id: 7,
@@ -70,7 +62,7 @@ module.exports = [
     moodRange: ["Joyful", "Happy", "Just Okay"],
   },
   {
-    is: 8,
+    id: 8,
     title: "Finding the Joy in Missing Out",
     imageTitle: require("../assets/imgs/JOMO.jpg"),
     articleLink:

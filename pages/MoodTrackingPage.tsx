@@ -42,7 +42,6 @@ export default function MoodTrackingPage() {
 
   useEffect(() => {
     if (loggedInUser === null) return;
-    console.log(loggedInUser.username);
     getUserMoods(loggedInUser.username)
       .then((userMoodsFromApi) => {
         setUserMoods(userMoodsFromApi.mood_data);
