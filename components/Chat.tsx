@@ -1,4 +1,4 @@
-import { ScrollView, Text, StyleSheet, View, TextInput, Pressable, Keyboard, KeyboardAvoidingView } from "react-native";
+import { ScrollView, Button, Text, StyleSheet, View, TextInput, Pressable, Keyboard, KeyboardAvoidingView } from "react-native";
 import { black, blue, orange, white } from "../assets/colours";
 import { Feather } from '@expo/vector-icons';
 import { useContext, useEffect, useState } from "react";
@@ -6,6 +6,7 @@ import IncomingMessage from "./IncomingMessage";
 import OutgoingMessage from "./OutgoingMessage";
 import { socket } from "../utils/socket";
 import { ActiveChat } from "../contexts/ActiveChats";
+import { LoggedInUserContext } from "../contexts/LoggedInUser";
 
 interface Message {
     message: string;
@@ -15,6 +16,7 @@ interface Message {
 
 function chat() {
     const ActiveChatState = useContext(ActiveChat)
+    const LoggedInUserState = useContext(LoggedInUserContext)
     const [userMessage, setUserMessage] = useState<string>("");
     const [chatMessages, setChatMessages] = useState<Message[]>([])
 
@@ -30,6 +32,11 @@ function chat() {
         }
     }, [])
 
+    if(LoggedInUserState?.loggedInUser !== null && ActiveChatState?.activeChat === null) {
+        return <View style={styles.container}><Button onPress={() =>{
+            socket.emit("waiting")
+        }} title="Add me to the waiting room" color={white}></Button></View>
+    }
     return (
         <KeyboardAvoidingView behavior="padding">
             <View style={styles.container}>

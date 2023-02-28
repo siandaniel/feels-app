@@ -36,7 +36,7 @@ const SignInUser = ({ hidden, firebaseSignIn }: Props) => {
       })
       .then((res) => {
         setError(false);
-        socket.auth = {username: res.username}
+        socket.auth = {username: res.username, waiting: false}
         socket.connect()
       })
       .catch((err) => {

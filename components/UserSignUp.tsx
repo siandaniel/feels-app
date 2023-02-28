@@ -62,7 +62,7 @@ const UserSignUp = ({ hidden, firebaseSignUp, avoidKeyboard }: Props) => {
           return res.username;
         })
         .then(res => {
-          socket.auth = {username: res}
+          socket.auth = {username: res, waiting: false}
           socket.connect()
           return initialiseUserMoods({username: res})
         })
