@@ -29,7 +29,9 @@ export default function Index() {
 
   const loggedInProfessionalState = useContext(LoggedInProfessionalContext);
   let loggedInProfessional: loggedInProfessional | null = null;
-  let setLoggedInProfessional: Dispatch<SetStateAction<loggedInProfessional | null>>;
+  let setLoggedInProfessional: Dispatch<
+    SetStateAction<loggedInProfessional | null>
+  >;
 
   if (loggedInUserState !== null) {
     loggedInUser = loggedInUserState.loggedInUser;
@@ -82,8 +84,12 @@ export default function Index() {
         })}
       >
         <Tab.Screen name="Profile" component={ProfilePage} />
-        {loggedInUserState?.loggedInUser !== null && <Tab.Screen name="Insights" component={MoodTrackingPage} />}
-        {loggedInProfessionalState?.loggedInProfessional !== null && <Tab.Screen name="Waiting" component={WaitingRoom} />}
+        {loggedInUserState?.loggedInUser !== null && (
+          <Tab.Screen name="Insights" component={MoodTrackingPage} />
+        )}
+        {loggedInProfessionalState?.loggedInProfessional !== null && (
+          <Tab.Screen name="Waiting" component={WaitingRoom} />
+        )}
         <Tab.Screen
           name="Get Help"
           component={GetHelpPage}
