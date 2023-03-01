@@ -69,7 +69,7 @@ const UserSignUp = ({ hidden, firebaseSignUp, avoidKeyboard }: Props) => {
         })
         .catch((error) => {
           if (error.response) {
-            console.log(error.response.data, "<<<<ERROR?????");
+            console.log(error.response.data);
           }
           if (error.response.data.message === "Key must be unique") {
             setUsernameTaken(true);
@@ -96,11 +96,11 @@ const UserSignUp = ({ hidden, firebaseSignUp, avoidKeyboard }: Props) => {
           isValid={username.length > 0 && /\s/.test(username) === false}
           avoidKeyboard={avoidKeyboard}
         />
-        <Text style={styles.userError}>
-          {usernameTaken
-            ? `The username ${invalidUsername} is already taken`
-            : ""}
-        </Text>
+        {usernameTaken && (
+          <Text style={styles.userError}>
+            {`The username ${invalidUsername} is already taken`}
+          </Text>
+        )}
         <FormInput
           value={email}
           onChange={setEmail}
