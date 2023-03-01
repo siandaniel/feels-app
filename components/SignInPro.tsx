@@ -19,7 +19,9 @@ const SignInPro = ({ hidden, firebaseSignIn }: Props) => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState(false);
   const loggedInProfessionalState = useContext(LoggedInProfessionalContext);
-  let setLoggedInProfessional: Dispatch<SetStateAction<loggedInProfessional | null>>;
+  let setLoggedInProfessional: Dispatch<
+    SetStateAction<loggedInProfessional | null>
+  >;
 
   const loggedInUserState = useContext(LoggedInUserContext);
 
@@ -31,15 +33,15 @@ const SignInPro = ({ hidden, firebaseSignIn }: Props) => {
     return getPro(regNumber)
       .then(async (res) => {
         const firebase = await firebaseSignIn(res.email, password);
-        setLoggedInProfessional(res)
-        loggedInUserState?.setLoggedInUser(null)
-        return firebase
+        setLoggedInProfessional(res);
+        loggedInUserState?.setLoggedInUser(null);
+        return firebase;
       })
       .then(() => {
         setError(false);
       })
       .catch((err) => {
-        console.log(err)
+        console.log(err);
         setError(true);
       });
   };
@@ -50,13 +52,13 @@ const SignInPro = ({ hidden, firebaseSignIn }: Props) => {
       <ScrollView contentContainerStyle={styles.inputContainer}>
         <FormInput
           value={regNumber}
-          label="Registration number"
+          label="👤 Registration number"
           placeholder="Registration Number"
           onChange={setRegNumber}
         />
         <FormInput
           value={password}
-          label="Password"
+          label="🔒 Password"
           placeholder="Password"
           secure
           onChange={setPassword}
