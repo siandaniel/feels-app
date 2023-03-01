@@ -1,4 +1,5 @@
 import { View, Text, Button, StyleSheet } from "react-native";
+import GetHelpPlaceholder from "../components/getHelpPlaceholder";
 
 export default function GetHelpPage() {
   return (
