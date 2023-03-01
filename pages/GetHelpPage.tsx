@@ -4,13 +4,9 @@ import Chat from "../components/Chat";
 
 export default function GetHelpPage() {
   return (
-    <View style={styles.page}>
+    <View>
       <Chat />
     </View>
   );
 }
 
-const styles = StyleSheet.create({
-  page: {
-  },
-});
