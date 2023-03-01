@@ -1,22 +1,36 @@
-import { useState, useCallback } from "react";
+import { useCallback, useContext, useState } from "react";
 import {
   StyleSheet,
   Text,
   View,
   ScrollView,
   RefreshControl,
+  Button,
+  Pressable,
 } from "react-native";
 import { blue, white } from "../assets/colours";
 import WaitingRoomCard from "../components/WaitingRoomCard";
+import { ActiveChat } from "../contexts/ActiveChats";
+import { ProChats } from "../contexts/ProChats";
+import { socket } from "../utils/socket";
 
 function WaitingRoom() {
   const [refreshing, setRefreshing] = useState(false);
 
+    const [users, setUsers] = useState<string[]>([]);
+    const [userMessage, setUserMessage] = useState<string>("");
+    socket.on("users", (res) => {
+        setUsers(res)
+    })
+
+    const ProChatsState = useContext(ProChats)
+    const ActiveChatState = useContext(ActiveChat)
+
+
+
   const onRefresh = useCallback(() => {
+    socket.emit("refresh")
     setRefreshing(true);
-    setTimeout(() => {
-      setRefreshing(false);
-    }, 2000);
   }, []);
 
   return (
@@ -79,6 +93,26 @@ function WaitingRoom() {
           }
         />
       </ScrollView>
+            {/* <Button title="Refresh" onPress={() => {
+              socket.emit("refresh")
+            }}></Button> */}
+            <View>
+              {users.map((user) => (
+                <Pressable onPress={() => {
+                  ActiveChatState?.setActiveChat(user)
+                  ProChatsState?.setProChats((currChats) => {
+                    if (currChats !== null) {
+                      return [...currChats, user]
+                    } else {
+                      return currChats
+                    }
+                  })
+                  socket.emit("addChat", user);
+                }}>
+                  <Text>{user}</Text>
+                </Pressable>
+              ))}
+            </View>
     </View>
   );
 }

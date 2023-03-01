@@ -29,7 +29,9 @@ export default function Index() {
 
   const loggedInProfessionalState = useContext(LoggedInProfessionalContext);
   let loggedInProfessional: loggedInProfessional | null = null;
-  let setLoggedInProfessional: Dispatch<SetStateAction<loggedInProfessional | null>>;
+  let setLoggedInProfessional: Dispatch<
+    SetStateAction<loggedInProfessional | null>
+  >;
 
   if (loggedInUserState !== null) {
     loggedInUser = loggedInUserState.loggedInUser;
@@ -59,7 +61,7 @@ export default function Index() {
           },
           headerShown: false,
           tabBarIcon: ({ focused, color, size }) => {
-            if (route.name === "Get Help") {
+            if (route.name === "Get Help" || route.name === "Chats") {
               return (
                 <Ionicons
                   name={"chatbubble-outline"}
@@ -75,6 +77,14 @@ export default function Index() {
               return (
                 <MaterialIcons name="insights" size={size} color={color} />
               );
+            } else if (route.name === "Waiting") {
+              return (
+                <Ionicons
+                  name="ios-people-circle-sharp"
+                  size={33}
+                  color={color}
+                />
+              );
             }
           },
           tabBarActiveTintColor: blue,
@@ -82,13 +92,26 @@ export default function Index() {
         })}
       >
         <Tab.Screen name="Profile" component={ProfilePage} />
-        {loggedInUserState?.loggedInUser !== null && <Tab.Screen name="Insights" component={MoodTrackingPage} />}
-        {loggedInProfessionalState?.loggedInProfessional !== null && <Tab.Screen name="Waiting" component={WaitingRoom} />}
-        <Tab.Screen
-          name="Get Help"
-          component={GetHelpPage}
-          options={{ tabBarBadge: 1 }}
-        />
+        {loggedInUserState?.loggedInUser !== null && (
+          <Tab.Screen name="Insights" component={MoodTrackingPage} />
+        )}
+        {loggedInProfessionalState?.loggedInProfessional !== null && (
+          <Tab.Screen name="Waiting" component={WaitingRoom} />
+        )}
+        {loggedInUserState?.loggedInUser !== null && (
+          <Tab.Screen
+            name="Get Help"
+            component={GetHelpPage}
+            options={{ tabBarBadge: 1 }}
+          />
+        )}
+        {loggedInProfessionalState?.loggedInProfessional !== null && (
+          <Tab.Screen
+            name="Chats"
+            component={GetHelpPage}
+            options={{ tabBarBadge: 1 }}
+          />
+        )}
       </Tab.Navigator>
     </NavigationContainer>
   );

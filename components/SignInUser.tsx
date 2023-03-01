@@ -8,6 +8,9 @@ import { white } from "../assets/colours";
 import { LoggedInUserContext } from "../contexts/LoggedInUser";
 import { loggedInProfessional, loggedInUser } from "../types";
 import { LoggedInProfessionalContext } from "../contexts/LoggedInProfessional";
+import { socket } from "../utils/socket";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { ActiveChat } from "../contexts/ActiveChats";
 
 interface Props {
   hidden: boolean;
@@ -21,20 +24,55 @@ const SignInUser = ({ hidden, firebaseSignIn }: Props) => {
   const loggedInUserState = useContext(LoggedInUserContext);
   let setLoggedInUser: Dispatch<SetStateAction<loggedInUser | null>>;
   const loggedInProfessionalState = useContext(LoggedInProfessionalContext);
+  const activeChatState = useContext(ActiveChat);
+  let setActiveChat: Dispatch<SetStateAction<string | null>>;
 
   if (loggedInUserState !== null) {
     setLoggedInUser = loggedInUserState.setLoggedInUser;
   }
+
+  if (activeChatState) {
+    setActiveChat = activeChatState.setActiveChat;
+  }
+
   const submitHandler = () => {
     return getUser(username)
       .then(async (res) => {
-        const firebase = await firebaseSignIn(res.email, password);
+        await firebaseSignIn(res.email, password);
         setLoggedInUser(res);
         loggedInProfessionalState?.setLoggedInProfessional(null);
-        return firebase;
+        return res;
       })
-      .then(() => {
+      .then(async (res) => {
         setError(false);
+        // Need this stuff
+        console.log(`${username}Session`);
+        const sessionID = await AsyncStorage.getItem(`${username}Session`);
+        if (sessionID) {
+          console.log("SessionID found");
+          console.log(sessionID, "<< IN LOGIN");
+
+          socket.auth = { sessionID };
+          socket.connect();
+        } else {
+          console.log("No sessionID");
+          socket.auth = { username: res.username, waiting: false };
+          socket.connect();
+        }
+
+        socket.on(
+          "session",
+          ({ sessionID, connectionID, isWaiting, talkingTo }) => {
+            socket.auth = { sessionID };
+            console.log(sessionID, "<< IN INDEX");
+
+            if (talkingTo !== null) {
+              setActiveChat(talkingTo);
+            }
+            AsyncStorage.setItem(`${username}Session`, `${sessionID}`);
+            socket.connectionID = connectionID;
+          }
+        );
       })
       .catch((err) => {
         console.log(err);

@@ -15,6 +15,9 @@ import DateOfBirthForm from "./DateOfBirthForm";
 import { LoggedInUserContext } from "../contexts/LoggedInUser";
 import { loggedInUser } from "../types";
 import { LoggedInProfessionalContext } from "../contexts/LoggedInProfessional";
+import { socket } from "../utils/socket";
+import { ActiveChat } from "../contexts/ActiveChats";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 // CHANGE THIS
 const tempImg =
   "https://www.pngitem.com/pimgs/m/30-307416_profile-icon-png-image-free-download-searchpng-employee.png";
@@ -37,9 +40,15 @@ const UserSignUp = ({ hidden, firebaseSignUp, avoidKeyboard }: Props) => {
   const loggedInProfessionalState = useContext(LoggedInProfessionalContext);
   const loggedInUserState = useContext(LoggedInUserContext);
   let setLoggedInUser: Dispatch<SetStateAction<loggedInUser | null>>;
+  const activeChatState = useContext(ActiveChat);
+  let setActiveChat: Dispatch<SetStateAction<string | null>>;
 
   if (loggedInUserState !== null) {
     setLoggedInUser = loggedInUserState.setLoggedInUser;
+  }
+
+   if (activeChatState) {
+    setActiveChat = activeChatState.setActiveChat;
   }
 
   const submitHandler = () => {
@@ -61,11 +70,38 @@ const UserSignUp = ({ hidden, firebaseSignUp, avoidKeyboard }: Props) => {
         .then(async (res) => {
           await firebaseSignUp(email, password);
           setLoggedInUser(res);
-          await loggedInProfessionalState?.setLoggedInProfessional(null);
+          loggedInProfessionalState?.setLoggedInProfessional(null);
           return res.username;
         })
-        .then((res) => {
-          return initialiseUserMoods({ username: res });
+        .then( async (res) => {
+          console.log(`${username}Session`);
+          const sessionID = await AsyncStorage.getItem(`${username}Session`);
+          if (sessionID) {
+            console.log("SessionID found");
+            console.log(sessionID, "<< IN LOGIN");
+  
+            socket.auth = { sessionID };
+            socket.connect();
+          } else {
+            console.log("No sessionID");
+            socket.auth = { username: username, waiting: false };
+            socket.connect();
+          }
+  
+          socket.on(
+            "session",
+            ({ sessionID, connectionID, isWaiting, talkingTo }) => {
+              socket.auth = { sessionID };
+              console.log(sessionID, "<< IN INDEX");
+  
+              if (talkingTo !== null) {
+                setActiveChat(talkingTo);
+              }
+              AsyncStorage.setItem(`${username}Session`, `${sessionID}`);
+              socket.connectionID = connectionID;
+            }
+          );
+          return initialiseUserMoods({username: res})
         })
         .catch((error) => {
           if (error.response) {
