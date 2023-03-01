@@ -7,6 +7,7 @@ import OutgoingMessage from "./OutgoingMessage";
 import { socket } from "../utils/socket";
 import { ActiveChat } from "../contexts/ActiveChats";
 import { LoggedInUserContext } from "../contexts/LoggedInUser";
+import JoinWaitingRoom from "./JoinWaitingRoom";
 
 interface Message {
     message: string;
@@ -33,9 +34,10 @@ function chat() {
     }, [])
 
     if(LoggedInUserState?.loggedInUser !== null && ActiveChatState?.activeChat === null) {
-        return <View style={styles.container}><Button onPress={() =>{
-            socket.emit("waiting")
-        }} title="Add me to the waiting room" color={white}></Button></View>
+        // return <View style={styles.container}><Button onPress={() =>{
+        //     socket.emit("waiting")
+        // }} title="Add me to the waiting room" color={white}></Button></View>
+        return <JoinWaitingRoom/>
     }
     return (
         <KeyboardAvoidingView behavior="padding">
@@ -59,6 +61,7 @@ function chat() {
                                 const message: Message = {message: userMessage, to: ActiveChatState?.activeChat}
                                 setChatMessages((currMessages) => [...currMessages, message])
                                 socket.emit("message", {message: userMessage, to: ActiveChatState.activeChat})
+                                setUserMessage("")
                             }
                         }}>
                             <Feather name="send" size={24} color={orange} />
@@ -90,6 +93,7 @@ const styles = StyleSheet.create({
         backgroundColor: "rgba(255, 255, 255, 0.8)",
         borderRadius: 30,
         marginTop: 40,
+        paddingTop: 40,
         minHeight: "88%",
         maxHeight: "90%",
         width: "100%"
