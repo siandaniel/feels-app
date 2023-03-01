@@ -18,6 +18,8 @@ import { socket } from "../utils/socket";
 import { ActiveChat } from "../contexts/ActiveChats";
 import { LoggedInUserContext } from "../contexts/LoggedInUser";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import JoinWaitingRoom from "./JoinWaitingRoom";
+import { ProChats } from "../contexts/ProChats";
 
 interface Message {
   message: string;
@@ -27,13 +29,22 @@ interface Message {
 
 function chat() {
   const ActiveChatState = useContext(ActiveChat);
+  const ProChatsState = useContext(ProChats)
   const LoggedInUserState = useContext(LoggedInUserContext);
   const [userMessage, setUserMessage] = useState<string>("");
   const [chatMessages, setChatMessages] = useState<Message[]>([]);
 
   useEffect(() => {
+    socket.emit("getOldMessages")
+
+    socket.on("oldMessages", (res) => {
+      setChatMessages(res);
+    })
+
     socket.on("message", (res) => {
-      if (!socket.isProfessional) {
+      console.log(res);
+      console.log(res.to, "THIS MF");
+        if (!socket.isProfessional) {
         ActiveChatState?.setActiveChat(res.from);
         socket.emit("matched", { from: res.from });
       }
@@ -44,36 +55,40 @@ function chat() {
     };
   }, []);
 
+  let proChats: string[] | null = null 
+  if (ProChatsState !== null && ProChatsState.proChats !== null) {
+    proChats = ProChatsState.proChats
+  }
+
   if (
     LoggedInUserState?.loggedInUser !== null &&
     ActiveChatState?.activeChat === null
   ) {
     return (
-      <View style={styles.container}>
-        <Button
-          onPress={() => {
-            socket.emit("waiting");
-          }}
-          title="Add me to the waiting room"
-          color={white}
-        ></Button>
-      </View>
+      <JoinWaitingRoom/>
     );
   }
   return (
-    <KeyboardAvoidingView behavior="padding">
+    <KeyboardAvoidingView behavior="padding"> 
       <View style={styles.container}>
+      {LoggedInUserState?.loggedInUser === null && proChats !== null && <View>
+        {proChats.map((chat) => {
+          return <Button title={chat} onPress={() => {
+            socket.emit("getHelpChat", chat)
+          }}></Button>
+        })}
+        </View>} 
         <View style={styles.chatContainer}>
           <ScrollView>
             {chatMessages.map((message) => {
-              if (message.to) {
+              if (message.to !== socket.connectionID) {
                 return (
                   <OutgoingMessage
                     messageBody={message.message}
                     timeStamp="14:27"
                   />
                 );
-              } else if (message.from) {
+              } else {
                 return (
                   <IncomingMessage
                     messageBody={message.message}
@@ -97,11 +112,15 @@ function chat() {
             ></TextInput>
             <Pressable
               onPress={() => {
+                setUserMessage("")
+                
                 if (ActiveChatState) {
                   const message: Message = {
                     message: userMessage,
                     to: ActiveChatState?.activeChat,
                   };
+                  console.log(message.to, "THIS BITCH");
+                  
                   setChatMessages((currMessages) => [...currMessages, message]);
                   socket.emit("message", {
                     message: userMessage,

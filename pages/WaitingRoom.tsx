@@ -13,6 +13,7 @@ function WaitingRoom() {
     })
 
     const ProChatsState = useContext(ProChats)
+    const ActiveChatState = useContext(ActiveChat)
 
     return (
         <View style={styles.page}>
@@ -23,6 +24,7 @@ function WaitingRoom() {
             <View>
               {users.map((user) => (
                 <Pressable onPress={() => {
+                  ActiveChatState?.setActiveChat(user)
                   ProChatsState?.setProChats((currChats) => {
                     if (currChats !== null) {
                       return [...currChats, user]
