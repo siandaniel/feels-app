@@ -1,6 +1,6 @@
 import { Dispatch, SetStateAction } from "react";
 import { StyleSheet, Text, TextInput, View } from "react-native";
-import { black, white } from "../assets/colours";
+import { black, orange, white } from "../assets/colours";
 
 interface Props {
   label: string;
@@ -51,6 +51,7 @@ const FormInput = ({
         value={value}
         style={styles.input}
         placeholder={placeholder}
+        selectionColor={orange}
         keyboardType={isNumber ? "number-pad" : "default"}
         secureTextEntry={secure}
         onChangeText={onChange}
