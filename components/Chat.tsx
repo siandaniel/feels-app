@@ -35,7 +35,10 @@ function chat() {
   const [chatMessages, setChatMessages] = useState<Message[]>([]);
 
   useEffect(() => {
-    socket.emit("getOldMessages");
+
+    if (LoggedInUserState?.loggedInUser !== null) {
+      socket.emit("getOldMessages");
+    }
 
     socket.on("oldMessages", (res) => {
       setChatMessages(res);
@@ -43,7 +46,6 @@ function chat() {
 
     socket.on("message", (res) => {
       console.log(res);
-      console.log(res.to, "THIS MF");
       if (!socket.isProfessional) {
         ActiveChatState?.setActiveChat(res.from);
         socket.emit("matched", { from: res.from });
@@ -127,7 +129,6 @@ function chat() {
                     message: userMessage,
                     to: ActiveChatState?.activeChat,
                   };
-                  console.log(message.to, "THIS BITCH");
 
                   setChatMessages((currMessages) => [...currMessages, message]);
                   socket.emit("message", {

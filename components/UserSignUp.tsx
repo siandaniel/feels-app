@@ -3,7 +3,7 @@ import { ScrollView, StyleSheet, Text, View } from "react-native";
 import FormInput from "./FormInput";
 import LoginPressable from "./LoginPressable";
 import type { UserCredential } from "firebase/auth";
-import { white } from "../assets/colours";
+import { orange, white, lightBlue } from "../assets/colours";
 import {
   initialiseUserMoods,
   postUser,
@@ -35,6 +35,8 @@ const UserSignUp = ({ hidden, firebaseSignUp, avoidKeyboard }: Props) => {
   const [day, setDay] = useState("");
   const [month, setMonth] = useState("");
   const [year, setYear] = useState("");
+  const [usernameTaken, setUsernameTaken] = useState(false);
+  const [invalidUsername, setInvalidUsername] = useState("");
   const loggedInProfessionalState = useContext(LoggedInProfessionalContext);
   const loggedInUserState = useContext(LoggedInUserContext);
   let setLoggedInUser: Dispatch<SetStateAction<loggedInUser | null>>;
@@ -50,10 +52,12 @@ const UserSignUp = ({ hidden, firebaseSignUp, avoidKeyboard }: Props) => {
   }
 
   const submitHandler = () => {
+    setUsernameTaken(false);
     if (
       email !== "" &&
       password !== "" &&
       username !== "" &&
+      /\s/.test(username) === false &&
       validateDate(+day, +month, +year) &&
       validateEmail(email)
     ) {
@@ -103,8 +107,12 @@ const UserSignUp = ({ hidden, firebaseSignUp, avoidKeyboard }: Props) => {
           if (error.response) {
             console.log(error.response.data);
           }
+          if (error.response.data.message === "Key must be unique") {
+            setUsernameTaken(true);
+            setInvalidUsername(username);
+          }
         });
-    } else console.log("Invalid date", validateDate(+day, +month, +year));
+    } else console.log("Invalid input", validateDate(+day, +month, +year));
   };
 
   return (
@@ -116,10 +124,19 @@ const UserSignUp = ({ hidden, firebaseSignUp, avoidKeyboard }: Props) => {
           onChange={setUsername}
           placeholder="Username"
           label="Username"
-          message="Please enter a username"
-          isValid={username.length > 0}
+          message={
+            username.length === 0
+              ? "Please enter a username"
+              : "Usernames must not contain spaces"
+          }
+          isValid={username.length > 0 && /\s/.test(username) === false}
           avoidKeyboard={avoidKeyboard}
         />
+        {usernameTaken && (
+          <Text style={styles.userError}>
+            {`The username ${invalidUsername} is already taken`}
+          </Text>
+        )}
         <FormInput
           value={email}
           onChange={setEmail}
@@ -186,6 +203,12 @@ const styles = StyleSheet.create({
   },
   hidden: {
     display: "none",
+  },
+  userError: {
+    color: "#FFC4B5",
+    marginLeft: 16,
+    marginTop: 10,
+    fontStyle: "italic",
   },
 });
 export default UserSignUp;

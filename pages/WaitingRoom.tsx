@@ -1,10 +1,21 @@
-import { useContext, useState } from "react";
-import { Button, Pressable, StyleSheet, Text, View } from "react-native";
+import { useCallback, useContext, useState } from "react";
+import {
+  StyleSheet,
+  Text,
+  View,
+  ScrollView,
+  RefreshControl,
+  Button,
+  Pressable,
+} from "react-native";
+import { blue, white } from "../assets/colours";
+import WaitingRoomCard from "../components/WaitingRoomCard";
 import { ActiveChat } from "../contexts/ActiveChats";
 import { ProChats } from "../contexts/ProChats";
 import { socket } from "../utils/socket";
 
 function WaitingRoom() {
+  const [refreshing, setRefreshing] = useState(false);
 
     const [users, setUsers] = useState<string[]>([]);
     const [userMessage, setUserMessage] = useState<string>("");
@@ -15,12 +26,76 @@ function WaitingRoom() {
     const ProChatsState = useContext(ProChats)
     const ActiveChatState = useContext(ActiveChat)
 
-    return (
-        <View style={styles.page}>
-            <Text>Welcome to the waiting room</Text>
-            <Button title="Refresh" onPress={() => {
+
+
+  const onRefresh = useCallback(() => {
+    socket.emit("refresh")
+    setRefreshing(true);
+  }, []);
+
+  return (
+    <View>
+      <ScrollView
+        contentContainerStyle={styles.page}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
+      >
+        <Text style={styles.text}>Waiting Room</Text>
+        <WaitingRoomCard
+          username={"Tom"}
+          avatar_url={
+            "https://images.pexels.com/photos/913390/pexels-photo-913390.jpeg?auto=compress&cs=tinysrgb&w=800"
+          }
+          chatTopics={
+            "I run a shop and its taken over my life! I'm struggling to maintain a work life balance "
+          }
+        />
+        <WaitingRoomCard
+          username={"Iris"}
+          avatar_url={
+            "https://images.pexels.com/photos/1853557/pexels-photo-1853557.jpeg?auto=compress&cs=tinysrgb&w=800"
+          }
+          chatTopics={"I'm getting burnt out how do I cope with these feels"}
+        />
+        <WaitingRoomCard
+          username={"Joe"}
+          avatar_url={
+            "https://www.tvguide.com/a/img/hub/2019/12/05/9cadb0bf-f87e-4383-ac1b-adf596690a15/you-reg.jpg"
+          }
+          chatTopics={
+            "Hello, you... No! I'm not doing that again. I'm obsessive and I can't control it"
+          }
+        />
+        <WaitingRoomCard
+          username={"Tom"}
+          avatar_url={
+            "https://images.pexels.com/photos/913390/pexels-photo-913390.jpeg?auto=compress&cs=tinysrgb&w=800"
+          }
+          chatTopics={
+            "I run a shop and its taken over my life! I'm struggling to maintain a work life balance"
+          }
+        />
+        <WaitingRoomCard
+          username={"Iris"}
+          avatar_url={
+            "https://images.pexels.com/photos/1853557/pexels-photo-1853557.jpeg?auto=compress&cs=tinysrgb&w=800"
+          }
+          chatTopics={"I'm getting burnt out how do I cope with these feels"}
+        />
+        <WaitingRoomCard
+          username={"Joe"}
+          avatar_url={
+            "https://www.tvguide.com/a/img/hub/2019/12/05/9cadb0bf-f87e-4383-ac1b-adf596690a15/you-reg.jpg"
+          }
+          chatTopics={
+            "Hello, you... No! I'm not doing that again. I'm obsessive and I can't control it"
+          }
+        />
+      </ScrollView>
+            {/* <Button title="Refresh" onPress={() => {
               socket.emit("refresh")
-            }}></Button>
+            }}></Button> */}
             <View>
               {users.map((user) => (
                 <Pressable onPress={() => {
@@ -38,15 +113,23 @@ function WaitingRoom() {
                 </Pressable>
               ))}
             </View>
-        </View>
-    );
+    </View>
+  );
 }
 
 const styles = StyleSheet.create({
-    page: {
-      marginTop: 60,
-    },
-  });
-  
+  page: {
+    backgroundColor: blue,
+    minHeight: "100%",
+    alignItems: "center",
+    paddingTop: 60,
+  },
+  scroller: {},
+  text: {
+    marginBottom: 20,
+    color: white,
+    fontSize: 25,
+  },
+});
 
 export default WaitingRoom;

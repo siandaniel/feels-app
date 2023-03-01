@@ -31,6 +31,8 @@ const ProSignUp = ({ hidden, firebaseSignUp, avoidKeyboard }: Props) => {
   const [email, setEmail] = useState("");
   const [registrationNumber, setRegistrationNumber] = useState("");
   const [password, setPassword] = useState("");
+  const [regTaken, setRegTaken] = useState(false);
+  const [invalidReg, setInvalidReg] = useState("");
   const loggedInUserState = useContext(LoggedInUserContext);
   const loggedInProfessionalState = useContext(LoggedInProfessionalContext);
   let setLoggedInProfessional: Dispatch<SetStateAction<loggedInProfessional | null>>;
@@ -46,6 +48,7 @@ const ProSignUp = ({ hidden, firebaseSignUp, avoidKeyboard }: Props) => {
   }
 
   const submitHandler = () => {
+    setRegTaken(false);
     if (
       email !== "" &&
       password !== "" &&
@@ -99,6 +102,10 @@ const ProSignUp = ({ hidden, firebaseSignUp, avoidKeyboard }: Props) => {
         })
         .catch((error) => {
           if (error.response) console.log(error.response.data);
+          if (error.response.data.message === "Key must be unique") {
+            setRegTaken(true);
+            setInvalidReg(registrationNumber);
+          }
         });
     }
   };
@@ -135,6 +142,11 @@ const ProSignUp = ({ hidden, firebaseSignUp, avoidKeyboard }: Props) => {
           avoidKeyboard={avoidKeyboard}
           isAvoiding
         />
+        {regTaken && (
+          <Text
+            style={styles.userError}
+          >{`The registration ${invalidReg} is already taken`}</Text>
+        )}
         <FormInput
           value={password}
           onChange={setPassword}
@@ -180,6 +192,12 @@ const styles = StyleSheet.create({
   },
   daysContainer: {
     marginLeft: 16,
+  },
+  userError: {
+    color: "#FFC4B5",
+    marginLeft: 16,
+    marginTop: 10,
+    fontStyle: "italic",
   },
 });
 // full name
