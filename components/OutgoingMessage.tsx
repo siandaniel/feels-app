@@ -8,28 +8,32 @@ interface Props {
 
 function OutgoingMessage({messageBody, timeStamp}: Props) {
     return (
+        <View>
         <View style={styles.chatBubble}>
             <Text style={styles.time}>{timeStamp}</Text>
             <Text style={styles.messageText}>{messageBody}</Text>
+        </View>
         </View>
     );
 }
 
 const styles = StyleSheet.create({
     chatBubble: {
+        alignSelf: "flex-start",
         backgroundColor: white,
         borderRadius: 25,
         flexDirection: "row",
         margin:10,
-        maxWidth: "85%",
+        minWidth: "10%",
+        maxWidth: "82%",
         padding: 10,
-        paddingHorizontal: 15,
+        paddingHorizontal: 17,
     },
     messageText: {
+        maxWidth: "86%",
         color: black,
         fontSize: 18,
         marginLeft: 10,
-        maxWidth: "90%"
     },
     time: {
         marginTop: 4,

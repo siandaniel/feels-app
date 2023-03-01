@@ -61,7 +61,7 @@ export default function Index() {
           },
           headerShown: false,
           tabBarIcon: ({ focused, color, size }) => {
-            if (route.name === "Get Help") {
+            if (route.name === "Get Help" || route.name === "Chats") {
               return (
                 <Ionicons
                   name={"chatbubble-outline"}
@@ -77,6 +77,14 @@ export default function Index() {
               return (
                 <MaterialIcons name="insights" size={size} color={color} />
               );
+            } else if (route.name === "Waiting") {
+              return (
+                <Ionicons
+                  name="ios-people-circle-sharp"
+                  size={33}
+                  color={color}
+                />
+              );
             }
           },
           tabBarActiveTintColor: blue,
@@ -90,11 +98,20 @@ export default function Index() {
         {loggedInProfessionalState?.loggedInProfessional !== null && (
           <Tab.Screen name="Waiting" component={WaitingRoom} />
         )}
-        <Tab.Screen
-          name="Get Help"
-          component={GetHelpPage}
-          options={{ tabBarBadge: 1 }}
-        />
+        {loggedInUserState?.loggedInUser !== null && (
+          <Tab.Screen
+            name="Get Help"
+            component={GetHelpPage}
+            options={{ tabBarBadge: 1 }}
+          />
+        )}
+        {loggedInProfessionalState?.loggedInProfessional !== null && (
+          <Tab.Screen
+            name="Chats"
+            component={GetHelpPage}
+            options={{ tabBarBadge: 1 }}
+          />
+        )}
       </Tab.Navigator>
     </NavigationContainer>
   );

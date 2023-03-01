@@ -139,6 +139,7 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(255, 255, 255, 0.8)",
     borderRadius: 30,
     marginTop: 40,
+    paddingTop: 40,
     minHeight: "88%",
     maxHeight: "90%",
     width: "100%",
