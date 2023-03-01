@@ -23,7 +23,14 @@ export interface loggedInProfessional {
   fullName: string;
   email: string;
   registrationNumber: string;
-  availableHours: Array<Object> | Array<any> ;
+  availableHours: Array<Object> | Array<any>;
   avatarURL: string;
   _v: string;
+}
+
+export interface WaitingUser {
+  username: string;
+  avatar_url: string;
+  chatTopics: string;
+  connectionID: string;
 }

@@ -1,4 +1,4 @@
-import { useCallback, useContext, useState } from "react";
+import { useCallback, useContext, useEffect, useState } from "react";
 import {
   StyleSheet,
   Text,
@@ -12,26 +12,47 @@ import { blue, white } from "../assets/colours";
 import WaitingRoomCard from "../components/WaitingRoomCard";
 import { ActiveChat } from "../contexts/ActiveChats";
 import { ProChats } from "../contexts/ProChats";
+import { WaitingUser } from "../types";
 import { socket } from "../utils/socket";
 
 function WaitingRoom() {
   const [refreshing, setRefreshing] = useState(false);
+  const [users, setUsers] = useState<WaitingUser[]>([]);
+  const ProChatsState = useContext(ProChats);
+  const ActiveChatState = useContext(ActiveChat);
+  // const [userMessage, setUserMessage] = useState<string>("");
 
-    const [users, setUsers] = useState<string[]>([]);
-    const [userMessage, setUserMessage] = useState<string>("");
+  useEffect(() => {
     socket.on("users", (res) => {
-        setUsers(res)
-    })
+      setUsers(res);
+      console.log(res);
+    });
 
-    const ProChatsState = useContext(ProChats)
-    const ActiveChatState = useContext(ActiveChat)
-
-
+    return () => {
+      socket.off("users");
+    };
+  }, []);
 
   const onRefresh = useCallback(() => {
-    socket.emit("refresh")
+    socket.emit("refresh");
     setRefreshing(true);
+    setTimeout(() => {
+      setRefreshing(false);
+    }, 2000);
   }, []);
+
+  const pressHandler = (user: WaitingUser) => {
+    return () => {
+      ActiveChatState?.setActiveChat(user.connectionID);
+      ProChatsState?.setProChats((currChats) => {
+        if (currChats !== null) {
+          return [...currChats, user.connectionID];
+        } else {
+          return currChats;
+        }
+      });
+    };
+  };
 
   return (
     <View>
@@ -42,23 +63,15 @@ function WaitingRoom() {
         }
       >
         <Text style={styles.text}>Waiting Room</Text>
-        <WaitingRoomCard
-          username={"Tom"}
-          avatar_url={
-            "https://images.pexels.com/photos/913390/pexels-photo-913390.jpeg?auto=compress&cs=tinysrgb&w=800"
-          }
-          chatTopics={
-            "I run a shop and its taken over my life! I'm struggling to maintain a work life balance "
-          }
-        />
-        <WaitingRoomCard
-          username={"Iris"}
-          avatar_url={
-            "https://images.pexels.com/photos/1853557/pexels-photo-1853557.jpeg?auto=compress&cs=tinysrgb&w=800"
-          }
-          chatTopics={"I'm getting burnt out how do I cope with these feels"}
-        />
-        <WaitingRoomCard
+        {users.map((user) => (
+          <WaitingRoomCard
+            onPress={pressHandler(user)}
+            username={user.username}
+            avatar_url={user.avatar_url}
+            chatTopics={user.chatTopics}
+          />
+        ))}
+        {/* <WaitingRoomCard
           username={"Joe"}
           avatar_url={
             "https://www.tvguide.com/a/img/hub/2019/12/05/9cadb0bf-f87e-4383-ac1b-adf596690a15/you-reg.jpg"
@@ -66,53 +79,30 @@ function WaitingRoom() {
           chatTopics={
             "Hello, you... No! I'm not doing that again. I'm obsessive and I can't control it"
           }
-        />
-        <WaitingRoomCard
-          username={"Tom"}
-          avatar_url={
-            "https://images.pexels.com/photos/913390/pexels-photo-913390.jpeg?auto=compress&cs=tinysrgb&w=800"
-          }
-          chatTopics={
-            "I run a shop and its taken over my life! I'm struggling to maintain a work life balance"
-          }
-        />
-        <WaitingRoomCard
-          username={"Iris"}
-          avatar_url={
-            "https://images.pexels.com/photos/1853557/pexels-photo-1853557.jpeg?auto=compress&cs=tinysrgb&w=800"
-          }
-          chatTopics={"I'm getting burnt out how do I cope with these feels"}
-        />
-        <WaitingRoomCard
-          username={"Joe"}
-          avatar_url={
-            "https://www.tvguide.com/a/img/hub/2019/12/05/9cadb0bf-f87e-4383-ac1b-adf596690a15/you-reg.jpg"
-          }
-          chatTopics={
-            "Hello, you... No! I'm not doing that again. I'm obsessive and I can't control it"
-          }
-        />
+        /> */}
       </ScrollView>
-            {/* <Button title="Refresh" onPress={() => {
+      {/* <Button title="Refresh" onPress={() => {
               socket.emit("refresh")
-            }}></Button> */}
-            <View>
-              {users.map((user) => (
-                <Pressable onPress={() => {
-                  ActiveChatState?.setActiveChat(user)
-                  ProChatsState?.setProChats((currChats) => {
-                    if (currChats !== null) {
-                      return [...currChats, user]
-                    } else {
-                      return currChats
-                    }
-                  })
-                  socket.emit("addChat", user);
-                }}>
-                  <Text>{user}</Text>
-                </Pressable>
-              ))}
-            </View>
+            }}></Button>
+      <View>
+        {users.map((user) => (
+          <Pressable
+            onPress={() => {
+              ActiveChatState?.setActiveChat(user);
+              ProChatsState?.setProChats((currChats) => {
+                if (currChats !== null) {
+                  return [...currChats, user];
+                } else {
+                  return currChats;
+                }
+              });
+              socket.emit("addChat", user);
+            }}
+          >
+            <Text>{user}</Text>
+          </Pressable>
+        ))}
+      </View> */}
     </View>
   );
 }

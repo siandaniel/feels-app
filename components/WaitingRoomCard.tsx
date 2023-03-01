@@ -5,12 +5,14 @@ interface Props {
   username: string;
   avatar_url: string;
   chatTopics: string;
+  onPress: () => void;
 }
 
 export default function WaitingRoomCard({
   username,
   avatar_url,
   chatTopics,
+  onPress,
 }: Props) {
   return (
     <View style={styles.container}>
@@ -18,7 +20,7 @@ export default function WaitingRoomCard({
       <View style={styles.textContainer}>
         <Text style={styles.header}>{username}</Text>
         <Text>{chatTopics}</Text>
-        <Pressable>
+        <Pressable onPress={onPress}>
           <Text style={styles.button}>💬 Chat</Text>
         </Pressable>
       </View>
