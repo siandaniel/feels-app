@@ -1,11 +1,32 @@
-import { StyleSheet, Text, View, ScrollView } from "react-native";
+import { useState, useCallback } from "react";
+import {
+  StyleSheet,
+  Text,
+  View,
+  ScrollView,
+  RefreshControl,
+} from "react-native";
 import { blue, white } from "../assets/colours";
 import WaitingRoomCard from "../components/WaitingRoomCard";
 
 function WaitingRoom() {
+  const [refreshing, setRefreshing] = useState(false);
+
+  const onRefresh = useCallback(() => {
+    setRefreshing(true);
+    setTimeout(() => {
+      setRefreshing(false);
+    }, 2000);
+  }, []);
+
   return (
     <View>
-      <ScrollView contentContainerStyle={styles.page}>
+      <ScrollView
+        contentContainerStyle={styles.page}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
+      >
         <Text style={styles.text}>Waiting Room</Text>
         <WaitingRoomCard
           username={"Tom"}
@@ -13,7 +34,7 @@ function WaitingRoom() {
             "https://images.pexels.com/photos/913390/pexels-photo-913390.jpeg?auto=compress&cs=tinysrgb&w=800"
           }
           chatTopics={
-            "I run a shop and its taken over my life! I'm struggling to maintain a positive work life balance "
+            "I run a shop and its taken over my life! I'm struggling to maintain a work life balance "
           }
         />
         <WaitingRoomCard
@@ -38,7 +59,7 @@ function WaitingRoom() {
             "https://images.pexels.com/photos/913390/pexels-photo-913390.jpeg?auto=compress&cs=tinysrgb&w=800"
           }
           chatTopics={
-            "I run a shop and its taken over my life! I'm struggling to maintain a positive work life balance"
+            "I run a shop and its taken over my life! I'm struggling to maintain a work life balance"
           }
         />
         <WaitingRoomCard
