@@ -73,7 +73,7 @@ const SignInPro = ({ hidden, firebaseSignIn }: Props) => {
         );
       })
       .catch((err) => {
-        console.log(err)
+        console.log(err);
         setError(true);
       });
   };
@@ -84,13 +84,13 @@ const SignInPro = ({ hidden, firebaseSignIn }: Props) => {
       <ScrollView contentContainerStyle={styles.inputContainer}>
         <FormInput
           value={regNumber}
-          label="Registration number"
+          label="👤 Registration number"
           placeholder="Registration Number"
           onChange={setRegNumber}
         />
         <FormInput
           value={password}
-          label="Password"
+          label="🔒 Password"
           placeholder="Password"
           secure
           onChange={setPassword}

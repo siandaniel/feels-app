@@ -86,13 +86,13 @@ const SignInUser = ({ hidden, firebaseSignIn }: Props) => {
       <ScrollView contentContainerStyle={styles.inputContainer}>
         <FormInput
           value={username}
-          label="Username"
+          label="👤 Username"
           placeholder="Username"
           onChange={setUsername}
         />
         <FormInput
           value={password}
-          label="Password"
+          label="🔒 Password"
           placeholder="Password"
           secure
           onChange={setPassword}
