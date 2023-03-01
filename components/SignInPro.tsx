@@ -9,6 +9,8 @@ import { loggedInProfessional, loggedInUser } from "../types";
 import { LoggedInProfessionalContext } from "../contexts/LoggedInProfessional";
 import { LoggedInUserContext } from "../contexts/LoggedInUser";
 import { socket } from "../utils/socket";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { ProChats } from "../contexts/ProChats";
 
 interface Props {
   hidden: boolean;
@@ -21,11 +23,17 @@ const SignInPro = ({ hidden, firebaseSignIn }: Props) => {
   const [error, setError] = useState(false);
   const loggedInProfessionalState = useContext(LoggedInProfessionalContext);
   let setLoggedInProfessional: Dispatch<SetStateAction<loggedInProfessional | null>>;
+  const proChatsState = useContext(ProChats)
+  let setProChats: Dispatch<SetStateAction<string[] | null>>;
 
   const loggedInUserState = useContext(LoggedInUserContext);
 
   if (loggedInProfessionalState !== null) {
     setLoggedInProfessional = loggedInProfessionalState.setLoggedInProfessional;
+  }
+
+  if (proChatsState) {
+    setProChats = proChatsState.setProChats;
   }
 
   const submitHandler = () => {
@@ -36,10 +44,33 @@ const SignInPro = ({ hidden, firebaseSignIn }: Props) => {
         loggedInUserState?.setLoggedInUser(null)
         return res
       })
-      .then((res) => {
+      .then(async (res) => {
         setError(false);
-        socket.auth = {fullName: res.fullName}
-        socket.connect()
+        console.log(`${regNumber}Session`);
+        const sessionID = await AsyncStorage.getItem(`${regNumber}Session`);
+        if (sessionID) {
+          console.log("SessionID found");
+          console.log(sessionID, "<< IN PRO LOGIN");
+          socket.auth = { sessionID };
+          socket.connect();
+        } else {
+          console.log("No sessionID");
+          socket.auth = {fullName: res.fullName}
+          socket.connect()
+        }
+        socket.on(
+          "session",
+          ({ sessionID, connectionID, talkingTo }) => {
+            socket.auth = { sessionID };
+            console.log(sessionID, "<< IN INDEX");
+
+            if (talkingTo !== null) {
+              setProChats(talkingTo) 
+            }
+            AsyncStorage.setItem(`${regNumber}Session`, `${sessionID}`);
+            socket.connectionID = connectionID;
+          }
+        );
       })
       .catch((err) => {
         console.log(err)

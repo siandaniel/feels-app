@@ -1,6 +1,7 @@
 import { useContext, useState } from "react";
 import { Button, Pressable, StyleSheet, Text, View } from "react-native";
 import { ActiveChat } from "../contexts/ActiveChats";
+import { ProChats } from "../contexts/ProChats";
 import { socket } from "../utils/socket";
 
 function WaitingRoom() {
@@ -11,7 +12,7 @@ function WaitingRoom() {
         setUsers(res)
     })
 
-    const ActiveChatState = useContext(ActiveChat)
+    const ProChatsState = useContext(ProChats)
 
     return (
         <View style={styles.page}>
@@ -22,7 +23,14 @@ function WaitingRoom() {
             <View>
               {users.map((user) => (
                 <Pressable onPress={() => {
-                  ActiveChatState?.setActiveChat(user)
+                  ProChatsState?.setProChats((currChats) => {
+                    if (currChats !== null) {
+                      return [...currChats, user]
+                    } else {
+                      return currChats
+                    }
+                  })
+                  socket.emit("addChat", user);
                 }}>
                   <Text>{user}</Text>
                 </Pressable>
