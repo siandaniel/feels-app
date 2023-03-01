@@ -16,7 +16,7 @@ export default function GetHelpPlaceholder() {
           soon.{" "}
         </Text>
         <Text style={styles.whynot}>
-          Why not have a look at your For You activities while you wait?
+          Why not have a look at your recommended 'For You' activities while you wait?
         </Text>
       </View>
     </View>
@@ -51,7 +51,7 @@ const styles = StyleSheet.create({
     height: "80%",
     marginLeft: "auto",
     marginRight: "auto",
-    marginTop: "auto",
+    marginTop: 85,
     marginBottom: "auto",
   },
   text: {

@@ -8,6 +8,8 @@ import {
   Pressable,
   Keyboard,
   KeyboardAvoidingView,
+  Image,
+  ImageBackground,
 } from "react-native";
 import { black, blue, orange, white } from "../assets/colours";
 import { Feather } from "@expo/vector-icons";
@@ -20,6 +22,8 @@ import { LoggedInUserContext } from "../contexts/LoggedInUser";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import JoinWaitingRoom from "./JoinWaitingRoom";
 import { ProChats } from "../contexts/ProChats";
+import GetHelpPlaceholder from "./getHelpPlaceholder";
+import usersWaiting from "../assets/waiting";
 
 interface Message {
   message: string;
@@ -33,6 +37,7 @@ function chat() {
   const LoggedInUserState = useContext(LoggedInUserContext);
   const [userMessage, setUserMessage] = useState<string>("");
   const [chatMessages, setChatMessages] = useState<Message[]>([]);
+  const [isWaiting, setIsWaiting] = useState<boolean>(false);
 
   useEffect(() => {
 
@@ -57,6 +62,8 @@ function chat() {
     };
   }, []);
 
+  const timeStamp = new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })  
+
   let proChats: string[] | null = null;
   if (ProChatsState !== null && ProChatsState.proChats !== null) {
     proChats = ProChatsState.proChats;
@@ -66,26 +73,44 @@ function chat() {
 
   if (
     LoggedInUserState?.loggedInUser !== null &&
-    ActiveChatState?.activeChat === null
+    ActiveChatState?.activeChat === null && !isWaiting
   ) {
-    return <JoinWaitingRoom />;
+    return <JoinWaitingRoom setIsWaiting={setIsWaiting}/>;
+  }
+
+  if (
+    LoggedInUserState?.loggedInUser !== null &&
+    ActiveChatState?.activeChat === null && isWaiting
+  ) {
+    return <GetHelpPlaceholder />;
   }
 
   return (
     <KeyboardAvoidingView behavior="padding">
       <View style={styles.container}>
-        {LoggedInUserState?.loggedInUser === null && proChats !== null && (
-          <View>
-            {proChats.map((chat) => {
-              return (
-                <Button
-                  title={chat}
-                  onPress={() => {
+        {LoggedInUserState?.loggedInUser === null && (
+          <View style={styles.chats}>
+            <ScrollView horizontal={true} contentContainerStyle={{alignItems: "center", justifyContent: "center"}}>
+              {usersWaiting.map((user) => {
+                return (
+                    <Pressable  onPress={() => {
+                      socket.emit("getHelpChat", user.connectionID);
+                      console.log(user.connectionID);
+                      
+                    }}>
+                    <ImageBackground imageStyle={{borderRadius:50}} style={{height:80, width:80, marginHorizontal: 5, shadowColor: black, shadowOpacity: 0.25, shadowRadius: 3}} source={{uri: user.avatar_url}}></ImageBackground>
+                    </Pressable>
+                )
+              })}
+              {/* {proChats.map((chat) => {
+                return (
+                  <Pressable onPress={() => {
                     socket.emit("getHelpChat", chat);
-                  }}
-                ></Button>
-              );
-            })}
+                  }}>
+                  </Pressable>
+                );
+              })} */}
+            </ScrollView>
           </View>
         )}
         <View style={styles.chatContainer}>
@@ -95,14 +120,14 @@ function chat() {
                 return (
                   <OutgoingMessage
                     messageBody={message.message}
-                    timeStamp="14:27"
+                    timeStamp={timeStamp}
                   />
                 );
               } else {
                 return (
                   <IncomingMessage
                     messageBody={message.message}
-                    timeStamp="14:27"
+                    timeStamp={timeStamp}
                   />
                 );
               }
@@ -155,6 +180,12 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     height: "100%",
   },
+  chats: {
+    height: 110,
+    margin: 8,
+    marginTop: 30,
+    minWidth: "100%"
+  },
   chatbox: {
     backgroundColor: "#fff",
     borderRadius: 30,
@@ -166,9 +197,8 @@ const styles = StyleSheet.create({
   chatContainer: {
     backgroundColor: "rgba(255, 255, 255, 0.8)",
     borderRadius: 30,
-    marginTop: 40,
     paddingTop: 40,
-    minHeight: "88%",
+    minHeight: "75%",
     maxHeight: "90%",
     width: "100%",
   },

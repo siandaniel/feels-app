@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { Dispatch, SetStateAction, useContext, useState } from "react";
 import { Text, TextInput, View, Image, Pressable, StyleSheet, Keyboard, Button, Linking } from "react-native";
 import { blue, orange, white } from "../assets/colours";
 import { LoggedInUserContext } from "../contexts/LoggedInUser";
@@ -6,7 +6,11 @@ import { socket } from "../utils/socket";
 
 const image = require('../assets/talk_to_a_professional.jpg');
 
-function JoinWaitingRoom() {
+interface Props {
+    setIsWaiting: Dispatch<SetStateAction<boolean>>
+}
+
+function JoinWaitingRoom({setIsWaiting}: Props) {
     const LoggedInUserState = useContext(LoggedInUserContext)
     const [userMessage, setUserMessage] = useState<string>("");
 
@@ -25,7 +29,10 @@ function JoinWaitingRoom() {
             <TextInput placeholder="Whats on your mind?" style={styles.textbox} selectionColor={orange} value={userMessage} onChangeText={setUserMessage} multiline={true} onBlur={() => {
                 Keyboard.dismiss()}}></TextInput>
             <Pressable style={styles.submitButton} onPress={() =>{
-                socket.emit("waiting")}}>
+                socket.emit("waiting")
+                setIsWaiting(true)
+                }}>
+                
                 <Text style={styles.submitButtonText} >Get Help</Text>
             </Pressable>
             <Text style={styles.text}>Is it an Emergency?</Text>
