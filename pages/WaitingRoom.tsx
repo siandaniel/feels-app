@@ -51,6 +51,7 @@ function WaitingRoom() {
           return currChats;
         }
       });
+      socket.emit("addChat", user.connectionID);
     };
   };
 

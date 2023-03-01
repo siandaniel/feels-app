@@ -6,6 +6,6 @@ interface SocketData extends Socket {
   connectionID?: string;
 }
 
-export const socket: SocketData = io("http://192.168.0.23:9999", {
+export const socket: SocketData = io("http://192.168.0.23:9090", {
   autoConnect: false,
 });

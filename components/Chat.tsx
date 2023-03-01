@@ -24,6 +24,7 @@ import JoinWaitingRoom from "./JoinWaitingRoom";
 import { ProChats } from "../contexts/ProChats";
 import GetHelpPlaceholder from "./getHelpPlaceholder";
 import usersWaiting from "../assets/waiting";
+import { WaitingUser } from "../types";
 
 interface Message {
   message: string;
@@ -38,12 +39,18 @@ function chat() {
   const [userMessage, setUserMessage] = useState<string>("");
   const [chatMessages, setChatMessages] = useState<Message[]>([]);
   const [isWaiting, setIsWaiting] = useState<boolean>(false);
+  const [activeChats, setActiveChats] = useState<WaitingUser[]>([]);
 
   useEffect(() => {
-
     if (LoggedInUserState?.loggedInUser !== null) {
       socket.emit("getOldMessages");
+    } else {
+      socket.emit("getTalkingTo");
     }
+
+    socket.on("talkingTo", (res) => {
+      setActiveChats(res);
+    });
 
     socket.on("oldMessages", (res) => {
       setChatMessages(res);
@@ -62,7 +69,10 @@ function chat() {
     };
   }, []);
 
-  const timeStamp = new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })  
+  const timeStamp = new Date().toLocaleTimeString([], {
+    hour: "2-digit",
+    minute: "2-digit",
+  });
 
   let proChats: string[] | null = null;
   if (ProChatsState !== null && ProChatsState.proChats !== null) {
@@ -73,14 +83,16 @@ function chat() {
 
   if (
     LoggedInUserState?.loggedInUser !== null &&
-    ActiveChatState?.activeChat === null && !isWaiting
+    ActiveChatState?.activeChat === null &&
+    !isWaiting
   ) {
-    return <JoinWaitingRoom setIsWaiting={setIsWaiting}/>;
+    return <JoinWaitingRoom setIsWaiting={setIsWaiting} />;
   }
 
   if (
     LoggedInUserState?.loggedInUser !== null &&
-    ActiveChatState?.activeChat === null && isWaiting
+    ActiveChatState?.activeChat === null &&
+    isWaiting
   ) {
     return <GetHelpPlaceholder />;
   }
@@ -90,17 +102,36 @@ function chat() {
       <View style={styles.container}>
         {LoggedInUserState?.loggedInUser === null && (
           <View style={styles.chats}>
-            <ScrollView horizontal={true} contentContainerStyle={{alignItems: "center", justifyContent: "center"}}>
-              {usersWaiting.map((user) => {
+            <ScrollView
+              horizontal={true}
+              contentContainerStyle={{
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              {activeChats.map((user) => {
                 return (
-                    <Pressable  onPress={() => {
+                  <Pressable
+                    onPress={() => {
                       socket.emit("getHelpChat", user.connectionID);
                       console.log(user.connectionID);
-                      
-                    }}>
-                    <ImageBackground imageStyle={{borderRadius:50}} style={{height:80, width:80, marginHorizontal: 5, shadowColor: black, shadowOpacity: 0.25, shadowRadius: 3}} source={{uri: user.avatar_url}}></ImageBackground>
-                    </Pressable>
-                )
+                      ActiveChatState?.setActiveChat(user.connectionID);
+                    }}
+                  >
+                    <ImageBackground
+                      imageStyle={{ borderRadius: 50 }}
+                      style={{
+                        height: 80,
+                        width: 80,
+                        marginHorizontal: 5,
+                        shadowColor: black,
+                        shadowOpacity: 0.25,
+                        shadowRadius: 3,
+                      }}
+                      source={{ uri: user.avatar_url }}
+                    ></ImageBackground>
+                  </Pressable>
+                );
               })}
               {/* {proChats.map((chat) => {
                 return (
@@ -184,7 +215,7 @@ const styles = StyleSheet.create({
     height: 110,
     margin: 8,
     marginTop: 30,
-    minWidth: "100%"
+    minWidth: "100%",
   },
   chatbox: {
     backgroundColor: "#fff",
