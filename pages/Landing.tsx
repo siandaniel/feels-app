@@ -5,6 +5,7 @@ const landingImg = require("../assets/imgs/innerpeace.jpg");
 import { blue, white } from "../assets/colours";
 import { RootStackParamsList } from "./LoginStack";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 interface Props {
   navigation: NativeStackNavigationProp<RootStackParamsList>;
@@ -27,6 +28,11 @@ const Landing = ({ navigation }: Props) => {
           text={"Sign up"}
           onPress={() => navigation.navigate("SignUp")}
           isPrimary={true}
+        />
+        <LoginPressable
+          text="CLEAR STORE"
+          onPress={() => AsyncStorage.clear()}
+          isPrimary
         />
       </View>
     </View>

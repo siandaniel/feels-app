@@ -12,6 +12,9 @@ import {
 import { LoggedInProfessionalContext } from "../contexts/LoggedInProfessional";
 import { loggedInProfessional } from "../types";
 import { LoggedInUserContext } from "../contexts/LoggedInUser";
+import { socket } from "../utils/socket";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { ProChats } from "../contexts/ProChats";
 const { white } = require("../assets/colours");
 
 const tempImg =
@@ -28,15 +31,24 @@ const ProSignUp = ({ hidden, firebaseSignUp, avoidKeyboard }: Props) => {
   const [email, setEmail] = useState("");
   const [registrationNumber, setRegistrationNumber] = useState("");
   const [password, setPassword] = useState("");
+  const [regTaken, setRegTaken] = useState(false);
+  const [invalidReg, setInvalidReg] = useState("");
   const loggedInUserState = useContext(LoggedInUserContext);
   const loggedInProfessionalState = useContext(LoggedInProfessionalContext);
   let setLoggedInProfessional: Dispatch<SetStateAction<loggedInProfessional | null>>;
-  
+  const proChatsState = useContext(ProChats)
+  let setProChats: Dispatch<SetStateAction<string[] | null>>;
+
   if (loggedInProfessionalState !== null) {
     setLoggedInProfessional = loggedInProfessionalState.setLoggedInProfessional;
   }
 
+  if (proChatsState) {
+    setProChats = proChatsState.setProChats;
+  }
+
   const submitHandler = () => {
+    setRegTaken(false);
     if (
       email !== "" &&
       password !== "" &&
@@ -55,9 +67,45 @@ const ProSignUp = ({ hidden, firebaseSignUp, avoidKeyboard }: Props) => {
           await firebaseSignUp(email, password);
           setLoggedInProfessional(res),
           loggedInUserState?.setLoggedInUser(null)
+          return res
+        })
+        .then( async (res) => {
+          console.log(`${registrationNumber}Session`);
+          const sessionID = await AsyncStorage.getItem(`${registrationNumber}Session`);
+          if (sessionID) {
+            console.log("SessionID found");
+            console.log(sessionID, "<< IN PRO LOGIN");
+            socket.auth = { sessionID };
+            socket.connect();
+          } else {
+            console.log("No sessionID");
+            socket.auth = {fullName: fullName}
+            socket.connect()
+          }
+          socket.on(
+            "session",
+            ({ sessionID, connectionID, talkingTo }) => {
+              socket.auth = { sessionID };
+              console.log(sessionID, "<< IN INDEX");
+  
+              if (talkingTo !== null) {
+                setProChats(talkingTo);
+              }
+              AsyncStorage.setItem(`${registrationNumber}Session`, `${sessionID}`);
+              socket.connectionID = connectionID;
+            }
+          );
+  
+
+          socket.auth = {fullName: res.fullName}
+          socket.connect()
         })
         .catch((error) => {
           if (error.response) console.log(error.response.data);
+          if (error.response.data.message === "Key must be unique") {
+            setRegTaken(true);
+            setInvalidReg(registrationNumber);
+          }
         });
     }
   };
@@ -94,6 +142,11 @@ const ProSignUp = ({ hidden, firebaseSignUp, avoidKeyboard }: Props) => {
           avoidKeyboard={avoidKeyboard}
           isAvoiding
         />
+        {regTaken && (
+          <Text
+            style={styles.userError}
+          >{`The registration ${invalidReg} is already taken`}</Text>
+        )}
         <FormInput
           value={password}
           onChange={setPassword}
@@ -139,6 +192,12 @@ const styles = StyleSheet.create({
   },
   daysContainer: {
     marginLeft: 16,
+  },
+  userError: {
+    color: "#FFC4B5",
+    marginLeft: 16,
+    marginTop: 10,
+    fontStyle: "italic",
   },
 });
 // full name

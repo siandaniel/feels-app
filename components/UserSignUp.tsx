@@ -3,7 +3,7 @@ import { ScrollView, StyleSheet, Text, View } from "react-native";
 import FormInput from "./FormInput";
 import LoginPressable from "./LoginPressable";
 import type { UserCredential } from "firebase/auth";
-import { white } from "../assets/colours";
+import { orange, white, lightBlue } from "../assets/colours";
 import {
   initialiseUserMoods,
   postUser,
@@ -15,6 +15,9 @@ import DateOfBirthForm from "./DateOfBirthForm";
 import { LoggedInUserContext } from "../contexts/LoggedInUser";
 import { loggedInUser } from "../types";
 import { LoggedInProfessionalContext } from "../contexts/LoggedInProfessional";
+import { socket } from "../utils/socket";
+import { ActiveChat } from "../contexts/ActiveChats";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 // CHANGE THIS
 const tempImg =
   "https://www.pngitem.com/pimgs/m/30-307416_profile-icon-png-image-free-download-searchpng-employee.png";
@@ -32,19 +35,29 @@ const UserSignUp = ({ hidden, firebaseSignUp, avoidKeyboard }: Props) => {
   const [day, setDay] = useState("");
   const [month, setMonth] = useState("");
   const [year, setYear] = useState("");
+  const [usernameTaken, setUsernameTaken] = useState(false);
+  const [invalidUsername, setInvalidUsername] = useState("");
   const loggedInProfessionalState = useContext(LoggedInProfessionalContext);
   const loggedInUserState = useContext(LoggedInUserContext);
   let setLoggedInUser: Dispatch<SetStateAction<loggedInUser | null>>;
+  const activeChatState = useContext(ActiveChat);
+  let setActiveChat: Dispatch<SetStateAction<string | null>>;
 
   if (loggedInUserState !== null) {
     setLoggedInUser = loggedInUserState.setLoggedInUser;
   }
 
+   if (activeChatState) {
+    setActiveChat = activeChatState.setActiveChat;
+  }
+
   const submitHandler = () => {
+    setUsernameTaken(false);
     if (
       email !== "" &&
       password !== "" &&
       username !== "" &&
+      /\s/.test(username) === false &&
       validateDate(+day, +month, +year) &&
       validateEmail(email)
     ) {
@@ -57,18 +70,49 @@ const UserSignUp = ({ hidden, firebaseSignUp, avoidKeyboard }: Props) => {
         .then(async (res) => {
           await firebaseSignUp(email, password);
           setLoggedInUser(res);
-          await loggedInProfessionalState?.setLoggedInProfessional(null);
+          loggedInProfessionalState?.setLoggedInProfessional(null);
           return res.username;
         })
-        .then((res) => {
-          return initialiseUserMoods({ username: res });
+        .then( async (res) => {
+          console.log(`${username}Session`);
+          const sessionID = await AsyncStorage.getItem(`${username}Session`);
+          if (sessionID) {
+            console.log("SessionID found");
+            console.log(sessionID, "<< IN LOGIN");
+  
+            socket.auth = { sessionID };
+            socket.connect();
+          } else {
+            console.log("No sessionID");
+            socket.auth = { username: username, waiting: false };
+            socket.connect();
+          }
+  
+          socket.on(
+            "session",
+            ({ sessionID, connectionID, isWaiting, talkingTo }) => {
+              socket.auth = { sessionID };
+              console.log(sessionID, "<< IN INDEX");
+  
+              if (talkingTo !== null) {
+                setActiveChat(talkingTo);
+              }
+              AsyncStorage.setItem(`${username}Session`, `${sessionID}`);
+              socket.connectionID = connectionID;
+            }
+          );
+          return initialiseUserMoods({username: res})
         })
         .catch((error) => {
           if (error.response) {
             console.log(error.response.data);
           }
+          if (error.response.data.message === "Key must be unique") {
+            setUsernameTaken(true);
+            setInvalidUsername(username);
+          }
         });
-    } else console.log("Invalid date", validateDate(+day, +month, +year));
+    } else console.log("Invalid input", validateDate(+day, +month, +year));
   };
 
   return (
@@ -80,10 +124,19 @@ const UserSignUp = ({ hidden, firebaseSignUp, avoidKeyboard }: Props) => {
           onChange={setUsername}
           placeholder="Username"
           label="Username"
-          message="Please enter a username"
-          isValid={username.length > 0}
+          message={
+            username.length === 0
+              ? "Please enter a username"
+              : "Usernames must not contain spaces"
+          }
+          isValid={username.length > 0 && /\s/.test(username) === false}
           avoidKeyboard={avoidKeyboard}
         />
+        {usernameTaken && (
+          <Text style={styles.userError}>
+            {`The username ${invalidUsername} is already taken`}
+          </Text>
+        )}
         <FormInput
           value={email}
           onChange={setEmail}
@@ -150,6 +203,12 @@ const styles = StyleSheet.create({
   },
   hidden: {
     display: "none",
+  },
+  userError: {
+    color: "#FFC4B5",
+    marginLeft: 16,
+    marginTop: 10,
+    fontStyle: "italic",
   },
 });
 export default UserSignUp;

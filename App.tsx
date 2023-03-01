@@ -3,6 +3,8 @@ import { useFonts } from "expo-font";
 import LoggedInUserContext2 from "./contexts/LoggedInUser";
 import LoggedInProfessional from "./contexts/LoggedInProfessional";
 import Index from "./Index";
+import ActiveChat from "./contexts/ActiveChats";
+import ProChats from "./contexts/ProChats";
 
 export default function App() {
   const [fontsLoaded] = useFonts({
@@ -19,11 +21,15 @@ export default function App() {
     ); 
     
     return (
-      <LoggedInProfessional>
-        <LoggedInUserContext2>
-          <Index/>
-        </LoggedInUserContext2>
-      </LoggedInProfessional>
+      <ProChats>
+        <ActiveChat>
+          <LoggedInProfessional>
+            <LoggedInUserContext2>
+              <Index/>
+            </LoggedInUserContext2>
+          </LoggedInProfessional>
+        </ActiveChat>
+      </ProChats>
     );
     
 }
