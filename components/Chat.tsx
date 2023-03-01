@@ -29,22 +29,22 @@ interface Message {
 
 function chat() {
   const ActiveChatState = useContext(ActiveChat);
-  const ProChatsState = useContext(ProChats)
+  const ProChatsState = useContext(ProChats);
   const LoggedInUserState = useContext(LoggedInUserContext);
   const [userMessage, setUserMessage] = useState<string>("");
   const [chatMessages, setChatMessages] = useState<Message[]>([]);
 
   useEffect(() => {
-    socket.emit("getOldMessages")
+    socket.emit("getOldMessages");
 
     socket.on("oldMessages", (res) => {
       setChatMessages(res);
-    })
+    });
 
     socket.on("message", (res) => {
       console.log(res);
       console.log(res.to, "THIS MF");
-        if (!socket.isProfessional) {
+      if (!socket.isProfessional) {
         ActiveChatState?.setActiveChat(res.from);
         socket.emit("matched", { from: res.from });
       }
@@ -55,29 +55,37 @@ function chat() {
     };
   }, []);
 
-  let proChats: string[] | null = null 
+  let proChats: string[] | null = null;
   if (ProChatsState !== null && ProChatsState.proChats !== null) {
-    proChats = ProChatsState.proChats
+    proChats = ProChatsState.proChats;
   }
+
+  if (ProChatsState === null) return null;
 
   if (
     LoggedInUserState?.loggedInUser !== null &&
     ActiveChatState?.activeChat === null
   ) {
-    return (
-      <JoinWaitingRoom/>
-    );
+    return <JoinWaitingRoom />;
   }
+
   return (
-    <KeyboardAvoidingView behavior="padding"> 
+    <KeyboardAvoidingView behavior="padding">
       <View style={styles.container}>
-      {LoggedInUserState?.loggedInUser === null && proChats !== null && <View>
-        {proChats.map((chat) => {
-          return <Button title={chat} onPress={() => {
-            socket.emit("getHelpChat", chat)
-          }}></Button>
-        })}
-        </View>} 
+        {LoggedInUserState?.loggedInUser === null && proChats !== null && (
+          <View>
+            {proChats.map((chat) => {
+              return (
+                <Button
+                  title={chat}
+                  onPress={() => {
+                    socket.emit("getHelpChat", chat);
+                  }}
+                ></Button>
+              );
+            })}
+          </View>
+        )}
         <View style={styles.chatContainer}>
           <ScrollView>
             {chatMessages.map((message) => {
@@ -112,15 +120,15 @@ function chat() {
             ></TextInput>
             <Pressable
               onPress={() => {
-                setUserMessage("")
-                
+                setUserMessage("");
+
                 if (ActiveChatState) {
                   const message: Message = {
                     message: userMessage,
                     to: ActiveChatState?.activeChat,
                   };
                   console.log(message.to, "THIS BITCH");
-                  
+
                   setChatMessages((currMessages) => [...currMessages, message]);
                   socket.emit("message", {
                     message: userMessage,
