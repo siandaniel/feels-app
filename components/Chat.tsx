@@ -7,7 +7,6 @@ import OutgoingMessage from "./OutgoingMessage";
 import { socket } from "../utils/socket";
 import { ActiveChat } from "../contexts/ActiveChats";
 import { LoggedInUserContext } from "../contexts/LoggedInUser";
-import JoinWaitingRoom from "./JoinWaitingRoom";
 
 interface Message {
     message: string;
@@ -34,10 +33,9 @@ function chat() {
     }, [])
 
     if(LoggedInUserState?.loggedInUser !== null && ActiveChatState?.activeChat === null) {
-        // return <View style={styles.container}><Button onPress={() =>{
-        //     socket.emit("waiting")
-        // }} title="Add me to the waiting room" color={white}></Button></View>
-        return <JoinWaitingRoom/>
+        return <View style={styles.container}><Button onPress={() =>{
+            socket.emit("waiting")
+        }} title="Add me to the waiting room" color={white}></Button></View>
     }
     return (
         <KeyboardAvoidingView behavior="padding">
