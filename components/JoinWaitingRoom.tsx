@@ -26,7 +26,7 @@ function JoinWaitingRoom({setIsWaiting}: Props) {
             <Text style={styles.subheading}>Looking for support?</Text>
             <Image source={image} style={styles.image}></Image>
             <Text style={styles.text}>Let us know what you want to discuss, click 'Get Help' and we'll have a registered professional get in touch with you within 24 hours!</Text> 
-            <TextInput placeholder="Whats on your mind?" style={styles.textbox} selectionColor={orange} value={userMessage} onChangeText={setUserMessage} multiline={true} onBlur={() => {
+            <TextInput placeholder="Whats on your mind?" style={styles.textbox} maxLength={200} selectionColor={orange} value={userMessage} onChangeText={setUserMessage} multiline={true} onBlur={() => {
                 Keyboard.dismiss()}}></TextInput>
             <Pressable style={styles.submitButton} onPress={() =>{
                 socket.emit("waiting")
