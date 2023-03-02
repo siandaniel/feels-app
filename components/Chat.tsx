@@ -52,13 +52,13 @@ function chat() {
       setActiveChats(res);
     });
 
-    socket.on("oldMessages", (res) => {
-      setChatMessages(res);
+    socket.on("oldMessages", ({ messages, other }) => {
+      setChatMessages(messages);
+      if (messages.length !== 0) ActiveChatState?.setActiveChat(other);
     });
 
     socket.on("message", (res) => {
-      console.log(res);
-      if (!socket.isProfessional) {
+      if (LoggedInUserState?.loggedInUser !== null) {
         ActiveChatState?.setActiveChat(res.from);
         socket.emit("matched", { from: res.from });
       }

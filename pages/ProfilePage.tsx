@@ -12,6 +12,7 @@ import {
   SetStateAction,
   Dispatch,
 } from "react";
+import { socket } from "../utils/socket";
 
 export default function ProfilePage() {
   const loggedInUserState = useContext(LoggedInUserContext);
@@ -51,7 +52,13 @@ export default function ProfilePage() {
           <Text style={styles.bold}>📅 Member Since: </Text>
           {loggedInUser.date_joined}
         </Text>
-        <Pressable style={styles.logout} onPress={() => setLoggedInUser(null)}>
+        <Pressable
+          style={styles.logout}
+          onPress={() => {
+            setLoggedInUser(null);
+            socket.disconnect();
+          }}
+        >
           <Text style={styles.logoutText}>Log Out</Text>
         </Pressable>
       </View>
@@ -92,7 +99,10 @@ export default function ProfilePage() {
 
         <Pressable
           style={styles.logoutProf}
-          onPress={() => setLoggedInProfessional(null)}
+          onPress={() => {
+            setLoggedInProfessional(null);
+            socket.disconnect();
+          }}
         >
           <Text style={styles.logoutText}>Log Out</Text>
         </Pressable>

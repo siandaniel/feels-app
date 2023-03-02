@@ -47,7 +47,7 @@ const UserSignUp = ({ hidden, firebaseSignUp, avoidKeyboard }: Props) => {
     setLoggedInUser = loggedInUserState.setLoggedInUser;
   }
 
-   if (activeChatState) {
+  if (activeChatState) {
     setActiveChat = activeChatState.setActiveChat;
   }
 
@@ -73,13 +73,13 @@ const UserSignUp = ({ hidden, firebaseSignUp, avoidKeyboard }: Props) => {
           loggedInProfessionalState?.setLoggedInProfessional(null);
           return res.username;
         })
-        .then( async (res) => {
+        .then(async (res) => {
           console.log(`${username}Session`);
           const sessionID = await AsyncStorage.getItem(`${username}Session`);
           if (sessionID) {
             console.log("SessionID found");
             console.log(sessionID, "<< IN LOGIN");
-  
+
             socket.auth = { sessionID };
             socket.connect();
           } else {
@@ -87,21 +87,28 @@ const UserSignUp = ({ hidden, firebaseSignUp, avoidKeyboard }: Props) => {
             socket.auth = { username: username, waiting: false };
             socket.connect();
           }
-  
+
           socket.on(
             "session",
-            ({ sessionID, connectionID, isWaiting, talkingTo }) => {
+            ({
+              sessionID,
+              connectionID,
+              isWaiting,
+              talkingTo,
+              isProfessional,
+            }) => {
               socket.auth = { sessionID };
               console.log(sessionID, "<< IN INDEX");
-  
+
               if (talkingTo !== null) {
                 setActiveChat(talkingTo);
               }
               AsyncStorage.setItem(`${username}Session`, `${sessionID}`);
               socket.connectionID = connectionID;
+              socket.isProfessional = isProfessional;
             }
           );
-          return initialiseUserMoods({username: res})
+          return initialiseUserMoods({ username: res });
         })
         .catch((error) => {
           if (error.response) {

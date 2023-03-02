@@ -53,7 +53,7 @@ const SignInPro = ({ hidden, firebaseSignIn }: Props) => {
         if (sessionID) {
           console.log("SessionID found");
           console.log(sessionID, "<< IN PRO LOGIN");
-          socket.auth = { sessionID };
+          socket.auth = { sessionID, regNumber: res.registrationNumber };
           socket.connect();
         } else {
           console.log("No sessionID");
@@ -63,16 +63,20 @@ const SignInPro = ({ hidden, firebaseSignIn }: Props) => {
           };
           socket.connect();
         }
-        socket.on("session", ({ sessionID, connectionID, talkingTo }) => {
-          socket.auth = { sessionID };
-          console.log(sessionID, "<< IN INDEX");
+        socket.on(
+          "session",
+          ({ sessionID, connectionID, talkingTo, isProfessional }) => {
+            socket.auth = { sessionID };
+            console.log(sessionID, "<< IN INDEX");
 
-          if (talkingTo !== null) {
-            setProChats(talkingTo);
+            if (talkingTo !== null) {
+              setProChats(talkingTo);
+            }
+            AsyncStorage.setItem(`${regNumber}Session`, `${sessionID}`);
+            socket.connectionID = connectionID;
+            socket.isProfessional = isProfessional;
           }
-          AsyncStorage.setItem(`${regNumber}Session`, `${sessionID}`);
-          socket.connectionID = connectionID;
-        });
+        );
       })
       .catch((err) => {
         console.log(err);

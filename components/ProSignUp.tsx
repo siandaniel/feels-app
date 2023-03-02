@@ -35,8 +35,10 @@ const ProSignUp = ({ hidden, firebaseSignUp, avoidKeyboard }: Props) => {
   const [invalidReg, setInvalidReg] = useState("");
   const loggedInUserState = useContext(LoggedInUserContext);
   const loggedInProfessionalState = useContext(LoggedInProfessionalContext);
-  let setLoggedInProfessional: Dispatch<SetStateAction<loggedInProfessional | null>>;
-  const proChatsState = useContext(ProChats)
+  let setLoggedInProfessional: Dispatch<
+    SetStateAction<loggedInProfessional | null>
+  >;
+  const proChatsState = useContext(ProChats);
   let setProChats: Dispatch<SetStateAction<string[] | null>>;
 
   if (loggedInProfessionalState !== null) {
@@ -66,12 +68,14 @@ const ProSignUp = ({ hidden, firebaseSignUp, avoidKeyboard }: Props) => {
         .then(async (res) => {
           await firebaseSignUp(email, password);
           setLoggedInProfessional(res),
-          loggedInUserState?.setLoggedInUser(null)
-          return res
+            loggedInUserState?.setLoggedInUser(null);
+          return res;
         })
-        .then( async (res) => {
+        .then(async (res) => {
           console.log(`${registrationNumber}Session`);
-          const sessionID = await AsyncStorage.getItem(`${registrationNumber}Session`);
+          const sessionID = await AsyncStorage.getItem(
+            `${registrationNumber}Session`
+          );
           if (sessionID) {
             console.log("SessionID found");
             console.log(sessionID, "<< IN PRO LOGIN");
@@ -79,26 +83,29 @@ const ProSignUp = ({ hidden, firebaseSignUp, avoidKeyboard }: Props) => {
             socket.connect();
           } else {
             console.log("No sessionID");
-            socket.auth = {fullName: fullName}
-            socket.connect()
+            socket.auth = { fullName: fullName };
+            socket.connect();
           }
           socket.on(
             "session",
-            ({ sessionID, connectionID, talkingTo }) => {
+            ({ sessionID, connectionID, talkingTo, isProfessional }) => {
               socket.auth = { sessionID };
               console.log(sessionID, "<< IN INDEX");
-  
+
               if (talkingTo !== null) {
                 setProChats(talkingTo);
               }
-              AsyncStorage.setItem(`${registrationNumber}Session`, `${sessionID}`);
+              AsyncStorage.setItem(
+                `${registrationNumber}Session`,
+                `${sessionID}`
+              );
               socket.connectionID = connectionID;
+              socket.isProfessional = isProfessional;
             }
           );
-  
 
-          socket.auth = {fullName: res.fullName}
-          socket.connect()
+          socket.auth = { fullName: res.fullName };
+          socket.connect();
         })
         .catch((error) => {
           if (error.response) console.log(error.response.data);
