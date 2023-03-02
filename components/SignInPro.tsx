@@ -51,12 +51,9 @@ const SignInPro = ({ hidden, firebaseSignIn }: Props) => {
         console.log(`${regNumber}Session`);
         const sessionID = await AsyncStorage.getItem(`${regNumber}Session`);
         if (sessionID) {
-          console.log("SessionID found");
-          console.log(sessionID, "<< IN PRO LOGIN");
           socket.auth = { sessionID, regNumber: res.registrationNumber };
           socket.connect();
         } else {
-          console.log("No sessionID");
           socket.auth = {
             fullName: res.fullName,
             regNumber: res.registrationNumber,
@@ -67,7 +64,6 @@ const SignInPro = ({ hidden, firebaseSignIn }: Props) => {
           "session",
           ({ sessionID, connectionID, talkingTo, isProfessional }) => {
             socket.auth = { sessionID };
-            console.log(sessionID, "<< IN INDEX");
 
             if (talkingTo !== null) {
               setProChats(talkingTo);

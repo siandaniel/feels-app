@@ -52,14 +52,21 @@ function chat() {
       setActiveChats(res);
     });
 
-    socket.on("oldMessages", ({ messages, other }) => {
+    socket.on("oldMessages", ({ messages }) => {
       setChatMessages(messages);
-      if (messages.length !== 0) ActiveChatState?.setActiveChat(other);
+      if (messages.length !== 0) {
+        const active =
+          messages[0].to === socket.connectionID
+            ? messages[0].from
+            : messages[0].to;
+        ActiveChatState?.setActiveChat(active);
+      }
     });
 
     socket.on("message", (res) => {
       if (LoggedInUserState?.loggedInUser !== null) {
-        ActiveChatState?.setActiveChat(res.from);
+        const active = res.from === socket.connectionID ? res.to : res.from;
+        ActiveChatState?.setActiveChat(active);
         socket.emit("matched", { from: res.from });
       }
       setChatMessages((currMessages) => [...currMessages, res]);
@@ -187,6 +194,9 @@ function chat() {
                   };
 
                   setChatMessages((currMessages) => [...currMessages, message]);
+                  console.log(ActiveChatState.activeChat, "IN SUBMIT HANDLER");
+                  console.log(socket.connectionID, "CONN ID");
+
                   socket.emit("message", {
                     message: userMessage,
                     to: ActiveChatState.activeChat,
