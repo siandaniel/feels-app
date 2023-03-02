@@ -40,6 +40,14 @@ function chat() {
   const [isWaiting, setIsWaiting] = useState<boolean>(false);
   const [activeChats, setActiveChats] = useState<WaitingUser[]>([]);
 
+  const todaysDate: Date = new Date();
+  const options: Object = {
+    weekday: "long",
+    day: "numeric",
+    month: "long",
+  };
+  const formattedDate: String = todaysDate.toLocaleDateString("en-UK", options);
+
   useEffect(() => {
     if (LoggedInUserState?.loggedInUser !== null) {
       socket.emit("getOldMessages");
@@ -141,6 +149,7 @@ function chat() {
             </ScrollView>
           </View>
         )}
+        {LoggedInUserState?.loggedInUser !== null && <Text style={{fontSize: 30, fontWeight: "bold", color: white, marginTop: 20, marginBottom: 20,}}>{formattedDate}</Text>}
         <View style={styles.chatContainer}>
           <ScrollView>
             {chatMessages.map((message, index) => {

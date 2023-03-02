@@ -11,6 +11,7 @@ import {
   Linking,
   TouchableWithoutFeedbackComponent,
   TouchableWithoutFeedback,
+  KeyboardAvoidingView,
 } from "react-native";
 import { blue, orange, white } from "../assets/colours";
 import { LoggedInUserContext } from "../contexts/LoggedInUser";
@@ -34,46 +35,48 @@ function JoinWaitingRoom({ setIsWaiting }: Props) {
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-      <View style={styles.container}>
-        <Text style={styles.heading}>All the Feels?</Text>
-        <Text style={styles.subheading}>Looking for support?</Text>
-        <Image source={image} style={styles.image}></Image>
-        <Text style={styles.text}>
-          Let us know what you want to discuss, click 'Get Help' and we'll have
-          a registered professional get in touch with you within 24 hours!
-        </Text>
-        <TextInput
-          placeholder="Whats on your mind?"
-          style={styles.textbox}
-          maxLength={200}
-          selectionColor={orange}
-          value={userMessage}
-          onChangeText={setUserMessage}
-          multiline={true}
-          onBlur={() => {
-            Keyboard.dismiss();
-          }}
-        ></TextInput>
-        <Pressable
-          style={styles.submitButton}
-          onPress={() => {
-            socket.emit("waiting", userMessage);
-            setIsWaiting(true);
-          }}
-        >
-          <Text style={styles.submitButtonText}>Get Help</Text>
-        </Pressable>
-        <Text style={styles.text}>Is it an Emergency?</Text>
-        <Button
-          title="Go to Mental health crisis helplines"
-          color={white}
-          onPress={() =>
-            Linking.openURL(
-              "https://www.mind.org.uk/information-support/guides-to-support-and-services/crisis-services/helplines-listening-services/"
-            )
-          }
-        ></Button>
-      </View>
+      <KeyboardAvoidingView behavior="padding">
+        <View style={styles.container}>
+          <Text style={styles.heading}>All the Feels?</Text>
+          <Text style={styles.subheading}>Looking for support?</Text>
+          <Image source={image} style={styles.image}></Image>
+          <Text style={styles.text}>
+            Let us know what you want to discuss, click 'Get Help' and we'll have
+            a registered professional get in touch with you within 24 hours!
+          </Text>
+          <TextInput
+            placeholder="Whats on your mind?"
+            style={styles.textbox}
+            maxLength={200}
+            selectionColor={orange}
+            value={userMessage}
+            onChangeText={setUserMessage}
+            multiline={true}
+            onBlur={() => {
+              Keyboard.dismiss();
+            }}
+          ></TextInput>
+          <Pressable
+            style={styles.submitButton}
+            onPress={() => {
+              socket.emit("waiting", userMessage);
+              setIsWaiting(true);
+            }}
+          >
+            <Text style={styles.submitButtonText}>Get Help</Text>
+          </Pressable>
+          <Text style={styles.text}>Is it an Emergency?</Text>
+          <Button
+            title="Go to Mental health crisis helplines"
+            color={white}
+            onPress={() =>
+              Linking.openURL(
+                "https://www.mind.org.uk/information-support/guides-to-support-and-services/crisis-services/helplines-listening-services/"
+              )
+            }
+          ></Button>
+        </View>
+      </KeyboardAvoidingView>
     </TouchableWithoutFeedback>
   );
 }

@@ -1,5 +1,6 @@
 import { View, Text, StyleSheet, Image, Pressable } from "react-native";
 import { lightBlue, blue, orange, black, white } from "../assets/colours";
+import { Link } from '@react-navigation/native'
 
 interface Props {
   username: string;
@@ -21,7 +22,9 @@ export default function WaitingRoomCard({
         <Text style={styles.header}>{username}</Text>
         <Text>{chatTopics}</Text>
         <Pressable onPress={onPress}>
-          <Text style={styles.button}>💬 Chat</Text>
+          <Link to={{ screen: 'Chats'}} onPress={onPress}>
+            <Text style={styles.button}>💬 Chat</Text>
+          </Link>
         </Pressable>
       </View>
     </View>

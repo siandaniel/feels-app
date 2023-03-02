@@ -102,9 +102,8 @@ export default function Index() {
           <Tab.Screen
             name="Get Help"
             component={GetHelpPage}
-            options={{ tabBarBadge: 1 }}
-          />
-        )}
+            />
+            )}
         {loggedInProfessionalState?.loggedInProfessional !== null && (
           <Tab.Screen
             name="Chats"
