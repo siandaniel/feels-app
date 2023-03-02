@@ -22,8 +22,10 @@ const SignInPro = ({ hidden, firebaseSignIn }: Props) => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState(false);
   const loggedInProfessionalState = useContext(LoggedInProfessionalContext);
-  let setLoggedInProfessional: Dispatch<SetStateAction<loggedInProfessional | null>>;
-  const proChatsState = useContext(ProChats)
+  let setLoggedInProfessional: Dispatch<
+    SetStateAction<loggedInProfessional | null>
+  >;
+  const proChatsState = useContext(ProChats);
   let setProChats: Dispatch<SetStateAction<string[] | null>>;
 
   const loggedInUserState = useContext(LoggedInUserContext);
@@ -40,35 +42,35 @@ const SignInPro = ({ hidden, firebaseSignIn }: Props) => {
     return getPro(regNumber)
       .then(async (res) => {
         await firebaseSignIn(res.email, password);
-        setLoggedInProfessional(res)
-        loggedInUserState?.setLoggedInUser(null)
-        return res
+        setLoggedInProfessional(res);
+        loggedInUserState?.setLoggedInUser(null);
+        return res;
       })
       .then(async (res) => {
         setError(false);
         console.log(`${regNumber}Session`);
         const sessionID = await AsyncStorage.getItem(`${regNumber}Session`);
         if (sessionID) {
-          console.log("SessionID found");
-          console.log(sessionID, "<< IN PRO LOGIN");
-          socket.auth = { sessionID };
+          socket.auth = { sessionID, regNumber: res.registrationNumber };
           socket.connect();
         } else {
-          console.log("No sessionID");
-          socket.auth = {fullName: res.fullName}
-          socket.connect()
+          socket.auth = {
+            fullName: res.fullName,
+            regNumber: res.registrationNumber,
+          };
+          socket.connect();
         }
         socket.on(
           "session",
-          ({ sessionID, connectionID, talkingTo }) => {
+          ({ sessionID, connectionID, talkingTo, isProfessional }) => {
             socket.auth = { sessionID };
-            console.log(sessionID, "<< IN INDEX");
 
             if (talkingTo !== null) {
-              setProChats(talkingTo) 
+              setProChats(talkingTo);
             }
             AsyncStorage.setItem(`${regNumber}Session`, `${sessionID}`);
             socket.connectionID = connectionID;
+            socket.isProfessional = isProfessional;
           }
         );
       })

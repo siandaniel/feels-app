@@ -49,28 +49,29 @@ const SignInUser = ({ hidden, firebaseSignIn }: Props) => {
         console.log(`${username}Session`);
         const sessionID = await AsyncStorage.getItem(`${username}Session`);
         if (sessionID) {
-          console.log("SessionID found");
-          console.log(sessionID, "<< IN LOGIN");
-
-          socket.auth = { sessionID };
+          socket.auth = { sessionID, username: res.username };
           socket.connect();
         } else {
-          console.log("No sessionID");
           socket.auth = { username: res.username, waiting: false };
           socket.connect();
         }
 
         socket.on(
           "session",
-          ({ sessionID, connectionID, isWaiting, talkingTo }) => {
+          ({
+            sessionID,
+            connectionID,
+            isWaiting,
+            talkingTo,
+            isProfessional,
+          }) => {
             socket.auth = { sessionID };
-            console.log(sessionID, "<< IN INDEX");
-
             if (talkingTo !== null) {
               setActiveChat(talkingTo);
             }
             AsyncStorage.setItem(`${username}Session`, `${sessionID}`);
             socket.connectionID = connectionID;
+            socket.isProfessional = isProfessional;
           }
         );
       })
