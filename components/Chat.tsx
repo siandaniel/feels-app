@@ -117,10 +117,9 @@ function chat() {
             >
               {activeChats.map((user) => {
                 return (
-                  <Pressable
+                  <Pressable key={user.connectionID}
                     onPress={() => {
                       socket.emit("getHelpChat", user.connectionID);
-                      console.log(user.connectionID);
                       ActiveChatState?.setActiveChat(user.connectionID);
                     }}
                   >
@@ -139,30 +138,22 @@ function chat() {
                   </Pressable>
                 );
               })}
-              {/* {proChats.map((chat) => {
-                return (
-                  <Pressable onPress={() => {
-                    socket.emit("getHelpChat", chat);
-                  }}>
-                  </Pressable>
-                );
-              })} */}
             </ScrollView>
           </View>
         )}
         <View style={styles.chatContainer}>
           <ScrollView>
-            {chatMessages.map((message) => {
+            {chatMessages.map((message, index) => {
               if (message.to !== socket.connectionID) {
                 return (
-                  <OutgoingMessage
+                  <OutgoingMessage key={index}
                     messageBody={message.message}
                     timeStamp={timeStamp}
                   />
                 );
               } else {
                 return (
-                  <IncomingMessage
+                  <IncomingMessage key={index}
                     messageBody={message.message}
                     timeStamp={timeStamp}
                   />
@@ -193,9 +184,6 @@ function chat() {
                   };
 
                   setChatMessages((currMessages) => [...currMessages, message]);
-                  console.log(ActiveChatState.activeChat, "IN SUBMIT HANDLER");
-                  console.log(socket.connectionID, "CONN ID");
-
                   socket.emit("message", {
                     message: userMessage,
                     to: ActiveChatState.activeChat,

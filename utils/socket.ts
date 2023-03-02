@@ -8,6 +8,6 @@ interface SocketData extends Socket {
   fullname?: string;
 }
 
-export const socket: SocketData = io("http://192.168.0.23:9090", {
+export const socket: SocketData = io("https://feels-api.onrender.com/", {
   autoConnect: false,
 });

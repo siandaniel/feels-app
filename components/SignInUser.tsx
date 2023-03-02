@@ -45,8 +45,6 @@ const SignInUser = ({ hidden, firebaseSignIn }: Props) => {
       })
       .then(async (res) => {
         setError(false);
-        // Need this stuff
-        console.log(`${username}Session`);
         const sessionID = await AsyncStorage.getItem(`${username}Session`);
         if (sessionID) {
           socket.auth = { sessionID, username: res.username };
@@ -87,7 +85,7 @@ const SignInUser = ({ hidden, firebaseSignIn }: Props) => {
       <ScrollView contentContainerStyle={styles.inputContainer}>
         <FormInput
           value={username}
-          label="👤 Username"
+          label="🧘 Username"
           placeholder="Username"
           onChange={setUsername}
         />

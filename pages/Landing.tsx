@@ -29,11 +29,6 @@ const Landing = ({ navigation }: Props) => {
           onPress={() => navigation.navigate("SignUp")}
           isPrimary={true}
         />
-        <LoginPressable
-          text="CLEAR STORE"
-          onPress={() => AsyncStorage.clear()}
-          isPrimary
-        />
       </View>
     </View>
   );

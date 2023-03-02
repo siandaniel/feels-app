@@ -72,17 +72,13 @@ const ProSignUp = ({ hidden, firebaseSignUp, avoidKeyboard }: Props) => {
           return res;
         })
         .then(async (res) => {
-          console.log(`${registrationNumber}Session`);
           const sessionID = await AsyncStorage.getItem(
             `${registrationNumber}Session`
           );
           if (sessionID) {
-            console.log("SessionID found");
-            console.log(sessionID, "<< IN PRO LOGIN");
             socket.auth = { sessionID };
             socket.connect();
           } else {
-            console.log("No sessionID");
             socket.auth = { fullName: fullName };
             socket.connect();
           }
@@ -90,7 +86,6 @@ const ProSignUp = ({ hidden, firebaseSignUp, avoidKeyboard }: Props) => {
             "session",
             ({ sessionID, connectionID, talkingTo, isProfessional }) => {
               socket.auth = { sessionID };
-              console.log(sessionID, "<< IN INDEX");
 
               if (talkingTo !== null) {
                 setProChats(talkingTo);

@@ -20,12 +20,10 @@ function WaitingRoom() {
   const [users, setUsers] = useState<WaitingUser[]>([]);
   const ProChatsState = useContext(ProChats);
   const ActiveChatState = useContext(ActiveChat);
-  // const [userMessage, setUserMessage] = useState<string>("");
 
   useEffect(() => {
     socket.on("users", (res) => {
       setUsers(res);
-      console.log(res);
     });
 
     return () => {
@@ -66,44 +64,14 @@ function WaitingRoom() {
         <Text style={styles.text}>Waiting Room</Text>
         {users.map((user) => (
           <WaitingRoomCard
+            key={user.connectionID}
             onPress={pressHandler(user)}
             username={user.username}
             avatar_url={user.avatar_url}
             chatTopics={user.chatTopics}
           />
         ))}
-        {/* <WaitingRoomCard
-          username={"Joe"}
-          avatar_url={
-            "https://www.tvguide.com/a/img/hub/2019/12/05/9cadb0bf-f87e-4383-ac1b-adf596690a15/you-reg.jpg"
-          }
-          chatTopics={
-            "Hello, you... No! I'm not doing that again. I'm obsessive and I can't control it"
-          }
-        /> */}
-      </ScrollView>
-      {/* <Button title="Refresh" onPress={() => {
-              socket.emit("refresh")
-            }}></Button>
-      <View>
-        {users.map((user) => (
-          <Pressable
-            onPress={() => {
-              ActiveChatState?.setActiveChat(user);
-              ProChatsState?.setProChats((currChats) => {
-                if (currChats !== null) {
-                  return [...currChats, user];
-                } else {
-                  return currChats;
-                }
-              });
-              socket.emit("addChat", user);
-            }}
-          >
-            <Text>{user}</Text>
-          </Pressable>
-        ))}
-      </View> */}
+      </ScrollView>      
     </View>
   );
 }

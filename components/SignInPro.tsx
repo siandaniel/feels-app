@@ -48,7 +48,6 @@ const SignInPro = ({ hidden, firebaseSignIn }: Props) => {
       })
       .then(async (res) => {
         setError(false);
-        console.log(`${regNumber}Session`);
         const sessionID = await AsyncStorage.getItem(`${regNumber}Session`);
         if (sessionID) {
           socket.auth = { sessionID, regNumber: res.registrationNumber };
@@ -86,7 +85,7 @@ const SignInPro = ({ hidden, firebaseSignIn }: Props) => {
       <ScrollView contentContainerStyle={styles.inputContainer}>
         <FormInput
           value={regNumber}
-          label="👤 Registration number"
+          label="🧘 Registration number"
           placeholder="Registration Number"
           onChange={setRegNumber}
         />
