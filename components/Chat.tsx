@@ -23,7 +23,6 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import JoinWaitingRoom from "./JoinWaitingRoom";
 import { ProChats } from "../contexts/ProChats";
 import GetHelpPlaceholder from "./getHelpPlaceholder";
-import usersWaiting from "../assets/waiting";
 import { WaitingUser } from "../types";
 
 interface Message {
