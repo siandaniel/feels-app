@@ -74,16 +74,11 @@ const UserSignUp = ({ hidden, firebaseSignUp, avoidKeyboard }: Props) => {
           return res.username;
         })
         .then(async (res) => {
-          console.log(`${username}Session`);
           const sessionID = await AsyncStorage.getItem(`${username}Session`);
           if (sessionID) {
-            console.log("SessionID found");
-            console.log(sessionID, "<< IN LOGIN");
-
             socket.auth = { sessionID };
             socket.connect();
           } else {
-            console.log("No sessionID");
             socket.auth = { username: username, waiting: false };
             socket.connect();
           }
