@@ -4,6 +4,9 @@
 
 Feels is an interactive mood tracking and mental health support app which provides users with the unique opportunity to connect to a registered professional to discuss their emotions, all in the same app. The app uses the Feels API to fetch user mood tracking information and allow users to join a waiting room to speak to a professional. Whilst in the waiting room, users are provided with links to tailored content such as articles, videos and support websites, all based upon their previous moods as retrieved from the API.
 
+📝 Manifest: https://exp.host/@stacey6105/feel Learn more.
+⚙️ Project page: https://expo.dev/@stacey6105/feel?serviceType=classic&distribution=expo-go
+
 ## Back End
 
 The production version of the Feels API is hosted via Render and can be accessed at the following URL:
